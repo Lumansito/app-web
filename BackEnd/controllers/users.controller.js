@@ -1,8 +1,10 @@
-import {pool} from "../bd.js";
+import { pool } from "../bd.js";
+
+//CRUD provisorio para ussuarios, deberian tener mas atributos, ejemplo fecha nacimiento, contraseña, etc
 
 export const getUsers = async (req, res) => {
   try {
-    const [result] = await db.query("SELECT * FROM users");
+    const [result] = await pool.query("SELECT * FROM users");
     if (result.length === 0) {
       return res.status(404).json({ message: "No hay usuarios cargados" });
     } else {
@@ -15,7 +17,7 @@ export const getUsers = async (req, res) => {
 
 export const getUserByDni = async (req, res) => {
   try {
-    const [result] = await db.query("SELECT * FROM users WHERE dni = ?", [
+    const [result] = await pool.query("SELECT * FROM users WHERE dni = ?", [
       req.params.dni,
     ]);
     if (result.length === 0) {
@@ -31,7 +33,8 @@ export const getUserByDni = async (req, res) => {
 export const createUser = async (req, res) => {
   try {
     const { nombre, apellido, dni } = req.body;
-    const res = await pool.query(
+    //no guardamos la respuesta ya que solamente subimos los datos del nuevo usuario
+    await pool.query(
       "INSERT INTO users (nombre, apellido, dni) VALUES (?, ?, ?)",
       [nombre, apellido, dni]
     );
@@ -47,11 +50,14 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const res = await pool.quety("UPDATE users SET / WHERE dni = ?", [
+    const [result] = await pool.query("UPDATE users SET / WHERE dni = ?", [
       req.body,
       req.params.dni,
     ]);
-    req.json({ message: "Usuario actualizado" });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.json({ message: "Usuario actualizado" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -59,7 +65,7 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    const [res] = await pool.query("DELETE FROM users WHERE dni = ?", [
+    const [result] = await pool.query("DELETE FROM users WHERE dni = ?", [
       req.params.dni,
     ]);
     if (result.affectedRows === 0)
