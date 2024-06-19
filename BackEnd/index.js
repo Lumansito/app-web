@@ -1,5 +1,5 @@
 import express from "express";
-import usersRouter from "./routes/users.routes.js";
+import usersRouter from "./routes/usuarios.routes.js";
 import ejerciciosRouter from "./routes/ejercicios.routes.js";
 import membresiasRouter from "./routes/membresias.routes.js";
 
