@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   getMembresias,
-  getMembresiaByCodeMembresia,
+  getMembresiaBycodMembresia,
   createMembresia,
   updateMembresia,
   deleteMembresia,
@@ -11,12 +11,12 @@ const router = Router();
 
 router.get("/membresias", getMembresias);
 
-router.get("/membresias/:id", getMembresiaByCodeMembresia);
+router.get("/membresias/:codMembresia", getMembresiaBycodMembresia);
 
 router.post("/membresias", createMembresia);
 
-router.put("/membresias/:id", updateMembresia);
+router.put("/membresias/:codMembresia", updateMembresia);
 
-router.delete("/membresias/:id", deleteMembresia);
+router.delete("/membresias/:codMembresia", deleteMembresia);
 
 export default router;

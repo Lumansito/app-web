@@ -15,8 +15,8 @@ router.get("/ejercicios/:codEjercicio", getEjercicioBycodEjercicios);
 
 router.post("/ejercicios", createEjercicio);
 
-router.put("/ejercicios/:id", updateEjercicio);
+router.put("/ejercicios/:codEjercicio", updateEjercicio);
 
-router.delete("/ejercicios/:id", deleteEjercicio);
+router.delete("/ejercicios/:codEjercicio", deleteEjercicio);
 
 export default router;

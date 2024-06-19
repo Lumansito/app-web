@@ -4,7 +4,7 @@ import { pool } from "../bd.js";
 
 export const getUsers = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM users");
+    const [result] = await pool.query("SELECT * FROM usuarios");
     if (result.length === 0) {
       return res.status(404).json({ message: "No hay usuarios cargados" });
     } else {
@@ -17,7 +17,7 @@ export const getUsers = async (req, res) => {
 
 export const getUserByDni = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM users WHERE dni = ?", [
+    const [result] = await pool.query("SELECT * FROM usuarios WHERE dni = ?", [
       req.params.dni,
     ]);
     if (result.length === 0) {
@@ -31,26 +31,42 @@ export const getUserByDni = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
+  const { nombre, apellido, dni, tipoUsuario, contraseña, fechaNac, sexo, telefono, mail } = req.body;
   try {
-    const { nombre, apellido, dni } = req.body;
+    
     //no guardamos la respuesta ya que solamente subimos los datos del nuevo usuario
     await pool.query(
-      "INSERT INTO users (nombre, apellido, dni) VALUES (?, ?, ?)",
-      [nombre, apellido, dni]
+      "INSERT INTO usuarios (nombre, apellido, dni, tipoUsuario, contraseña, fechaNac, sexo, telefono, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [nombre, apellido, dni, tipoUsuario, contraseña, fechaNac, sexo, telefono, mail]
     );
     res.json({
       nombre,
       apellido,
       dni,
+      tipoUsuario,
+      contraseña,
+      fechaNac,
+      sexo,
+      telefono,
+      mail,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+  if(tipoUsuario==="cliente"){
+    try{
+      await pool.query("INSERT INTO cliente (dni) VALUES (?)", [dni]);
+
+    }
+    catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
   }
 };
 
 export const updateUser = async (req, res) => {
   try {
-    const [result] = await pool.query("UPDATE users SET / WHERE dni = ?", [
+    const [result] = await pool.query("UPDATE usuarios SET / WHERE dni = ?", [
       req.body,
       req.params.dni,
     ]);
@@ -65,11 +81,13 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM users WHERE dni = ?", [
-      req.params.dni,
+    const { tipoUsuario } = req.body;
+    const [result] = await pool.query("DELETE FROM usuarios WHERE dni = ? and tipoUsuario = ? ", [
+      req.params.dni, tipoUsuario
     ]);
-    if (result.affectedRows === 0)
+    if (result.affectedRows === 0) {
       return res.status(404).json({ message: "User not found" });
+    }
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ message: error.message });

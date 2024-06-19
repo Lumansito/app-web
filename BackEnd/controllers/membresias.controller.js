@@ -13,11 +13,11 @@ export const getMembresias = async (req, res) => {
   }
 };
 
-export const getMembresiaByCodeMembresia = async (req, res) => {
+export const getMembresiaBycodMembresia = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM membresias WHERE CodeMembresia = ?",
-      [req.params.CodeMembresia]
+      "SELECT * FROM membresias WHERE codMembresia = ?",
+      [req.params.codMembresia]
     );
     if (result.length === 0) {
       return res.status(404).json({ message: "Membresia no encontrada" });
@@ -50,8 +50,8 @@ export const createMembresia = async (req, res) => {
 export const updateMembresia = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "UPDATE membresias SET ? WHERE CodeMembresia = ?",
-      [req.body, req.params.CodeMembresia]
+      "UPDATE membresias SET ? WHERE codMembresia = ?",
+      [req.body, req.params.codMembresia]
     );
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Membresia no encontrada" });
@@ -65,8 +65,8 @@ export const updateMembresia = async (req, res) => {
 export const deleteMembresia = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "DELETE FROM membresias WHERE CodeMembresia = ?",
-      [req.params.CodeMembresia]
+      "DELETE FROM membresias WHERE codMembresia = ?",
+      [req.params.codMembresia]
     );
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Membresia no encontrada" });
