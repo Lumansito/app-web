@@ -61,7 +61,7 @@ CREATE TABLE LINEAS_SEGUIMIENTO (
     repeticiones INT,
     peso DECIMAL(10, 2),
     PRIMARY KEY (dniCliente, fechaSeguimiento, codEjercicio),
-    FOREIGN KEY (dniCliente) REFERENCES CLIENTES(dniCliente),
+    FOREIGN KEY (dniCliente, fechaSeguimiento) REFERENCES SEGUIMIENTOS_GYM(dniCliente, fechaSeguimiento),
     FOREIGN KEY (codEjercicio) REFERENCES EJERCICIOS(codEjercicio)
 );
 
@@ -126,7 +126,7 @@ CREATE TABLE LINEAS_RUTINA_PRE_ESTABLECIDA (
     repeticiones INT,
     series INT,
     codEjercicio INT,
-    PRIMARY KEY (sexo, nroDias),
+    PRIMARY KEY (sexo, nroDias, orden),
     FOREIGN KEY (sexo, nroDias) REFERENCES RUTINAS_PRE_ESTABLECIDAS(sexo, nroDias),
     FOREIGN KEY (codEjercicio) REFERENCES EJERCICIOS(codEjercicio)
 );
