@@ -9,14 +9,14 @@ import {
 
 const router = Router();
 
-router.get("/membresias", getMembresias);
+router.get("/api/membresias", getMembresias);
 
-router.get("/membresias/:codMembresia", getMembresiaBycodMembresia);
+router.get("/api/membresias/:codMembresia", getMembresiaBycodMembresia);
 
-router.post("/membresias", createMembresia);
+router.post("/api/membresias", createMembresia);
 
-router.put("/membresias/:codMembresia", updateMembresia);
+router.put("/api/membresias/:codMembresia", updateMembresia);
 
-router.delete("/membresias/:codMembresia", deleteMembresia);
+router.delete("/api/membresias/:codMembresia", deleteMembresia);
 
 export default router;

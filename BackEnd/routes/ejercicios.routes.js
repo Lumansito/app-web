@@ -9,14 +9,14 @@ import {
 
 const router = Router();
 
-router.get("/ejercicios", getEjercicios);
+router.get("/api/ejercicios", getEjercicios);
 
-router.get("/ejercicios/:codEjercicio", getEjercicioBycodEjercicios);
+router.get("/api/ejercicios/:codEjercicio", getEjercicioBycodEjercicios);
 
-router.post("/ejercicios", createEjercicio);
+router.post("/api/ejercicios", createEjercicio);
 
-router.put("/ejercicios/:codEjercicio", updateEjercicio);
+router.put("/api/ejercicios/:codEjercicio", updateEjercicio);
 
-router.delete("/ejercicios/:codEjercicio", deleteEjercicio);
+router.delete("/api/ejercicios/:codEjercicio", deleteEjercicio);
 
 export default router;
