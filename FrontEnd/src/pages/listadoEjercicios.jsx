@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 export const ListadoEjercicios = () => {
 
     const [ejercicios, setEjercicios] = useState([]);
-
     useEffect(() => {
         const fetchEjercicios = async () => {
             const response = await getEjercicios()
@@ -14,6 +13,7 @@ export const ListadoEjercicios = () => {
         fetchEjercicios();
     }, []);
 
+    console.log(ejercicios);
     return (
         <div>
             <h1>Listado de ejercicios</h1>

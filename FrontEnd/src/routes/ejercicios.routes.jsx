@@ -6,7 +6,6 @@ export function EjerciciosRoutes() {
   return (
     <Routes>
       <Route path="/" element={<ListadoEjercicios />} />
-      
     </Routes>
   );
 }
