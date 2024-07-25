@@ -17,7 +17,7 @@ export function Rutina() {
         }, []);
 
         return (
-            <div>
+            <div id="rutina">
                 <h1>Rutina Pre establecida</h1>
                 <ul>
                 {lineas.map((linea) => (<li key={linea.orden}><LineaRutina linea={linea} /></li>
