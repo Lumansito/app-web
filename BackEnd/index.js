@@ -2,6 +2,7 @@ import express from "express";
 import usersRouter from "./routes/usuarios.routes.js";
 import ejerciciosRouter from "./routes/ejercicios.routes.js";
 import membresiasRouter from "./routes/membresias.routes.js";
+import rutinas_pre_establecidasRouter from "./routes/rutinas_pre_establecidas.routes.js";
 import cors from "cors";
 
 
@@ -12,6 +13,7 @@ app.use(express.json()); //para usar json en el body
 app.use(usersRouter);
 app.use(membresiasRouter);
 app.use(ejerciciosRouter);
+app.use(rutinas_pre_establecidasRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
