@@ -4,7 +4,7 @@ INSERT INTO USUARIOS (dni, tipoUsuario, nombre, apellido, contrasenia, fechaNac,
 (87654321, 'Cliente', 'Jane', 'Smith', 'password456', '1990-08-25', 'F', '987-654-3210', 'jane.smith@example.com', '2021-06-01');
 
 -- Cargar datos iniciales en la tabla MEMBRESIAS
-INSERT INTO MEMBRESIAS (codMembresia, nombre, costo, descripción, cuposDia) VALUES
+INSERT INTO MEMBRESIAS (codMembresia, nombre, costo, descripcion, cuposDia) VALUES
 (1, 'Basic', 29.99, 'Basic Membership', 10),
 (2, 'Premium', 49.99, 'Premium Membership', 20);
 
@@ -13,7 +13,7 @@ INSERT INTO CLIENTES (dniCliente, tipoUsuario, estado, codMembresia) VALUES
 (87654321, 'Cliente', 'Activo', 1);
 
 -- Cargar datos iniciales en la tabla PAGOS
-INSERT INTO PAGOS (dniCliente, fecha, descripcion, monto, método) VALUES
+INSERT INTO PAGOS (dniCliente, fecha, descripcion, monto, metodo) VALUES
 (87654321, '2023-07-01', 'Monthly Fee', 29.99, 'Credit Card');
 
 -- Cargar datos iniciales en la tabla EJERCICIOS

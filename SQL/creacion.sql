@@ -1,6 +1,6 @@
 CREATE TABLE USUARIOS (
     dni INT NOT NULL,
-    tipoUsuario VARCHAR(255) NOT NULL ,
+    tipoUsuario VARCHAR(255) NOT NULL,
     nombre VARCHAR(255),
     apellido VARCHAR(255),
     contrasenia VARCHAR(255) NOT NULL,
@@ -9,14 +9,14 @@ CREATE TABLE USUARIOS (
     telefono VARCHAR(255),
     mail VARCHAR(255),
     fechaInscripcion DATE,
-
     PRIMARY KEY (dni, tipoUsuario)
 );
+
 CREATE TABLE MEMBRESIAS (
     codMembresia INT PRIMARY KEY,
     nombre VARCHAR(255),
     costo DECIMAL(10, 2),
-    descripción VARCHAR(255),
+    descripcion VARCHAR(255),  -- Cambié "descripción" a "descripcion" por consistencia
     cuposDia INT
 );
 
@@ -26,22 +26,19 @@ CREATE TABLE CLIENTES (
     estado VARCHAR(255) DEFAULT 'Activo',
     codMembresia INT,
     PRIMARY KEY (dniCliente),
-    FOREIGN KEY (dniCliente,tipoUsuario) REFERENCES USUARIOS(dni,tipoUsuario),
-    FOREIGN KEY (codMembresia) REFERENCES MEMBRESiAS(codMembresia)
+    FOREIGN KEY (dniCliente, tipoUsuario) REFERENCES USUARIOS(dni, tipoUsuario),
+    FOREIGN KEY (codMembresia) REFERENCES MEMBRESIAS(codMembresia)
 );
-
-
 
 CREATE TABLE PAGOS (
     dniCliente INT,
     fecha DATE,
     descripcion VARCHAR(255),
     monto DECIMAL(10, 2),
-    método VARCHAR(255),
+    metodo VARCHAR(255),  -- Cambié "método" a "metodo" por consistencia
     PRIMARY KEY (dniCliente, fecha),
     FOREIGN KEY (dniCliente) REFERENCES CLIENTES(dniCliente)
 );
-
 
 CREATE TABLE EJERCICIOS (
     codEjercicio INT PRIMARY KEY AUTO_INCREMENT,
@@ -65,7 +62,6 @@ CREATE TABLE LINEAS_SEGUIMIENTO (
     FOREIGN KEY (dniCliente, fechaSeguimiento) REFERENCES SEGUIMIENTOS_GYM(dniCliente, fechaSeguimiento),
     FOREIGN KEY (codEjercicio) REFERENCES EJERCICIOS(codEjercicio)
 );
-
 
 CREATE TABLE CUPO_OTORGADO (
     fecha DATE,
@@ -97,26 +93,26 @@ CREATE TABLE RUTINAS (
 CREATE TABLE LINEAS_RUTINA (
     dniCliente INT,
     fechaPeticion DATE,
-    dia int,
+    dia INT,
     orden INT,
     repeticiones INT,
     series INT,
     codEjercicio INT,
-    PRIMARY KEY (dniCliente, fechaPeticion, dia),
-    FOREIGN KEY (dniCliente, fechaPeticion ) REFERENCES RUTINAS(dniCliente, fechaPeticion),
+    PRIMARY KEY (dniCliente, fechaPeticion, dia, orden),
+    FOREIGN KEY (dniCliente, fechaPeticion) REFERENCES RUTINAS(dniCliente, fechaPeticion),
     FOREIGN KEY (codEjercicio) REFERENCES EJERCICIOS(codEjercicio)
 );
 
 CREATE TABLE RUTINAS_PRE_ESTABLECIDAS (
     sexo VARCHAR(255),
-    nroDias int,
+    nroDias INT,
     PRIMARY KEY (sexo, nroDias)
 );
 
 CREATE TABLE LINEAS_RUTINA_PRE_ESTABLECIDA (
     sexo VARCHAR(255),
-    nroDias VARCHAR(255),
-    dia int,
+    nroDias INT,
+    dia INT,
     orden INT,
     repeticiones INT,
     series INT,
