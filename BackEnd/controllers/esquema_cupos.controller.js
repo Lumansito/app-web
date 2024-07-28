@@ -1,6 +1,6 @@
 import { pool } from "../bd.js";
 
-export const getCupos = async (req, res) => {
+export const getEsquemaCupos = async (req, res) => {
   try {
     const [results] = await pool.query("SELECT * FROM esquemaCupos");
     if (results.length === 0) {
@@ -13,7 +13,7 @@ export const getCupos = async (req, res) => {
   }
 };
 
-export const getCupoByDate = async (req, res) => {
+export const getEsquemaCuposByDate = async (req, res) => {
   try {
     const { diaSemana, horario } = req.params;
     const [result] = await pool.query(
@@ -32,7 +32,7 @@ export const getCupoByDate = async (req, res) => {
   }
 };
 
-export const getCupoToday = async (req, res) => {
+export const getEsquemaCuposToday = async (req, res) => {
   try {
     const diaSemana = new Date().getDay();
     const [result] = await pool.query(
@@ -51,7 +51,7 @@ export const getCupoToday = async (req, res) => {
   }
 };
 
-export const createCupo = async (req, res) => {
+export const createEsquemaCupos = async (req, res) => {
   try {
     const { diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario } = req.body;
     await pool.query(
@@ -71,7 +71,7 @@ export const createCupo = async (req, res) => {
   }
 };
 
-export const updateCupo = async (req, res) => {
+export const updateEsquemaCupos = async (req, res) => {
   try {
     const { diaSemana, horario } = req.params;
     const [result] = await pool.query(
@@ -87,7 +87,7 @@ export const updateCupo = async (req, res) => {
   }
 };
 
-export const deleteCupo = async (req, res) => {
+export const deleteEsquemaCupos = async (req, res) => {
   try {
     const { diaSemana, horario } = req.params;
     const [result] = await pool.query(

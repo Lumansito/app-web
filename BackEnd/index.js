@@ -3,7 +3,7 @@ import usersRouter from "./routes/usuarios.routes.js";
 import ejerciciosRouter from "./routes/ejercicios.routes.js";
 import membresiasRouter from "./routes/membresias.routes.js";
 import rutinas_pre_establecidasRouter from "./routes/rutinas_pre_establecidas.routes.js";
-import esquemas_cupos from "./routes/esquemaCupos.routes.js";
+import esquema_cuposRouter from "./routes/esquema_cupos.routes.js";
 import cors from "cors";
 
 
@@ -15,8 +15,7 @@ app.use(usersRouter);
 app.use(membresiasRouter);
 app.use(ejerciciosRouter);
 app.use(rutinas_pre_establecidasRouter);
-app.use(esquemas_cupos);
-
+app.use(esquema_cuposRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);

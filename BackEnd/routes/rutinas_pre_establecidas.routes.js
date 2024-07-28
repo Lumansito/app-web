@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   getRutinas_pre_establecidasBySexoNroDias, //no estoy seguro si se filtan por id
   updateRutinas_pre_establecidas,
-} from "../controllers/rutinas_pre_establecidas.controllers.js";
+} from "../controllers/rutinas_pre_establecidas.controller.js";
 
 
 const router = Router();
