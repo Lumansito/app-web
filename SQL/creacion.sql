@@ -97,7 +97,7 @@ CREATE TABLE RUTINAS (
 CREATE TABLE LINEAS_RUTINA (
     dniCliente INT,
     fechaPeticion DATE,
-    dia VARCHAR(255),
+    dia int,
     orden INT,
     repeticiones INT,
     series INT,
@@ -109,14 +109,14 @@ CREATE TABLE LINEAS_RUTINA (
 
 CREATE TABLE RUTINAS_PRE_ESTABLECIDAS (
     sexo VARCHAR(255),
-    nroDias VARCHAR(255),
+    nroDias int,
     PRIMARY KEY (sexo, nroDias)
 );
 
 CREATE TABLE LINEAS_RUTINA_PRE_ESTABLECIDA (
     sexo VARCHAR(255),
     nroDias VARCHAR(255),
-    dia VARCHAR(255),
+    dia int,
     orden INT,
     repeticiones INT,
     series INT,
