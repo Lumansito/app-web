@@ -22,10 +22,11 @@ CREATE TABLE MEMBRESIAS (
 
 CREATE TABLE CLIENTES (
     dniCliente INT NOT NULL,
+    tipoUsuario VARCHAR(255) NOT NULL,
     estado VARCHAR(255) DEFAULT 'Activo',
     codMembresia INT,
     PRIMARY KEY (dniCliente),
-    FOREIGN KEY (dniCliente) REFERENCES USUARIOS(dni),
+    FOREIGN KEY (dniCliente,tipoUsuario) REFERENCES USUARIOS(dni,tipoUsuario),
     FOREIGN KEY (codMembresia) REFERENCES MEMBRESiAS(codMembresia)
 );
 
@@ -65,25 +66,19 @@ CREATE TABLE LINEAS_SEGUIMIENTO (
     FOREIGN KEY (codEjercicio) REFERENCES EJERCICIOS(codEjercicio)
 );
 
-CREATE TABLE CLASES (
-    fecha DATE,
-    horaInicio TIME,
-    dniInstructor INT,
-    tipoUsuario VARCHAR(255),
-    PRIMARY KEY (fecha, horaInicio),
-    FOREIGN KEY (dniInstructor, tipoUsuario) REFERENCES USUARIOS(dni, tipoUsuario)
-);
 
 CREATE TABLE CUPO_OTORGADO (
     fecha DATE,
     horaInicio TIME,
     dniCliente INT,
+    dniInstructor INT,
+    tipoUsuario VARCHAR(255),
     estado VARCHAR(255),
     horaIngreso TIME,
     horaReserva TIME,
     horaCancelacion TIME,
     PRIMARY KEY (fecha, horaInicio, dniCliente),
-    FOREIGN KEY (fecha, horaInicio) REFERENCES CLASES(fecha, horaInicio),
+    FOREIGN KEY (dniInstructor, tipoUsuario) REFERENCES USUARIOS(dni, tipoUsuario),
     FOREIGN KEY (dniCliente) REFERENCES CLIENTES(dniCliente)
 );
 
