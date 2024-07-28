@@ -32,6 +32,26 @@ export const getEsquemaCuposByDate = async (req, res) => {
   }
 };
 
+export const getEsquemaCuposByDiaSemana = async (req, res) => {
+  try {
+    const { diaSemana} = req.params;
+    const [result] = await pool.query(
+      "SELECT * FROM esquemaCupos WHERE diaSemana = ?",
+      [diaSemana]
+    );
+    if (result.length === 0) {
+      return res.status(404).json({
+        message: "no hay cupos cargados en el dia especificado.",
+      });
+    } else {
+      res.json(result[0]);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 export const getEsquemaCuposToday = async (req, res) => {
   try {
     const diaSemana = new Date().getDay();
