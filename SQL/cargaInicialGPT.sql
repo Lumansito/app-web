@@ -41,8 +41,8 @@ INSERT INTO RUTINAS (dniCliente, fechaPeticion, fechaCarga, peticion, dniInstruc
 
 -- Cargar datos iniciales en la tabla LINEAS_RUTINA
 INSERT INTO LINEAS_RUTINA (dniCliente, fechaPeticion, dia, orden, repeticiones, series, codEjercicio) VALUES
-(87654321, '2023-07-18', 'Lunes', 1, 10, 3, 1),
-(87654321, '2023-07-18', 'Lunes', 2, 15, 3, 2);
+(87654321, '2023-07-18', 1, 1, 10, 3, 1),
+(87654321, '2023-07-18', 1, 2, 15, 3, 2);
 
 -- Cargar datos iniciales en la tabla RUTINAS_PRE_ESTABLECIDAS
 INSERT INTO RUTINAS_PRE_ESTABLECIDAS (sexo, nroDias) VALUES
