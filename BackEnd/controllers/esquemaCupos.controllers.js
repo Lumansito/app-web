@@ -53,17 +53,18 @@ export const getCupoToday = async (req, res) => {
 
 export const createCupo = async (req, res) => {
   try {
-    const { diaSemana, horario, cuposDisponibles, estado, cupo } = req.body;
+    const { diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario } = req.body;
     await pool.query(
-      "INSERT INTO esquemaCupos (diaSemana, horario, cuposDisponibles, estado, cupo) VALUES (?, ?, ?. ?, ?)",
-      [diaSemana, horario, cuposDisponibles]
+      "INSERT INTO esquemaCupos (diaSemana, horario, estado, cupo) VALUES (?, ?, ?, ?, ?, ?)",
+      [diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario]
     );
     res.json({
       diaSemana,
       horario,
-      cuposDisponibles,
       estado,
       cupo,
+      dniInstructor,
+      tipoUsuario,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

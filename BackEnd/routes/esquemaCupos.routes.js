@@ -6,7 +6,7 @@ import {
   createCupo,
   updateCupo,
   deleteCupo,
-} from "../controllers/esquemaCupos.controller.js";
+} from "../controllers/esquemaCupos.controllers.js";
 
 const router = Router();
 
