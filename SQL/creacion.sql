@@ -117,7 +117,7 @@ CREATE TABLE LINEAS_RUTINA_PRE_ESTABLECIDA (
     repeticiones INT,
     series INT,
     codEjercicio INT,
-    PRIMARY KEY (sexo, nroDias, orden),
+    PRIMARY KEY (sexo, nroDias, dia,orden),
     FOREIGN KEY (sexo, nroDias) REFERENCES RUTINAS_PRE_ESTABLECIDAS(sexo, nroDias),
     FOREIGN KEY (codEjercicio) REFERENCES EJERCICIOS(codEjercicio)
 );
