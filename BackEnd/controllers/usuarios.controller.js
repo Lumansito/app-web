@@ -36,7 +36,7 @@ export const createUser = async (req, res) => {
     
     //no guardamos la respuesta ya que solamente subimos los datos del nuevo usuario
     await pool.query(
-      "INSERT INTO usuarios (nombre, apellido, dni, tipoUsuario, contraseña, fechaNac, sexo, telefono, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO usuarios (nombre, apellido, dni, tipoUsuario, contrasenia, fechaNac, sexo, telefono, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [nombre, apellido, dni, tipoUsuario, contraseña, fechaNac, sexo, telefono, mail]
     );
     res.json({

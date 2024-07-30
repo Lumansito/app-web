@@ -41,7 +41,7 @@ export const getEsquemaCuposByDiaSemana = async (req, res) => {
     );
     if (result.length === 0) {
       return res.status(404).json({
-        message: "no hay cupos cargados en el dia especificado.",
+        message: "no hay cupos cargados en el dia .",
       });
     } else {
       res.json(result[0]);
@@ -61,7 +61,7 @@ export const getEsquemaCuposToday = async (req, res) => {
     );
     if (result.length === 0) {
       return res.status(404).json({
-        message: "no hay cupos cargados en el dia especificado.",
+        message: "no hay cupos cargados en el dia de hoy.",
       });
     } else {
       res.json(result);
@@ -75,7 +75,7 @@ export const createEsquemaCupos = async (req, res) => {
   try {
     const { diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario } = req.body;
     await pool.query(
-      "INSERT INTO esquemaCupos (diaSemana, horario, estado, cupo) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO esquemaCupos (diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?)",
       [diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario]
     );
     res.json({
