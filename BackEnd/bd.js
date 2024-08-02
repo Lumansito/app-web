@@ -1,9 +1,15 @@
-import { createPool } from "mysql2/promise";
+require('dotenv').config();
 
-export const pool = createPool({
-  host: "192.168.100.8",
-  port: 3305,
-  user: "root",
-  password: "luhmann123",
-  database: "gimnasio",
-});
+const dbUrl = process.env.DATABASE_URL;
+const secretKey = process.env.SECRET_KEY;
+const apiKey = process.env.API_KEY;
+
+console.log('Database URL:', dbUrl);
+console.log('Secret Key:', secretKey);
+console.log('API Key:', apiKey);
+
+const { dbUrl, secretKey, apiKey } = require('./config');
+
+console.log('Database URL:', dbUrl);
+console.log('Secret Key:', secretKey);
+console.log('API Key:', apiKey);
