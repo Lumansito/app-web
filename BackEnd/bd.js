@@ -1,15 +1,15 @@
-require('dotenv').config();
+import { createPool } from "mysql2/promise";
+import dotenv from 'dotenv';
 
-const dbUrl = process.env.DATABASE_URL;
-const secretKey = process.env.SECRET_KEY;
-const apiKey = process.env.API_KEY;
+const dbHost = process.env.DB_HOST;
+const dbUser = process.env.DB_USER;
+const dbPass = process.env.DB_PASS;
+const dbPort = process.env.DB_PORT;
 
-console.log('Database URL:', dbUrl);
-console.log('Secret Key:', secretKey);
-console.log('API Key:', apiKey);
-
-const { dbUrl, secretKey, apiKey } = require('./config');
-
-console.log('Database URL:', dbUrl);
-console.log('Secret Key:', secretKey);
-console.log('API Key:', apiKey);
+export const pool = createPool({
+  host: dbHost,
+  port: dbPort,
+  user: dbUser,
+  password: dbPass,
+  database: "gimnasio",
+});
