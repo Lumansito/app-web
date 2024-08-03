@@ -44,7 +44,6 @@ export const updateRutinas_pre_establecidas = async (req, res) => {
       variables += `("${lineas[i].sexo}", ${lineas[i].nroDias}, ${lineas[i].dia},${i}, ${lineas[i].codEjercicio}, ${lineas[i].series}, ${lineas[i].repeticiones}),`;
     }
     variables = variables.slice(0, -1);
-    console.log(variables);
     const query= `INSERT INTO lineas_rutina_pre_establecida (sexo, nroDias,dia, orden, codEjercicio, series, repeticiones) VALUES ${variables}`;
     console.log(query);
     const [result] = await pool.query(query);
