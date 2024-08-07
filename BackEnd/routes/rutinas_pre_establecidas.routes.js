@@ -14,6 +14,4 @@ router.get("/api/rutinas_pre_establecidas/:sexo/:nrodias", getRutinas_pre_establ
 
 router.put("/api/rutinas_pre_establecidas", updateRutinas_pre_establecidas);
 
-
-
 export default router;

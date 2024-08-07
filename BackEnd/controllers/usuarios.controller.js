@@ -103,7 +103,7 @@ export const login = async (req, res) => {
     if (result.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     } else {
-      if(result[0].contrasenia== result[0].fechaNac){
+      if(result[0].contrasenia == result[0].fechaNac){
         return res.status(404).json({ message: "Debe cambiar la contraseña" }); //pequeña valuidacion cambio de contraseña
       }else {
       res.json(result[0]);
