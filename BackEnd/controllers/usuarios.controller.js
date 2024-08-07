@@ -30,13 +30,14 @@ export const getUserByDni = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { nombre, apellido, dni, tipoUsuario, contraseña, fechaNac, sexo, telefono, mail } = req.body;
+  const { nombre, apellido, dni, tipoUsuario,  fechaNac, sexo, telefono, mail } = req.body;
   try {
     
-    //no guardamos la respuesta ya que solamente subimos los datos del nuevo usuario
+    
+    //Insertamos la fecha de nacimiento en la contraseña, para que luego la cambie el usuario
     await pool.query(
       "INSERT INTO usuarios (nombre, apellido, dni, tipoUsuario, contrasenia, fechaNac, sexo, telefono, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [nombre, apellido, dni, tipoUsuario, contraseña, fechaNac, sexo, telefono, mail]
+      [nombre, apellido, dni, tipoUsuario, fechaNac, fechaNac, sexo, telefono, mail]
     );
     res.json({
       nombre,
@@ -92,3 +93,23 @@ export const deleteUser = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const login = async (req, res) => {
+  try {
+    const [result] = await pool.query("SELECT * FROM usuarios WHERE dni = ? AND contrasenia = ?", [
+      req.body.dni,
+      req.body.contrasenia,
+    ]);
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    } else {
+      if(result[0].contrasenia== result[0].fechaNac){
+        return res.status(404).json({ message: "Debe cambiar la contraseña" }); //pequeña valuidacion cambio de contraseña
+      }else {
+      res.json(result[0]);
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}

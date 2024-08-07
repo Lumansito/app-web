@@ -1,3 +1,4 @@
+import e from "cors";
 import {pool} from "../bd.js";
 
 export const getRutinas_pre_establecidasBySexoNroDias = async (req, res) => {
@@ -15,8 +16,22 @@ export const getRutinas_pre_establecidasBySexoNroDias = async (req, res) => {
   }
 };
 
-export const updateRutinas_pre_establecidas = async (req, res) => {
+export const getRutinas_pre_establecidas = async (req, res) => {
   try {
+    const [result] = await pool.query("SELECT * FROM rutinas_pre_establecidas");
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No hay rutinas pre establecidas cargadas" });
+    } else {
+      res.json(result);
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateRutinas_pre_establecidas = async (req, res) => {
+  
     const lineas = req.body;
     let variables = "";
   
@@ -44,14 +59,25 @@ export const updateRutinas_pre_establecidas = async (req, res) => {
       variables += `("${lineas[i].sexo}", ${lineas[i].nroDias}, ${lineas[i].dia},${i}, ${lineas[i].codEjercicio}, ${lineas[i].series}, ${lineas[i].repeticiones}),`;
     }
     variables = variables.slice(0, -1);
-    const query= `INSERT INTO lineas_rutina_pre_establecida (sexo, nroDias,dia, orden, codEjercicio, series, repeticiones) VALUES ${variables}`;
-    console.log(query);
-    const [result] = await pool.query(query);
-    if (result.affectedRows === 0) {
-      return res.status(404).json({message:"no se encuentra la linea de rutina pre establecida."});
-    } res.json({message:"linea de rutina pre establecida actualizada correctamente."});
-     
+    const queryInsert= `INSERT INTO lineas_rutina_pre_establecida (sexo, nroDias,dia, orden, codEjercicio, series, repeticiones) VALUES ${variables}`;
+    const queryDelete = `DELETE FROM lineas_rutina_pre_establecida WHERE sexo = "${lineas[0].sexo}" and nroDias = ${lineas[0].nroDias}`;
+
+    let connection;
+
+  try {  //generamos una transaccion para que se hagan todas las operaciones o ninguna para evitar inconsistencias
+    connection = await pool.getConnection();
+    await connection.beginTransaction();
+
+    await connection.query(queryDelete);
+    await connection.query(queryInsert);
+
+    await connection.commit();
+    res.json({ message: "Lineas de rutina pre establecida actualizadas correctamente." });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    if (connection) await connection.rollback();
+    res.status(500).json({ message: error.message });
+  } finally {
+    if (connection) connection.release();
   }
+  
 };
