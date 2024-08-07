@@ -1,6 +1,5 @@
 import { pool } from "../bd.js";
 
-//CRUD provisorio para ussuarios, deberian tener mas atributos, ejemplo fecha nacimiento, contraseña, etc
 
 export const getUsers = async (req, res) => {
   try {

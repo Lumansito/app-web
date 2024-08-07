@@ -1,0 +1,11 @@
+USUARIOS:
+en el crud de los usuarios la contraseña tiene q ser la feach y ver de poner un campo mas en la bd para 
+saber si se modifico o no esta, para hacer pedirle al usuario que ingrese su nueva contraseña 
+crear la peticion esta, y para el inicio de sesion
+
+RUTINAS PRE ESTABLECIDAS:
+crear una transaccin en la bd para asegurar qur no se borren registros sin que se registren los nuevos
+crear un CRETE para nuevas rutinas, ejemplo queiro tener una rutina de 4 dias hombre que no esta inicializada
+, tmb cumpliriamos con lo que nos aclaro el profe de que nada debe estar "hardcodeado" pero en este caso 
+nose que tan necesario es.ANALALIZAR
+
