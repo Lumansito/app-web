@@ -59,6 +59,7 @@ CREATE TABLE SEGUIMIENTOS_GYM (
 
 
 CREATE TABLE CUPO_OTORGADO (
+    idCupo INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE,
     horaInicio TIME,
     dniCliente INT,
@@ -66,12 +67,12 @@ CREATE TABLE CUPO_OTORGADO (
     tipoUsuario VARCHAR(255),
     estado VARCHAR(255),
     horaIngreso TIME,
-    horaReserva TIME,
+    horaReserva  TIME DEFAULT CURRENT_TIME,
     horaCancelacion TIME,
-    PRIMARY KEY (fecha, horaInicio, dniCliente),
     FOREIGN KEY (dniInstructor, tipoUsuario) REFERENCES USUARIOS(dni, tipoUsuario),
     FOREIGN KEY (dniCliente) REFERENCES CLIENTES(dniCliente)
 );
+
 
 CREATE TABLE RUTINAS (
     dniCliente INT,

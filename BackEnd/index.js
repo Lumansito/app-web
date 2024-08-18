@@ -6,6 +6,7 @@ import rutinas_pre_establecidasRouter from "./routes/rutinas_pre_establecidas.ro
 import esquema_cuposRouter from "./routes/esquema_cupos.routes.js";
 import pagosRouter from "./routes/pagos.routes.js";
 import seguimientosRouter from "./routes/seguimientos.routes.js";
+import cuposRouter from "./routes/cupo_otorgado.routes.js";
 import cors from "cors";
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(rutinas_pre_establecidasRouter);
 app.use(esquema_cuposRouter);
 app.use(pagosRouter);
 app.use(seguimientosRouter);
+app.use(cuposRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
