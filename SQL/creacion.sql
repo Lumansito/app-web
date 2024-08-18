@@ -48,20 +48,15 @@ CREATE TABLE EJERCICIOS (
 CREATE TABLE SEGUIMIENTOS_GYM (
     dniCliente INT,
     fechaSeguimiento DATE,
-    PRIMARY KEY (dniCliente, fechaSeguimiento),
-    FOREIGN KEY (dniCliente) REFERENCES CLIENTES(dniCliente)
-);
-
-CREATE TABLE LINEAS_SEGUIMIENTO (
-    dniCliente INT,
-    fechaSeguimiento DATE,
+    idSeguimiento INT AUTO_INCREMENT PRIMARY KEY,
     codEjercicio INT,
     repeticiones INT,
     peso DECIMAL(10, 2),
-    PRIMARY KEY (dniCliente, fechaSeguimiento, codEjercicio),
-    FOREIGN KEY (dniCliente, fechaSeguimiento) REFERENCES SEGUIMIENTOS_GYM(dniCliente, fechaSeguimiento),
+    FOREIGN KEY (dniCliente) REFERENCES CLIENTES(dniCliente),
     FOREIGN KEY (codEjercicio) REFERENCES EJERCICIOS(codEjercicio)
 );
+
+
 
 CREATE TABLE CUPO_OTORGADO (
     fecha DATE,
