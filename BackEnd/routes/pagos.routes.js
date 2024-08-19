@@ -10,10 +10,10 @@ const router = Router();
 
 router.get("/api/pagos", getPagos);
 
-router.get("api/pagos/:dniCliente", getPagosByDNI);
+router.get("/api/pagos/:dniCliente", getPagosByDNI);
 
-router.post("api/pagos", createPago);
+router.post("/api/pagos", createPago);
 
-router.put("api/pagos/:idPago", updatePago);
+router.put("/api/pagos/:idPago", updatePago);
 
 export default router;

@@ -17,6 +17,7 @@ export const getPagos = async (req, res) => {
 
 export const getPagosByDNI = async (req, res) => {
   try {
+    const { dniCliente } = req.params;
     const [result] = await pool.query(
       "SELECT * FROM pagos WHERE dniCliente = ?",
       [dniCliente]
@@ -33,9 +34,22 @@ export const getPagosByDNI = async (req, res) => {
 
 export const createPago = async (req, res) => {
   try {
-    const { fecha, descripcion, monto, metodo, dniCliente, codMembresia } =
-      req.body;
 
+    /*
+  {
+    "descripcion": "Pago de membresía",
+    "monto": 1000,
+    "metodo": "tarjeta",
+    "dniCliente": "12345678",
+    "codMembresia": "1"  
+  }
+    
+    
+    */
+
+
+    const { descripcion, monto, metodo, dniCliente, codMembresia } = req.body;
+    const fecha = new Date().toISOString().split("T")[0];
     // Inicia una transacción
     await pool.query("START TRANSACTION");
 
@@ -60,10 +74,10 @@ export const createPago = async (req, res) => {
     const nuevaFecha = new Date(fecha);
     nuevaFecha.setDate(nuevaFecha.getDate() + 30);
 
-    const nuevoEstado = fecha > new Date() ? "activo" : "inactivo";
+    const nuevoEstado =  "activo" ;
 
     await pool.query(
-      "UPDATE Clientes SET estado = ?, membresia_activa = ? WHERE dniCliente = ?",
+      "UPDATE clientes SET estado = ?, codMembresia = ? WHERE dniCliente = ?",
       [nuevoEstado, codMembresia, dniCliente]
     );
 
@@ -89,9 +103,8 @@ export const createPago = async (req, res) => {
 // Actualizar un pago existente y recalcular el estado del cliente
 export const updatePago = async (req, res) => {
   try {
-    const { fecha, descripcion, monto, metodo, dniCliente, codMembresia } =
-      req.body;
-
+    const {descripcion, monto, metodo, dniCliente, codMembresia } =   req.body;
+    const fecha = new Date().toISOString().split("T")[0];
     // Inicia una transacción
     await pool.query("START TRANSACTION");
 
