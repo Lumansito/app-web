@@ -19,7 +19,7 @@ export const ListadoEjercicios = () => {
             <h1>Listado de ejercicios</h1>
             <ul>
                 {ejercicios.map(ejercicio => (
-                    <li key={ejercicio.id}>{ejercicio.nombre}</li>
+                    <li key={ejercicio.codEjercicio}>{ejercicio.nombre}</li>
                 ))}
             </ul>
         </div>

@@ -2,26 +2,56 @@
 import { pool } from "../bd.js";
 
 // usuario agrega un comentario a una rutina personalizada
-export const getSolicitudRutinas = async (req, res) => {
+export const createSolicitudRutinas = async (req, res) => {
   try {
-    const { dni, rutinaId } = req.params;
+    const { dni } = req.params;
     const { peticion } = req.body;
+    const fecha = new Date().toISOString().split("T")[0];
+
+    cosnt [valido] = await pool.query(`
+      SELECT condMembresia FROM clientes WHERE dniCliente = ?`, [dni]);    
+    if (valido[0].condMembresia != 3 ) {  
+      return res.status(400).json({ message: "El usuario no tiene una membresía activa." });
+    }
 
     const [result] = await pool.query(
-      "INSERT INTO rutinas (dniCliente, rutinaId, peticion) VALUES (?, ?, ?)",
-      [dni, rutinaId, peticion]
+      "INSERT INTO rutinas (dniCliente, peticion, fechaPeticion) VALUES (?, ?, ?)",
+      [dni, peticion, fecha]
     );
 
-    res.json({ message: "Comentario agregado correctamente.", id: result.insertId });
+    res.json({ message: "Comentario agregado correctamente." });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
+//se supone que en la implementacion del front nos viene asi el json
+    /*
+    [
+  {
+    "sexo": "m",
+    "nroDias": 3,
+    "dia":"1",
+    "codEjercicio": "1",
+    "series": 4,
+    "repeticiones": 12
+  },
+  {
+    "sexo": "m",
+    "nroDias": 3,
+    "dia":"1",
+    "codEjercicio": "2",
+    "series": 3,
+    "repeticiones": 15
+  }
+] */
+
 
 // administrador cree o modifique una rutina personalizada
 export const updatePersonalizedRoutine = async (req, res) => {
     const { rutinaId } = req.params;
+
+    
     const lineas = req.body; // Array de objetos que representan las líneas de la rutina
     let variables = "";
   
