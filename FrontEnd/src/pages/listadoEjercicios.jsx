@@ -1,16 +1,10 @@
-import {getEjercicios} from '../api/ejercicios.api';
-import React, { useEffect, useState } from 'react';
+import { useEffect } from "react";
+import { useEjercicios } from "../context/Ejercicio/EjercicioProvider";
 
 export const ListadoEjercicios = () => {
-
-    const [ejercicios, setEjercicios] = useState([]);
+    const { ejercicios, loadEjercicios } = useEjercicios();
     useEffect(() => {
-        const fetchEjercicios = async () => {
-            const response = await getEjercicios()
-            setEjercicios(response.data);
-            console.log(response);
-        }
-        fetchEjercicios();
+        loadEjercicios();
     }, []);
 
     console.log(ejercicios);
