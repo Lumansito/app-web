@@ -10,14 +10,14 @@ export function Home() {
 
     return (
         <div>
-            <h1>Inicie sesión!</h1>
             {!userRole ? (
                 <LogIn onLogin={handleLogin} />
             ) : (
                 <div>
+
                     <h2>Bienvenido, {userRole}!</h2>
                     {/* Aquí podrías renderizar diferentes componentes basados en el rol */}
-                    {userRole === 'instructor' && <p>Componente para instructores</p>}
+                    {userRole === 'instructor' && <h1>Componente para instructores</h1>}
                     {userRole === 'user' }
                 </div>
             )}

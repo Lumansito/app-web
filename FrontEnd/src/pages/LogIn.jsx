@@ -30,6 +30,8 @@ export function LogIn({ onLogin }) {
 
     return (
         <div>
+                     <h1>Inicie sesión!</h1>
+
             <input
                 type="text"
                 placeholder="Username"
