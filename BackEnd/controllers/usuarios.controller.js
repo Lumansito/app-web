@@ -29,39 +29,29 @@ export const getUserByDni = async (req, res) => {
   }
 };
 
+
+// los roles vienen en un arreglo si es cliente roles = [1] si es cleinte y profesor roles = [1,2] si es admin roles = [3]
 export const createUser = async (req, res) => {
-  const { nombre, apellido, dni, tipoUsuario,  fechaNac, sexo, telefono, mail } = req.body;
+  const { nombre, apellido, dni, roles,  fechaNac, sexo, telefono, mail } = req.body;
   try {
     
     
     //Insertamos la fecha de nacimiento en la contraseña, para que luego la cambie el usuario
     await pool.query(
-      "INSERT INTO usuarios (nombre, apellido, dni, tipoUsuario, contrasenia, fechaNac, sexo, telefono, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [nombre, apellido, dni, tipoUsuario, fechaNac, fechaNac, sexo, telefono, mail]
+      "INSERT INTO usuarios (nombre, apellido, dni, contrasenia, fechaNac, sexo, telefono, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [nombre, apellido, dni, fechaNac, fechaNac, sexo, telefono, mail]
     );
-    res.json({
-      nombre,
-      apellido,
-      dni,
-      tipoUsuario,
-      contraseña,
-      fechaNac,
-      sexo,
-      telefono,
-      mail,
-    });
+    for (let i = 0; i < roles.length; i++) {
+      await pool.query(
+        "INSERT INTO USUARIOS_ROLES (dni, idRol) VALUES (?, ?)",
+        [dni, roles[i]]
+      );
+    }
+    res.status(201).json({ message: "Usuario Creado correctamente" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-  if(tipoUsuario==="cliente"){
-    try{
-      await pool.query("INSERT INTO cliente (dni) VALUES (?)", [dni]);
-
-    }
-    catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
-  }
+ 
 };
 
 export const updateUser = async (req, res) => {
@@ -82,7 +72,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { tipoUsuario } = req.body;
-    const [result] = await pool.query("DELETE FROM usuarios WHERE dni = ? and tipoUsuario = ? ", [
+    const [result] = await pool.query("DELETE FROM usuarios WHERE dni = ?  ", [
       req.params.dni, tipoUsuario
     ]);
     if (result.affectedRows === 0) {
@@ -101,14 +91,19 @@ export const login = async (req, res) => {
       req.body.contrasenia,
     ]);
     if (result.length === 0) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
+      return res.status(404).json({ message: "Credenciales erroneas" });
     } else {
-      if(result[0].contrasenia == result[0].fechaNac){
-        return res.status(404).json({ message: "Debe cambiar la contraseña" }); //pequeña valuidacion cambio de contraseña
-      }else {
-      res.json(result[0]);
+      const roles = await pool.query("SELECT idRol FROM usuarios_roles WHERE dni = ?", [req.body.dni]);
+      let rol = [];
+      for (let i = 0; i < roles[0].length; i++) {
+         rol[i] = roles[0][i].idRol;
       }
-    }
+      if(result[0].contrasenia == result[0].fechaNac){
+        return res.json({ message: "Debe cambiar la contraseña" }, rol); //pequeña valuidacion cambio de contraseña
+      }
+      res.json(rol);
+      }
+    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

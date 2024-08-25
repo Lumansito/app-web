@@ -73,10 +73,10 @@ export const getEsquemaCuposToday = async (req, res) => {
 
 export const createEsquemaCupos = async (req, res) => {
   try {
-    const { diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario } = req.body;
+    const { diaSemana, horario, estado, cupo, dniInstructor } = req.body;
     await pool.query(
-      "INSERT INTO esquemaCupos (diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?)",
-      [diaSemana, horario, estado, cupo, dniInstructor, tipoUsuario]
+      "INSERT INTO esquemaCupos (diaSemana, horario, estado, cupo, dniInstructor) VALUES (?, ?, ?, ?,  ?)",
+      [diaSemana, horario, estado, cupo, dniInstructor]
     );
     res.json({
       diaSemana,
@@ -84,7 +84,7 @@ export const createEsquemaCupos = async (req, res) => {
       estado,
       cupo,
       dniInstructor,
-      tipoUsuario,
+      
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -95,7 +95,7 @@ export const updateEsquemaCupos = async (req, res) => {
   try {
     const { diaSemana, horario } = req.params;
     const [result] = await pool.query(
-      "UPDATE esquemaCupos SET ? WHERE diaSemana = ? and horario = ?",
+      "UPDATE esquemaCupos SET ? WHERE diaSemana = ? and horario = ?", //ESTO ESTA RARO
       [diaSemana, horario]
     );
     if (result.affectedRows === 0) {

@@ -25,7 +25,7 @@ export const createCupoOtorgado = async (req, res) => {
             where fecha = CURDATE() and dniCliente = ? and estado = "asistido"`, [dniCliente]);
         const [cuposMaxCliente] = await pool.query(`
             SELECT cuposDia from membresia mem
-            inner join cleintes cli
+            inner join usuarios cli
             on cli.codMembresia = mem.codMembresia
             where dniCliente = ?`, [dniCliente]);
         if (cupoReservado[0].cantidad >= cuposMaxCliente[0].cuposDia) {
@@ -42,12 +42,11 @@ export const createCupoOtorgado = async (req, res) => {
         
         //Realiza la reserva
         const fechaClase = new Date().toISOString().split('T')[0];
-        const rolInstrictor = 'Instructor';
         const estado = "reservado";
         const horaReserva = new Date().toTimeString().split(' ')[0];
         const [result] = await pool.query(`
-            INSERT INTO cupo_otorgado (fecha, horaInicio, dniCliente, dniInstructor, tipoUsuario, estado, horaReserva) 
-            VALUES (?, ?, ?,?,?,?,?)`, [fechaClase, horaInicio, dniCliente, dniInstructor, rolInstrictor, estado, horaReserva]);
+            INSERT INTO cupo_otorgado (fecha, horaInicio, dniCliente, dniInstructor, estado, horaReserva) 
+            VALUES (?, ?, ?,?,?,?)`, [fechaClase, horaInicio, dniCliente, dniInstructor, estado, horaReserva]);
         if (result.affectedRows === 0) {
             return res.status(400).json({ message: "No se pudo otorgar el cupo" });
         }else{

@@ -1,3 +1,11 @@
+CREATE TABLE MEMBRESIAS (
+    codMembresia INT PRIMARY KEY,
+    nombre VARCHAR(255),
+    costo DECIMAL(10, 2),
+    descripcion VARCHAR(255),  -- Cambié "descripción" a "descripcion" por consistencia
+    cuposDia INT
+);
+
 CREATE TABLE USUARIOS (
     dni INT NOT NULL,
     nombre VARCHAR(255),
@@ -9,7 +17,7 @@ CREATE TABLE USUARIOS (
     mail VARCHAR(255),
     codMembresia INT,
     fechaInscripcion DATE,
-    PRIMARY KEY (dni)
+    PRIMARY KEY (dni),
     FOREIGN KEY (codMembresia) REFERENCES MEMBRESIAS(codMembresia)
 );
 
@@ -22,17 +30,10 @@ CREATE TABLE USUARIOS_ROLES(
     dni INT,
     idRol INT,
     PRIMARY KEY (dni, idRol),
-    FOREIGN KEY (dni) REFERENCES USUARIOS(dni),
+    FOREIGN KEY (dni) REFERENCES USUARIOS(dni) ON DELETE CASCADE, 
     FOREIGN KEY (idRol) REFERENCES ROLES(idRol)
 );
 
-CREATE TABLE MEMBRESIAS (
-    codMembresia INT PRIMARY KEY,
-    nombre VARCHAR(255),
-    costo DECIMAL(10, 2),
-    descripcion VARCHAR(255),  -- Cambié "descripción" a "descripcion" por consistencia
-    cuposDia INT
-);
 
 
 CREATE TABLE PAGOS (
@@ -71,7 +72,7 @@ CREATE TABLE CUPO_OTORGADO (
     dniInstructor INT,
     estado VARCHAR(255),
     horaIngreso TIME,
-    horaReserva  TIME DEFAULT CURRENT_TIME,
+    horaReserva  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     horaCancelacion TIME,
     FOREIGN KEY (dniInstructor) REFERENCES USUARIOS(dni),
     FOREIGN KEY (dniCliente) REFERENCES USUARIOS(dni)
@@ -131,3 +132,4 @@ CREATE TABLE ESQUEMACUPOS (
     PRIMARY KEY (diaSemana, horario),
     FOREIGN KEY (dniInstructor) REFERENCES USUARIOS(dni)
 );
+

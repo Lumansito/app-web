@@ -39,16 +39,14 @@ export const updateRutinas_pre_establecidas = async (req, res) => {
     /*
     [
   {
-    "sexo": "m",
-    "nroDias": 3,
+    "idRutinaPre": "1",
     "dia":"1",
     "codEjercicio": "1",
     "series": 4,
     "repeticiones": 12
   },
   {
-    "sexo": "m",
-    "nroDias": 3,
+    "idRutinaPre": "1",
     "dia":"1",
     "codEjercicio": "2",
     "series": 3,
@@ -56,11 +54,11 @@ export const updateRutinas_pre_establecidas = async (req, res) => {
   }
 ] */
     for (let i = 0; i < lineas.length; i++) {
-      variables += `("${lineas[i].sexo}", ${lineas[i].nroDias}, ${lineas[i].dia},${i}, ${lineas[i].codEjercicio}, ${lineas[i].series}, ${lineas[i].repeticiones}),`;
+      variables += `("${lineas[i].IdRutinaPre}", ${lineas[i].dia},${i}, ${lineas[i].codEjercicio}, ${lineas[i].series}, ${lineas[i].repeticiones}),`;
     }
     variables = variables.slice(0, -1);
-    const queryInsert= `INSERT INTO lineas_rutina_pre_establecida (sexo, nroDias,dia, orden, codEjercicio, series, repeticiones) VALUES ${variables}`;
-    const queryDelete = `DELETE FROM lineas_rutina_pre_establecida WHERE sexo = "${lineas[0].sexo}" and nroDias = ${lineas[0].nroDias}`;
+    const queryInsert= `INSERT INTO lineas_rutina_pre_establecida (idRutinaPre ,dia, orden, codEjercicio, series, repeticiones) VALUES ${variables}`;
+    const queryDelete = `DELETE FROM lineas_rutina_pre_establecida WHERE idRutinaPre = "${lineas[0].IdRutinaPre}"`;
 
     let connection;
 

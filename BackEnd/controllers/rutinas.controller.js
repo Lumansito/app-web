@@ -9,7 +9,7 @@ export const createSolicitudRutinas = async (req, res) => {
     const fecha = new Date().toISOString().split("T")[0];
 
     cosnt [valido] = await pool.query(`
-      SELECT condMembresia FROM clientes WHERE dniCliente = ?`, [dni]);    
+      SELECT condMembresia FROM usuarios WHERE dni = ?`, [dni]);    
     if (valido[0].condMembresia != 3 ) {  
       return res.status(400).json({ message: "El usuario no tiene una membresía activa." });
     }
@@ -29,16 +29,14 @@ export const createSolicitudRutinas = async (req, res) => {
     /*
     [
   {
-    "sexo": "m",
-    "nroDias": 3,
+    "idRutina": "1",
     "dia":"1",
     "codEjercicio": "1",
     "series": 4,
     "repeticiones": 12
   },
   {
-    "sexo": "m",
-    "nroDias": 3,
+    "idRutina": "1",
     "dia":"1",
     "codEjercicio": "2",
     "series": 3,
@@ -61,7 +59,7 @@ export const updatePersonalizedRoutine = async (req, res) => {
     variables = variables.slice(0, -1);
   
     const queryInsert = `INSERT INTO lineas_rutina (rutinaId, dia, orden, codEjercicio, series, repeticiones) VALUES ${variables}`;
-    const queryDelete = `DELETE FROM lineas_rutina WHERE rutinaId = ${rutinaId} AND dia = ?`;
+    const queryDelete = `DELETE FROM lineas_rutina WHERE rutinaId = ${rutinaId} `;
   
     let connection;
   

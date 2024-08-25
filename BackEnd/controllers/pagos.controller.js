@@ -55,7 +55,7 @@ export const createPago = async (req, res) => {
 
     // Verificar si el cliente existe
     const [clienteResult] = await pool.query(
-      "SELECT estado FROM Clientes WHERE dniCliente = ?",
+      "SELECT estado FROM usuarios WHERE dni = ?",
       [dniCliente]
     );
 
@@ -77,7 +77,7 @@ export const createPago = async (req, res) => {
     const nuevoEstado =  "activo" ;
 
     await pool.query(
-      "UPDATE clientes SET estado = ?, codMembresia = ? WHERE dniCliente = ?",
+      "UPDATE usuarios SET estado = ?, codMembresia = ? WHERE dni = ?",
       [nuevoEstado, codMembresia, dniCliente]
     );
 
@@ -134,7 +134,7 @@ export const updatePago = async (req, res) => {
       nuevaFechaVencimiento > new Date() ? "activo" : "inactivo";
 
     await pool.query(
-      "UPDATE Clientes SET estado = ?, membresia_activa = ? WHERE dniCliente = ?",
+      "UPDATE usuarios SET estado = ?, membresia_activa = ? WHERE dni = ?",
       [nuevoEstado, codMembresia, dniCliente]
     );
 

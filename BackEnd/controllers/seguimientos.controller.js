@@ -8,9 +8,7 @@ import { pool } from "../bd.js";
 export const getClientesParaSeguimiento = async (req, res) => {
     try {
         const [result] = await pool.query(
-        `SELECT dniCliente, u.nombre, u.apellido FROM clientes
-        inner join usuarios u on 
-        clientes.dniCliente = u.dni and u.tipoUsuario = 'Cliente'
+        `SELECT dni, u.nombre, u.apellido FROM usuarios
         WHERE estado = 'activo' and codMembresia = 3` //suponiendo que 3 es l ragno mas alto
         );
         if (result.length === 0) {
