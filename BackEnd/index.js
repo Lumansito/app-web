@@ -8,10 +8,12 @@ import pagosRouter from "./routes/pagos.routes.js";
 import seguimientosRouter from "./routes/seguimientos.routes.js";
 import cuposRouter from "./routes/cupo_otorgado.routes.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = 3000;
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json()); //para usar json en el body
 app.use(usersRouter);
 app.use(membresiasRouter);

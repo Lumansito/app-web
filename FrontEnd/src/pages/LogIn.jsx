@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import {Rol_logIn, createUser} from '../api/usuarios.api';
+import { useUsuario } from '../context/Usuario/UsuarioProvider';
 
 
-export function LogIn({ onLogin }) {
+
+
+export function LogIn() {
+    const { login } = useUsuario();
+
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+   
 
     const handleLogin = async () => {
 
@@ -12,25 +18,14 @@ export function LogIn({ onLogin }) {
             dni: username,
             contrasenia: password
         }
-        const response = await Rol_logIn(usuario);
-        const rol = response.data.tipoUsuario;
+        await login(usuario);
         
         
-        // Simular la autenticación y obtener el rol del usuario
-        // En una app real, harías una petición al backend aquí
-
-        //const userRole = 'admin'; // Este rol vendría del backend
-
-        // Guardar el rol en localStorage (opcional)
-        localStorage.setItem('userRole', rol);
-
-        // Llamar a la función onLogin con el rol
-        onLogin(rol);
     };
 
     return (
-        <div>
-                     <h1>Inicie sesión!</h1>
+        <div>       
+            <h1>Inicie sesión!</h1>
 
             <input
                 type="text"

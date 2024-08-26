@@ -1,4 +1,6 @@
 import { pool } from "../bd.js";
+import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 
 export const getUsers = async (req, res) => {
@@ -101,7 +103,10 @@ export const login = async (req, res) => {
       if(result[0].contrasenia == result[0].fechaNac){
         return res.json({ message: "Debe cambiar la contraseña" }, rol); //pequeña valuidacion cambio de contraseña
       }
-      res.json(rol);
+      const token = jwt.sign({ dni: req.body.dni , rol: rol }, "CLAVE_SUPER_SEGURA", { expiresIn: "1h" });
+      
+      res
+      .send({token: token});
       }
     
   } catch (error) {
