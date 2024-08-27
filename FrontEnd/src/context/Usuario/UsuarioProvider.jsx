@@ -23,6 +23,7 @@ export const useUsuario = () => {
     const [rol, setRol] = useState([]);
     const [dni, setDni] = useState();
   
+
     async function login(usuario) {
         const response = await Rol_logIn(usuario);
         const token = response.data.token;
@@ -49,6 +50,9 @@ export const useUsuario = () => {
             console.error('Error decoding token:', error);
             localStorage.removeItem('token');
         }
+      }else{
+        setRol([]);
+        setDni();
       }
     }
     
