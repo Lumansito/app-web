@@ -21,6 +21,7 @@ export const useUsuario = () => {
     //proveedor para acceder a los datos de los empleados desde cualquier componente
     
     const [rol, setRol] = useState([]);
+    const [dni, setDni] = useState();
   
     async function login(usuario) {
         const response = await Rol_logIn(usuario);
@@ -28,11 +29,35 @@ export const useUsuario = () => {
         localStorage.setItem('token', token);
         const decodedToken = jwtDecode(token);
         setRol(decodedToken.rol);
+        setDni(decodedToken.dni);
     }
+
+
+    function comprobarToken(){
+
+      if (localStorage.getItem('token')){
+        try {
+            const decoded = jwtDecode(localStorage.getItem('token'));
+            if(decoded.exp < Date.now() / 1000){
+                console.error('Token expired');
+                localStorage.removeItem('token');
+            }else{
+              setRol(decoded.rol);
+              setDni(decoded.dni);
+            }
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            localStorage.removeItem('token');
+        }
+      }
+    }
+    
+
+
 
     return (
       <UsuarioContext.Provider
-        value={{ rol,setRol, login}}>
+        value={{ rol,setRol, login, comprobarToken, dni}}>
         {children}
       </UsuarioContext.Provider>
     );

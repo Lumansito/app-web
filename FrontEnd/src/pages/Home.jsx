@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { LogIn } from './LogIn';
 import { useUsuario } from '../context/Usuario/UsuarioProvider';
 import { jwtDecode } from "jwt-decode"
@@ -8,16 +9,10 @@ import { jwtDecode } from "jwt-decode"
 
 export function Home() {
 
-    const {setRol, rol} = useUsuario();
+    const {rol, comprobarToken, dni} = useUsuario();
     useEffect(() => {
-        if (localStorage.getItem('token')){
-        setRol(jwtDecode(localStorage.getItem('token')).rol)
-        }
+        comprobarToken();
     }, []);
-
-    useEffect(() => {
-        console.log(rol)
-    }, [rol]);
 
     return (
         <div>
@@ -25,13 +20,17 @@ export function Home() {
                 <LogIn />
             ) : (
                 <div>
-                    <h2>Bienvenido, {rol}!</h2>
-                    {/* Aquí podrías renderizar diferentes componentes basados en el rol */}
-                    {rol.map((rol) => (
-                        <div key={rol}>
-                            <h3>{rol}</h3>
+                    <h2>Bienvenido, usuario con dni: {dni}!</h2>
+                    <h2>Estos son los roles que tienes</h2>
+                    {rol.includes(1) && <h3>Cliente</h3>}
+                    {rol.includes(2) && 
+                        <div>
+                            <h3>Profesional</h3>
+                            <Link>Entrenamientos De Clientes</Link>
                         </div>
-                    ))}
+                    } 
+                    {rol.includes(3) && <h3>Admin</h3>}                   
+                    <Link>Perfil</Link>
                 </div>
             )}
         </div>
