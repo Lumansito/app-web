@@ -26,7 +26,10 @@ export function Home() {
                     {rol.includes(2) && 
                         <div>
                             <h3>Profesional</h3>
-                            <Link>Entrenamientos De Clientes</Link>
+                            
+                            <Link>Solicitudes de Rutina</Link>
+                            <br />
+                            <Link to="/seguimiento">Marcas Clientes</Link>
                         </div>
                     } 
                     {rol.includes(3) && <h3>Admin</h3>}                   
