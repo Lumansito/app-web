@@ -113,3 +113,27 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 }
+
+//obtener los clientes con la membresia suficiente para tener seguimientos
+
+export const getClientesConMembresia = async (req, res) => {
+  try {
+    const {codMembresia} = req.params 
+    const [result] = await pool.query(`
+      SELECT * 
+      FROM usuarios u
+      INNER JOIN pagos p
+      ON p.dniCliente = u.dni
+      WHERE p.fecha BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND CURRENT_DATE() and u.codMembresia=?;
+      `, [codMembresia]);
+    console.log(codMembresia);
+    console.log(result);
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No hay usuarios con membresia activa" });
+    } else {
+      res.json(result);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

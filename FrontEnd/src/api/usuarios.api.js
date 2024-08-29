@@ -7,3 +7,7 @@ export const Rol_logIn = async (usuario) => {
 export const createUser = async (usuario) => {
     return await axios.post("http://localhost:3000/api/users", usuario );
 }
+
+export const usuariosConMembresia = async (codMembresia) => {
+    return await axios.get(`http://localhost:3000/api/users/membresia/${codMembresia}`);
+}

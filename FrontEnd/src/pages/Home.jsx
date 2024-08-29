@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LogIn } from './LogIn';
 import { useUsuario } from '../context/Usuario/UsuarioProvider';
-import { jwtDecode } from "jwt-decode"
+
 
 
 

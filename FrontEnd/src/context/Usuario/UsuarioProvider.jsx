@@ -1,10 +1,7 @@
 import { UsuarioContext } from "./UsuarioContext.jsx";
 import {Rol_logIn} from '../../api/usuarios.api';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { jwtDecode } from "jwt-decode"
-
-
-
 
 
 export const useUsuario = () => {
@@ -17,12 +14,16 @@ export const useUsuario = () => {
     return context;
   };
   
-  const UsuarioProvider = ({ children }) => {
+  const UsuarioProvider = ({ children }) => {  
     //proveedor para acceder a los datos de los empleados desde cualquier componente
     
     const [rol, setRol] = useState([]);
     const [dni, setDni] = useState();
   
+
+    useEffect(() => {
+      comprobarToken();
+    }, []);
 
     async function login(usuario) {
         const response = await Rol_logIn(usuario);

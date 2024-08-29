@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getUsers,
   getUserByDni,
+  getClientesConMembresia,
   createUser,
   updateUser,
   deleteUser,
@@ -15,6 +16,8 @@ router.post("/api/users/login", login);
 router.get("/api/users", getUsers);
 
 router.get("/api/users/:dni", getUserByDni);
+
+router.get("/api/users/membresia/:codMembresia", getClientesConMembresia);
 
 router.post("/api/users", createUser);
 
