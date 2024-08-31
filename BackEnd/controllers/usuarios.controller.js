@@ -118,15 +118,10 @@ export const login = async (req, res) => {
 
 export const getClientesConMembresia = async (req, res) => {
   try {
-
-    let token = null;
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      token = authHeader.split(' ')[1]; 
-      let decoded = jwt.verify(token, "CLAVE_SUPER_SEGURA")  //esto hay q hacerlo bien pero va por aca digamos
-      console.log("Decoded" + decoded.dni)
+    
+    if (req.session.rol == null || !req.session.rol.includes(2)) {
+      return res.status(403).json({ message: "No tiene permisos" });
     }
-    console.log(token)
 
     const {codMembresia} = req.params 
     const [result] = await pool.query(`

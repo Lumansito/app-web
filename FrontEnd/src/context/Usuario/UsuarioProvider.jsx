@@ -29,9 +29,10 @@ export const useUsuario = () => {
         const response = await Rol_logIn(usuario);
         const token = response.data.token;
         localStorage.setItem('token', token);
-        const decodedToken = jwtDecode(token);
-        setRol(decodedToken.rol);
-        setDni(decodedToken.dni);
+        const decoded = jwtDecode(token);
+        setRol(decoded.rol);
+        setDni(decoded.dni);
+        window.location.reload(); //recarga la pagina para que se actualice el rol globalmente en los componentes hijos
     }
 
 

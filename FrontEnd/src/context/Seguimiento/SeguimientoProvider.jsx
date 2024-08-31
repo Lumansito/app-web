@@ -17,6 +17,9 @@ const SeguimientoProvider = ({ children }) => {
     const [seguimientos, setSeguimientos] = useState([]);
     const [clientes, setClientes] = useState([]);
 
+    
+
+
     async function loadClientesSeguimiento() {
         const response = await usuariosConMembresia(3); //suponemos que el cod de membresia 3 es el que habilita tener seguimientos
         setClientes(response.data);
