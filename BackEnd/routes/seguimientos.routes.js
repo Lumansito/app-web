@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-    getClientesParaSeguimiento,
+    
     getSeguimientosByDni_CodEje,
     createSeguimiento,
     updateSeguimiento,
@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-router.get("/api/seguimientos/clientes", getClientesParaSeguimiento);
+
 
 router.get("/api/seguimientos/clientes/:dniCliente/:codEjercicio", getSeguimientosByDni_CodEje);
 

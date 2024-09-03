@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route , Link} from "react-router-dom";
 import SeguimientoProvider from "../context/Seguimiento/SeguimientoProvider.jsx";
 import { useUsuario } from "../context/Usuario/UsuarioProvider.jsx";
 import {ListadoClientesSeguimiento} from "../pages/listadoClientesSeguimiento";
@@ -13,14 +13,10 @@ export function SeguimientosRoutes() {
       <ProfesionalElement rol={rol}>
         <Routes>
           <Route path="/" element={<ListadoClientesSeguimiento/>} />
-          <Route
-            path="/dni/:dni"
-            element={
-              <h1>
-                Seguimientos Ordenados Por Ejercicio para un determiando dni
-              </h1>
-            }
-          />
+          <Route path="/:dni" element={<ListadoClientesSeguimiento/>} />
+          <Route path="/:dni/:codEjercicio" element={<ListadoClientesSeguimiento/>} />
+          
+          
         </Routes>
       </ProfesionalElement>
     </SeguimientoProvider>
@@ -31,7 +27,13 @@ function ProfesionalElement({ rol, children }) {  //se crea esta fun para rebota
   if (rol.includes(2)) {
     return <>{children}</>;
   } else {
-    return <h1>No tienes permisos para ver esta página</h1>;
+    return (
+      <div>
+        <h1>No tienes permisos para ver esta página</h1>
+        <Link to="/">Home</Link>
+      </div>
+    
+    );
   }
 }
 

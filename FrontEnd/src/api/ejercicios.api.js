@@ -3,3 +3,7 @@ import axios from 'axios';
 export const getEjercicios = async () => {
     return await axios.get('http://localhost:3000/api/ejercicios');
 }
+
+export const getEjercicio = async (codEjercicio) => {
+    return await axios.get(`http://localhost:3000/api/ejercicios/${codEjercicio}`);
+}

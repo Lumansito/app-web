@@ -131,8 +131,7 @@ export const getClientesConMembresia = async (req, res) => {
       ON p.dniCliente = u.dni
       WHERE p.fecha BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND CURRENT_DATE() and u.codMembresia=?;
       `, [codMembresia]);
-    console.log(codMembresia);
-    console.log(result);
+    
     if (result.length === 0) {
       return res.status(404).json({ message: "No hay usuarios con membresia activa" });
     } else {

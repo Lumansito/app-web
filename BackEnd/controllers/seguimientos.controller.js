@@ -5,21 +5,6 @@
 
 import { pool } from "../bd.js";
 
-export const getClientesParaSeguimiento = async (req, res) => {
-    try {
-        const [result] = await pool.query(
-        `SELECT dni, u.nombre, u.apellido FROM usuarios
-        WHERE estado = 'activo' and codMembresia = 3` //suponiendo que 3 es l ragno mas alto
-        );
-        if (result.length === 0) {
-        return res.status(404).json({ message: "No hay clientes con membresia Platinum" });
-        } else {
-        res.json(result);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export const getSeguimientosByDni_CodEje = async (req, res) => {
     try{

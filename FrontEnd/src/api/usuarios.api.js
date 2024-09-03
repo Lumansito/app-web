@@ -18,3 +18,11 @@ export const usuariosConMembresia = async (codMembresia) => {
         }
     }) ;
 }
+
+export const getCliente = async (dni) => {
+    return await axios.get(`http://localhost:3000/api/users/${dni}`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }) ;
+}
