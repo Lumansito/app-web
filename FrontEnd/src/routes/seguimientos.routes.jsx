@@ -12,9 +12,10 @@ export function SeguimientosRoutes() {
     <SeguimientoProvider>
       <ProfesionalElement rol={rol}>
         <Routes>
-          <Route path="/" element={<ListadoClientesSeguimiento/>} />
-          <Route path="/:dni" element={<ListadoClientesSeguimiento/>} />
-          <Route path="/:dni/:codEjercicio" element={<ListadoClientesSeguimiento/>} />
+        <Route path="/:dni/:codEjercicio" element={<ListadoClientesSeguimiento/>} />
+        <Route path="/:dni" element={<ListadoClientesSeguimiento/>} />
+        <Route path="/" element={<ListadoClientesSeguimiento/>} />
+          
           
           
         </Routes>

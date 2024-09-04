@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { useSeguimiento } from "../context/Seguimiento/SeguimientoProvider";
-import { Cliente } from "../components/Cliente";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSeguimiento } from "../context/Seguimiento/SeguimientoProvider";
+
+import { Cliente } from "../components/Cliente";
 import { Ejercicio } from "../components/Ejercicio";
+import { Seguimiento } from "../components/Seguimiento";
 
 export const ListadoClientesSeguimiento = () => {
   const { dni, codEjercicio } = useParams();
@@ -21,17 +23,33 @@ export const ListadoClientesSeguimiento = () => {
     loadEjercicio,
     setCliente,
     setEjercicio,
+    setSeguimientos
   } = useSeguimiento();
   useEffect(() => {
     loadClientesSeguimiento();
     loadEjercicios();
-    if(dni){
-    loadCliente(dni);
+    if (dni) {
+      loadCliente(dni);
     }
-    if(codEjercicio){
-    loadEjercicio(codEjercicio);
+    if (codEjercicio) {
+      loadEjercicio(codEjercicio);
     }
   }, []);
+
+  useEffect(() => {
+    if (dni) {
+      loadCliente(dni);
+      setSeguimientos([]); // Limpiar seguimientos al cambiar de cliente
+    }
+  }, [dni]);
+
+  useEffect(() => {
+    if (dni && codEjercicio) {
+      loadEjercicio(codEjercicio);
+      loadSeguimientos(dni, codEjercicio); // Cargar seguimientos cuando cliente y ejercicio estén disponibles
+    }
+  }, [dni, codEjercicio]);
+
 
   const handleClienteClick = (cliente) => {
     navigate(`/seguimiento/${cliente.dni}`, { replace: false });
@@ -42,6 +60,8 @@ export const ListadoClientesSeguimiento = () => {
       replace: false,
     });
     setEjercicio(ejercicio);
+    setSeguimientos([]);
+    loadSeguimientos(cliente.dni, ejercicio.codEjercicio);
   };
 
   const renderSeguimientos = () => {
@@ -49,16 +69,20 @@ export const ListadoClientesSeguimiento = () => {
       return (
         <div>
           <h2>
-            Seguimientos del cliente {cliente.nombre} con DNI: {cliente.dni} y ejercicio: {ejercicio.nombre}
+            Seguimientos del cliente {cliente.nombre} con DNI: {cliente.dni} y
+            ejercicio: {ejercicio.nombre}
           </h2>
-          <ul>
-            {seguimientos.map((seguimiento) => (
-              <li key={seguimiento.id}>
-                {/* Aquí deberías definir cómo quieres renderizar cada seguimiento */}
-                {seguimiento.details}
-              </li>
-            ))}
-          </ul>
+          {seguimientos.length === 0 ? (
+            <p>No hay seguimientos para este cliente y ejercicio</p>
+          ) : (
+            <ul>
+              {seguimientos.map((seguimiento) => (
+                <li key={seguimiento.idSeguimiento}>
+                  <Seguimiento seguimiento={seguimiento} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       );
     } else if (dni) {

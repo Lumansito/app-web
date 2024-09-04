@@ -39,8 +39,12 @@ const SeguimientoProvider = ({ children }) => {
     }
 
     async function loadSeguimientos(dni, codEjercicio) {
-        const response = await getSeguimientos();
-        setSeguimientos(response.data);
+        const response = await getSeguimientos(dni,codEjercicio);
+        if(response){
+            setSeguimientos(response.data);
+        }else{
+            setSeguimientos([]);
+        }
     }
 
     async function loadCliente(dni) {
@@ -57,7 +61,7 @@ const SeguimientoProvider = ({ children }) => {
 
     return (
         <SeguimientoContext.Provider
-            value={{loadClientesSeguimiento, clientes, loadSeguimientos, seguimientos, loadEjercicios, ejercicios,setEjercicio,setCliente, cliente, loadCliente, ejercicio, loadEjercicio}}
+            value={{loadClientesSeguimiento, clientes, loadSeguimientos, seguimientos,setSeguimientos, loadEjercicios, ejercicios,setEjercicio,setCliente, cliente, loadCliente, ejercicio, loadEjercicio}}
         >
             {children}
         </SeguimientoContext.Provider>

@@ -103,7 +103,7 @@ export const login = async (req, res) => {
       if(result[0].contrasenia == result[0].fechaNac){
         return res.json({ message: "Debe cambiar la contraseña" }, rol); //pequeña valuidacion cambio de contraseña
       }
-      const token = jwt.sign({ dni: req.body.dni , rol: rol }, "CLAVE_SUPER_SEGURA", { expiresIn: "1m" });
+      const token = jwt.sign({ dni: req.body.dni , rol: rol }, "CLAVE_SUPER_SEGURA", { expiresIn: "5m" });
       
       res
       .send({token: token});
