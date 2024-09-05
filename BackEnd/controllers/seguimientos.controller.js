@@ -37,7 +37,8 @@ export const createSeguimiento = async (req, res) => {
 
 export const updateSeguimiento = async (req, res) => {
     try {
-        const { repeticiones, peso , idSeguimiento} = req.body;   //presentar esta actualizacion nen forma de modal
+        const {idSeguimiento} = req.params;
+        const { repeticiones, peso } = req.body;   //presentar esta actualizacion nen forma de modal
         const [result] = await pool.query(`
             UPDATE seguimientos_gym SET repeticiones = ?, peso = ? WHERE idSeguimiento = ?`, [repeticiones, peso, idSeguimiento]);
         res.json({ message: "Seguimiento actualizado" });
@@ -51,6 +52,20 @@ export const deleteSeguimiento = async (req, res) => {
         const {idSeguimiento} = req.body;
         const [result] = await pool.query("DELETE FROM seguimientos_gym WHERE idSeguimiento = ?", [idSeguimiento]);
         res.json({ message: "Seguimiento eliminado" });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getSeguimiento = async (req, res) => {
+    try {
+        const {idSeguimiento} = req.params;
+        const [result] = await pool.query("SELECT * FROM seguimientos_gym WHERE idSeguimiento = ?", [idSeguimiento]);
+        if (result.length === 0) {
+            return res.status(404).json({ message: "No existe el seguimiento" });
+        } else {
+            res.json(result[0]);
+        }
     } catch (error) {
         console.log(error);
     }

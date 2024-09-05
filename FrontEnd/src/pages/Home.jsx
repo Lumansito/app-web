@@ -31,7 +31,7 @@ export function Home() {
                             
                             <Link>Solicitudes de Rutina</Link>
                             <br />
-                            <Link to="/seguimiento">Marcas Clientes</Link>
+                            <Link to="/seguimiento/lista">Marcas Clientes</Link>
                         </div>
                     } 
                     {rol.includes(3) && <h3>Admin</h3>}                   

@@ -55,11 +55,11 @@ export const ListadoClientesSeguimiento = () => {
   }, [dni, codEjercicio]);
 
   const handleClienteClick = (cliente) => {
-    navigate(`/seguimiento/${cliente.dni}`, { replace: false });
+    navigate(`/seguimiento/lista/${cliente.dni}`, { replace: false });
     setCliente(cliente);
   };
   const handleEjercicioClick = (ejercicio) => {
-    navigate(`/seguimiento/${dni}/${ejercicio.codEjercicio}`, {
+    navigate(`/seguimiento/lista/${dni}/${ejercicio.codEjercicio}`, {
       replace: false,
     });
     setEjercicio(ejercicio);

@@ -13,12 +13,13 @@ export function SeguimientosRoutes() {
     <SeguimientoProvider>
       <ProfesionalElement rol={rol}>
         <Routes>
-        <Route path="/:dni/:codEjercicio" element={<ListadoClientesSeguimiento/>} />
-        <Route path="/:dni" element={<ListadoClientesSeguimiento/>} />
-        <Route path="/" element={<ListadoClientesSeguimiento/>} />
-        <Route path="/edit/:id" element={<FormSeguimiento/>} />
-        <Route path="/new" element={<FormSeguimiento/>} /> 
-    
+        <Route path="/edit/:idSeguimiento" element={<FormSeguimiento/>} />
+        <Route path="/new/:dni/:codEjercicio" element={<FormSeguimiento/>} /> 
+        <Route path="/lista/:dni/:codEjercicio" element={<ListadoClientesSeguimiento/>} />
+        <Route path="/lista/:dni" element={<ListadoClientesSeguimiento/>} />
+        <Route path="/lista" element={<ListadoClientesSeguimiento/>} />
+        <Route path="*" element={<h1>Not Found</h1>} />
+
           
         </Routes>
       </ProfesionalElement>

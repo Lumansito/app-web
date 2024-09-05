@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function Seguimiento({seguimiento}) {
 
     const fechaOriginal = new Date(seguimiento.fechaSeguimiento);
@@ -12,6 +14,7 @@ export function Seguimiento({seguimiento}) {
             <p>Hora: {hora}</p>
             <p>Repeticiones: {seguimiento.repeticiones}</p>
             <p>Peso: {seguimiento.peso}</p>
+            <Link to={`/seguimiento/edit/${seguimiento.idSeguimiento}`}>EDITAR</Link>
         </div>
     )
 }
