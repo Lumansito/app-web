@@ -1,9 +1,19 @@
-import axios from 'axios';
+import axiosInstance from "./axiosInstance";
 
 export const getEjercicios = async () => {
-    return await axios.get('http://localhost:3000/api/ejercicios');
-}
+  try {
+    const response = await axiosInstance.get("/ejercicios");
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const getEjercicio = async (codEjercicio) => {
-    return await axios.get(`http://localhost:3000/api/ejercicios/${codEjercicio}`);
-}
+    try {
+        const response = await axiosInstance.get("/ejercicios");
+        return response;
+      } catch (error) {
+        return error;
+      }
+};

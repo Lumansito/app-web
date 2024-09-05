@@ -6,12 +6,11 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  login,
 } from "../controllers/usuarios.controller.js";
 
 const router = Router();
 
-router.post("/api/users/login", login);
+
 
 router.get("/api/users", getUsers);
 

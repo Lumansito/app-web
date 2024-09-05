@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSeguimiento } from "../context/Seguimiento/SeguimientoProvider";
+import { useUsuario } from "../context/Usuario/UsuarioProvider";
 
 import { Cliente } from "../components/Cliente";
 import { Ejercicio } from "../components/Ejercicio";
@@ -10,6 +11,7 @@ export const ListadoClientesSeguimiento = () => {
   const { dni, codEjercicio } = useParams();
   const navigate = useNavigate();
 
+  const {comprobarToken} =  useUsuario();
   const {
     clientes,
     loadClientesSeguimiento,
@@ -23,8 +25,9 @@ export const ListadoClientesSeguimiento = () => {
     loadEjercicio,
     setCliente,
     setEjercicio,
-    setSeguimientos
+    setSeguimientos,
   } = useSeguimiento();
+
   useEffect(() => {
     loadClientesSeguimiento();
     loadEjercicios();
@@ -37,6 +40,7 @@ export const ListadoClientesSeguimiento = () => {
   }, []);
 
   useEffect(() => {
+    comprobarToken();
     if (dni) {
       loadCliente(dni);
       setSeguimientos([]); // Limpiar seguimientos al cambiar de cliente
@@ -49,7 +53,6 @@ export const ListadoClientesSeguimiento = () => {
       loadSeguimientos(dni, codEjercicio); // Cargar seguimientos cuando cliente y ejercicio estén disponibles
     }
   }, [dni, codEjercicio]);
-
 
   const handleClienteClick = (cliente) => {
     navigate(`/seguimiento/${cliente.dni}`, { replace: false });

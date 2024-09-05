@@ -16,6 +16,8 @@ export function Home() {
 
     return (
         <div>
+            <h1>Gym</h1>
+            
             {rol.length ==0 ? (
                 <LogIn />
             ) : (

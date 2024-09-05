@@ -1,28 +1,40 @@
-import axios from 'axios';
-
-const token = localStorage.getItem('token'); // Obtén el token del localStorage
-
+import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
 export const Rol_logIn = async (usuario) => {
-    return await axios.post("http://localhost:3000/api/users/login", usuario );
-}
-
+  try {
+    const response = await axios.post("http://localhost:3000/api/users/login", usuario);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
 export const createUser = async (usuario) => {
-    return await axios.post("http://localhost:3000/api/users", usuario );
-}
+  try {
+    const response = await axiosInstance.post("/users", usuario);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const usuariosConMembresia = async (codMembresia) => {
-    return await axios.get(`http://localhost:3000/api/users/membresia/${codMembresia}`, {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    }) ;
-}
+  try {
+    const response = await axiosInstance.get(
+      `/users/membresia/${codMembresia}`
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const getCliente = async (dni) => {
-    return await axios.get(`http://localhost:3000/api/users/${dni}`, {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    }) ;
-}
+  try {
+    const response = await axiosInstance.get(`/users/${dni}`);
+    return response;
+  }
+    catch (error) {
+        return error;
+    }
+};
