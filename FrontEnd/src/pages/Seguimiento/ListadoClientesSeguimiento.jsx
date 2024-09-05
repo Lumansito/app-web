@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSeguimiento } from "../context/Seguimiento/SeguimientoProvider";
-import { useUsuario } from "../context/Usuario/UsuarioProvider";
+import { useSeguimiento } from "../../context/Seguimiento/SeguimientoProvider";
+import { useUsuario } from "../../context/Usuario/UsuarioProvider";
 
-import { Cliente } from "../components/Cliente";
-import { Ejercicio } from "../components/Ejercicio";
-import { Seguimiento } from "../components/Seguimiento";
+import { Cliente } from "../../components/Cliente";
+import { Ejercicio } from "../../components/Ejercicio";
+import { Seguimiento } from "../../components/Seguimiento";
 
 export const ListadoClientesSeguimiento = () => {
   const { dni, codEjercicio } = useParams();

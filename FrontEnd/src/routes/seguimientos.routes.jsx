@@ -1,7 +1,8 @@
 import { Routes, Route , Link} from "react-router-dom";
 import SeguimientoProvider from "../context/Seguimiento/SeguimientoProvider.jsx";
 import { useUsuario } from "../context/Usuario/UsuarioProvider.jsx";
-import {ListadoClientesSeguimiento} from "../pages/listadoClientesSeguimiento";
+import {ListadoClientesSeguimiento} from "../pages/Seguimiento/listadoClientesSeguimiento";
+import {FormSeguimiento} from "../pages/Seguimiento/FormSeguimiento";
 
 
 
@@ -15,8 +16,9 @@ export function SeguimientosRoutes() {
         <Route path="/:dni/:codEjercicio" element={<ListadoClientesSeguimiento/>} />
         <Route path="/:dni" element={<ListadoClientesSeguimiento/>} />
         <Route path="/" element={<ListadoClientesSeguimiento/>} />
-          
-          
+        <Route path="/edit/:id" element={<FormSeguimiento/>} />
+        <Route path="/new" element={<FormSeguimiento/>} /> 
+    
           
         </Routes>
       </ProfesionalElement>
