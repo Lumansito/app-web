@@ -14,11 +14,11 @@ const router = Router();
 
 router.get("/api/seguimientos/clientes/:dniCliente/:codEjercicio", getSeguimientosByDni_CodEje);
 
-router.post("/api/seguimientos/clientes/", createSeguimiento);
+router.post("/api/seguimientos", createSeguimiento);
 
 router.put("/api/seguimientos/:idSeguimiento/", updateSeguimiento);
 
-router.delete("/api/seguimientos/clientes/", deleteSeguimiento);
+router.delete("/api/seguimientos/:idSeguimiento", deleteSeguimiento);
 
 router.get("/api/seguimientos/:idSeguimiento", getSeguimiento);
 

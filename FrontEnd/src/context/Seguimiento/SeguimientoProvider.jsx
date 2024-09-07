@@ -2,7 +2,7 @@ import { SeguimientoContext } from "./SeguimientoContext.jsx";
 import React, { useContext, useState } from 'react';
 
 import { usuariosConMembresia } from "../../api/usuarios.api.js";
-import {getSeguimientos, getSeguimientoByid, updateSeguimiento} from "../../api/seguimientos.api.js";
+import {getSeguimientos, getSeguimientoByid, updateSeguimiento, createSeguimiento, deleteSeguimiento} from "../../api/seguimientos.api.js";
 import {getEjercicios, getEjercicio} from "../../api/ejercicios.api.js";
 import {getCliente} from "../../api/usuarios.api.js";
 
@@ -70,11 +70,38 @@ const SeguimientoProvider = ({ children }) => {
             return false;
         }
     }
+    async function newSeguimiento(param, dni, codEjercicio) {
+        const seguimiento={
+            dniCliente: dni,
+            codEjercicio: codEjercicio,
+            peso: param.peso,
+            repeticiones: param.repeticiones
+        }
+        const response = await createSeguimiento(seguimiento);
+       
+        if(response.data.message && response.data.message === "Seguimiento creado"){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    async function borrarSeguimiento(idSeguimiento) {
+        
+        const response = await deleteSeguimiento(idSeguimiento);
+        await loadSeguimientos(cliente.dni, ejercicio.codEjercicio);
+        if(response.data.message && response.data.message === "Seguimiento eliminado"){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     return (
         <SeguimientoContext.Provider
-            value={{updateSeguimientoId,seguimiento,loadSeguimiento,loadClientesSeguimiento, clientes, loadSeguimientos, seguimientos,setSeguimientos, loadEjercicios, ejercicios,setEjercicio,setCliente, cliente, loadCliente, ejercicio, loadEjercicio}}
+            value={{borrarSeguimiento,newSeguimiento,updateSeguimientoId,seguimiento,loadSeguimiento,loadClientesSeguimiento, clientes, loadSeguimientos, seguimientos,setSeguimientos, loadEjercicios, ejercicios,setEjercicio,setCliente, cliente, loadCliente, ejercicio, loadEjercicio}}
         >
             {children}
         </SeguimientoContext.Provider>

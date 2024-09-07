@@ -49,9 +49,14 @@ export const updateSeguimiento = async (req, res) => {
 
 export const deleteSeguimiento = async (req, res) => {
     try {
-        const {idSeguimiento} = req.body;
+        const {idSeguimiento} = req.params;
         const [result] = await pool.query("DELETE FROM seguimientos_gym WHERE idSeguimiento = ?", [idSeguimiento]);
-        res.json({ message: "Seguimiento eliminado" });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "No existe el seguimiento" });
+        }else{
+            res.json({ message: "Seguimiento eliminado" });
+        }
+        
     } catch (error) {
         console.log(error);
     }

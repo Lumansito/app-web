@@ -28,3 +28,21 @@ export const updateSeguimiento = async (id, seguimiento) => {
       return null;
     }
   };
+
+export const createSeguimiento = async (seguimiento) => {
+    try {
+      const response = await axiosInstance.post(`/seguimientos`, seguimiento);
+      return response;
+    } catch (error) {
+      return null;
+    }
+  }
+
+export const deleteSeguimiento = async (idSeguimiento) => {
+    try {
+      const response = await axiosInstance.delete(`/seguimientos/${idSeguimiento}`);
+      return response;
+    } catch (error) {
+      return null;
+    }
+  };

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link} from "react-router-dom";
 import { useSeguimiento } from "../../context/Seguimiento/SeguimientoProvider";
 import { useUsuario } from "../../context/Usuario/UsuarioProvider";
 
@@ -47,12 +47,14 @@ export const ListadoClientesSeguimiento = () => {
     }
   }, [dni]);
 
+
+
   useEffect(() => {
     if (dni && codEjercicio) {
       loadEjercicio(codEjercicio);
       loadSeguimientos(dni, codEjercicio); // Cargar seguimientos cuando cliente y ejercicio estén disponibles
     }
-  }, [dni, codEjercicio]);
+  }, [codEjercicio]);
 
   const handleClienteClick = (cliente) => {
     navigate(`/seguimiento/lista/${cliente.dni}`, { replace: false });
@@ -86,6 +88,7 @@ export const ListadoClientesSeguimiento = () => {
               ))}
             </ul>
           )}
+          <Link to ={`/seguimiento/new/${dni}/${codEjercicio}`} >Crear un seg nuevo</Link>
         </div>
       );
     } else if (dni) {

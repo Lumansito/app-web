@@ -11,7 +11,7 @@ export const getEjercicios = async () => {
 
 export const getEjercicio = async (codEjercicio) => {
     try {
-        const response = await axiosInstance.get("/ejercicios");
+        const response = await axiosInstance.get("/ejercicios/"+codEjercicio);
         return response;
       } catch (error) {
         return error;

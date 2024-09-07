@@ -12,7 +12,7 @@ export const FormSeguimiento = () => {
   const params = useParams();
   const navigate = useNavigate();
   
-  const { loadSeguimiento, seguimiento, updateSeguimientoId } = useSeguimiento();
+  const { loadSeguimiento, seguimiento, updateSeguimientoId, newSeguimiento} = useSeguimiento();
 
   const isEditRoute = location.pathname.includes("/edit");
   const isNewRoute = location.pathname.includes("/new");
@@ -42,16 +42,28 @@ export const FormSeguimiento = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (isEditRoute) {
-      const ok =updateSeguimientoId(params.idSeguimiento, values);
-      if(ok){
+      const ok = await updateSeguimientoId(params.idSeguimiento, values);
+    if(ok == true){
         alert("Seguimiento actualizado correctamente");
         navigate("/seguimiento/lista");
+      }else{
+        alert("Error al actualizar el seguimiento");
       }
       
       return;
+    }else{
+      const ok = await newSeguimiento(values, params.dni, params.codEjercicio);
+      if(ok == true){
+        alert("Seguimiento creado correctamente");
+        navigate("/seguimiento/lista");
+      }else{
+        alert("Error al crear el seguimiento");
+      }
+
+
     }
 
   };
