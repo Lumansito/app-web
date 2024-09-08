@@ -62,10 +62,10 @@ INSERT INTO CUPO_OTORGADO (fecha, horaInicio, dniCliente, dniInstructor, estado,
 ('2024-05-03', '10:00:00', 34567890, 45678901, 'Confirmado', '09:55:00', NULL);
 
 -- Insertar datos en RUTINAS
-INSERT INTO RUTINAS (dniCliente, fechaPeticion, fechaCarga, peticion, dniInstructor, tipoUsuario) VALUES
-(12345678, '2024-05-01', '2024-05-02', 'Rutina básica de fuerza', 23456789, 'Cliente'),
-(23456789, '2024-05-03', '2024-05-04', 'Rutina avanzada de resistencia', 34567890, 'Cliente'),
-(34567890, '2024-05-05', '2024-05-06', 'Rutina personalizada para musculación', 45678901, 'Cliente');
+INSERT INTO RUTINAS (dniCliente, fechaPeticion, fechaCarga, peticion, dniInstructor) VALUES
+(12345678, '2024-05-01', '2024-05-02', 'Rutina básica de fuerza', 23456789 ),
+(23456789, '2024-05-03', '2024-05-04', 'Rutina avanzada de resistencia', 34567890 ),
+(34567890, '2024-05-05', '2024-05-06', 'Rutina personalizada para musculación', 45678901);
 
 -- Insertar datos en LINEAS_RUTINA
 INSERT INTO LINEAS_RUTINA (idRutina, dia, orden, repeticiones, series, codEjercicio) VALUES

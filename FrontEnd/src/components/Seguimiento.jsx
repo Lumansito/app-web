@@ -16,7 +16,7 @@ export function Seguimiento({ seguimiento }) {
   };
 
   return (
-    <div className="Seguimiento" style={{ backgroundColor: "red" }}>
+    <div className="Seguimiento" style={{ backgroundColor: "red", borderRadius: 100 }}>
       <p>Fecha: {fecha}</p>
       <p>Repeticiones: {seguimiento.repeticiones}</p>
       <p>Peso: {seguimiento.peso}</p>

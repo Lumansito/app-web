@@ -29,7 +29,7 @@ export function Home() {
                         <div>
                             <h3>Profesional</h3>
                             
-                            <Link>Solicitudes de Rutina</Link>
+                            <Link to="/rutinas/solicitudes">Solicitudes de Rutina</Link>
                             <br />
                             <Link to="/seguimiento/lista">Marcas Clientes</Link>
                         </div>

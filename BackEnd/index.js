@@ -13,6 +13,7 @@ import pagosRouter from "./routes/pagos.routes.js";
 import seguimientosRouter from "./routes/seguimientos.routes.js";
 import cuposRouter from "./routes/cupo_otorgado.routes.js";
 import loginRouter from "./routes/login.routes.js";
+import rutiasRouter from "./routes/rutinas.routes.js";
 
 const app = express();
 const PORT = 3000;
@@ -43,8 +44,9 @@ app.use(authorizeRole([2, 3]), membresiasRouter);
 app.use(authorizeRole([2, 3]), ejerciciosRouter);
 app.use(authorizeRole([2, 3]), rutinas_pre_establecidasRouter);
 app.use(esquema_cuposRouter);
+app.use(authorizeRole([2]) ,rutiasRouter);
 app.use(authorizeRole([3]), pagosRouter);
-app.use(authorizeRole(2), seguimientosRouter);
+app.use(authorizeRole([2]), seguimientosRouter);
 app.use(cuposRouter);
 
 app.listen(PORT, () => {

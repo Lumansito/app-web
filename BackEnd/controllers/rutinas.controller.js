@@ -84,26 +84,60 @@ export const updatePersonalizedRoutine = async (req, res) => {
   };
   
   // obtener las rutinas personalizadas de un usuario
-  export const getRutinaByDni = async (req, res) => {
-    try {
-      const { dniCliente } = req.params;
-  
-      const [result] = await pool.query(
-        "SELECT rp.*, lrp.*, ej.nombre, c.peticion FROM rutinas rp " +
-        "INNER JOIN lineas_rutina lrp ON rp.id = lrp.rutinaId " +
-        "INNER JOIN ejercicios ej ON lrp.codEjercicio = ej.codEjercicio " +
-        "LEFT JOIN comentarios_rutinas c ON rp.id = c.rutinaId " +
-        "WHERE rp.dniCliente = ? ORDER BY lrp.dia, lrp.orden",
-        [dniCliente]
-      );
-  
-      if (result.length === 0) {
-        return res.status(404).json({ message: "No se encontraron rutinas personalizadas para este usuario." });
-      } else {
-        res.json(result);
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error.message });
+export const getRutinaByDni = async (req, res) => {
+  try {
+    const { dniCliente } = req.params;
+
+    const [result] = await pool.query(
+      "SELECT rp.*, lrp.*, ej.nombre, c.peticion FROM rutinas rp " +
+      "INNER JOIN lineas_rutina lrp ON rp.id = lrp.rutinaId " +
+      "INNER JOIN ejercicios ej ON lrp.codEjercicio = ej.codEjercicio " +
+      "LEFT JOIN comentarios_rutinas c ON rp.id = c.rutinaId " +
+      "WHERE rp.dniCliente = ? ORDER BY lrp.dia, lrp.orden",
+      [dniCliente]
+    );
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No se encontraron rutinas personalizadas para este usuario." });
+    } else {
+      res.json(result);
     }
-  };
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getSoliciutdesRutinas = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT r.*, u.nombre, u.apellido FROM rutinas r INNER JOIN usuarios u ON r.dniCliente = u.dni where r.fechaCarga is null"
+    );
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const getRutinaById = async (req, res) => {
+  try {
+    const { idRutina } = req.params;
+   
+    const [result] = await pool.query(
+      "SELECT r.*, u.nombre, u.apellido FROM rutinas r INNER JOIN usuarios u ON r.dniCliente = u.dni where r.idRutina = ?",
+      [idRutina]
+    );
+
+    if (result.length === 0) {
+      
+      return res.status(404).json({ message: "No se encontró la rutina solicitada." });
+    } else {
+      
+      res.json(result[0]);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+}

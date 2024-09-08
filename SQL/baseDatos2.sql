@@ -86,7 +86,6 @@ CREATE TABLE RUTINAS (
     fechaCarga DATE,
     peticion TEXT,
     dniInstructor INT,
-    tipoUsuario VARCHAR(255),
     UNIQUE (dniCliente, fechaPeticion),
     FOREIGN KEY (dniInstructor) REFERENCES USUARIOS(dni),
     FOREIGN KEY (dniCliente) REFERENCES USUARIOS(dni)
