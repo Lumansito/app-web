@@ -4,12 +4,22 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useRutinas } from "../../context/Rutinas/RutinasProvider";
 
 import { Solicitud } from "../../components/Solicitud";
-import { LineaRutinaForm } from "../../components/LineaRutinaForm";
+import { ConjuntoLineas } from "../../components/ConjuntoLineas";
+
+// drag and drop
+import {
+    DndContext,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    closestCorners,
+  } from "@dnd-kit/core";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 export const FormRutinaSolicitud = () => {
-  const { solicitud, loadSolicitud, lineas } = useRutinas();
-
-  const [numeroLineas, setNumeroLineas] = useState(1);
+  const { solicitud, loadSolicitud, lineas, setLineas, indice, setIndice } = useRutinas();
+    
   const navigate = useNavigate();
   const params = useParams();
 
@@ -26,7 +36,36 @@ export const FormRutinaSolicitud = () => {
     console.log(lineas);
   };
   const handleAñadir = () => {
-    setNumeroLineas((prev) => prev + 1);
+    setLineas((prevLineas) => [
+      ...prevLineas, // Mantener las líneas anteriores
+      { codEjercicio: "", series: "0", rep: "0", id:indice }, // Agregar una nueva línea
+    ]);
+    setIndice(indice + 1);
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  const getLineaPos = (id) => lineas.findIndex((linea) => linea.id === id);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id === over.id) return;
+
+    setLineas((lineas) => {
+      const originalPos = getLineaPos(active.id);
+      const newPos = getLineaPos(over.id);
+
+      return arrayMove(lineas, originalPos, newPos);
+    });
   };
 
   if (!solicitud) {
@@ -39,12 +78,12 @@ export const FormRutinaSolicitud = () => {
       <Link to="/rutinas/solicitudes">Volver</Link>
 
       <h2>Lineas de Rutina</h2>
-      {Array.from({ length: numeroLineas }, (_, index) => (
-        <LineaRutinaForm key={index} index={index} />
-      ))}
+      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+        <ConjuntoLineas lineas={lineas} />
+      </DndContext>
 
       <button onClick={handleAñadir}>Añadir otra linea</button>
-      <button onClick={handleClickButton}>ENVIAR</button>
+      <button onClick={handleClickButton}>ENsVIAR</button>
     </div>
   );
 };

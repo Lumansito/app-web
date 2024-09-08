@@ -18,6 +18,7 @@ const RutinasProvider = ({ children }) => {
   const [solicitudes, setSolicitudes] = useState([]);
   const [solicitud, setSolicitud] = useState(null);
   const [lineas, setLineas] = useState([]);
+  const [indice, setIndice] = useState(0);
 
 
   async function loadSolicitudes() {
@@ -43,7 +44,7 @@ const RutinasProvider = ({ children }) => {
 
 
   return (
-    <RutinasContext.Provider value={{ loadSolicitudes, solicitudes, loadSolicitud, solicitud , updateLineaRutina, lineas}}>
+    <RutinasContext.Provider value={{ loadSolicitudes, solicitudes, loadSolicitud, solicitud ,indice, setIndice, updateLineaRutina, lineas, setLineas}}>
       {children}
     </RutinasContext.Provider>
   );
