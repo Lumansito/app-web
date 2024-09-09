@@ -14,7 +14,10 @@ export function ConjuntoLineas({ lineas, onClick }) {
       <SortableContext items={lineas} strategy={verticalListSortingStrategy}>
         {console.log("lineas", lineas)}
         {lineas.map((linea) => (
-          <LineaRutinaForm key={linea.id} id={linea.id} linea={linea} />
+          <div key={linea.id}>
+            <LineaRutinaForm id={linea.id} linea={linea} />
+            {console.log(linea.id)}
+          </div>
         ))}
       </SortableContext>
     </div>

@@ -18,7 +18,7 @@ const RutinasProvider = ({ children }) => {
   const [solicitudes, setSolicitudes] = useState([]);
   const [solicitud, setSolicitud] = useState(null);
   const [lineas, setLineas] = useState([]);
-  const [indice, setIndice] = useState(0);
+  const [indice, setIndice] = useState(1);
 
 
   async function loadSolicitudes() {
@@ -32,9 +32,10 @@ const RutinasProvider = ({ children }) => {
     
     }
 
-    const updateLineaRutina = (index, nuevaLinea) => {
+    const updateLineaRutina = (id, nuevaLinea) => {
         setLineas((prevLineas) => {
           const nuevasLineas = [...prevLineas];
+          const index = nuevasLineas.findIndex((linea) => linea.id === id);
           nuevasLineas[index] = nuevaLinea;
           return nuevasLineas;
         });
