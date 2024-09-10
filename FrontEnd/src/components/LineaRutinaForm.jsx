@@ -55,13 +55,10 @@ export function LineaRutinaForm({ id, linea }) {
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
-    border: "2px solid blue",
-    padding: "10px",
-    margin: "5px",
   };
 
   return (
-    <div ref={setNodeRef} {...attributes} {...listeners} style={style} className="LineaRutinaForm">
+    <div ref={setNodeRef} {...attributes} {...listeners} style={style} className="LineaRutinaForm bg-blue-500 rounded-2xl">
       <label>Seleccionar Ejercicio:</label>
       <select value={selectedEjercicio} onChange={handleEjercicioChange}>
         <option value="">--Seleccionar--</option>

@@ -72,10 +72,10 @@ export const FormRutinaSolicitud = () => {
     return <div>Cargando solicitud...</div>; // Mostrar un indicador de carga mientras se obtiene la solicitud
   }
   return (
-    <div>
+    <div className="flex flex-col">
       <h1>Solicitud de Rutina</h1>
       <Solicitud solicitud={solicitud} modo="descripcion" />
-      <Link to="/rutinas/solicitudes">Volver</Link>
+      
 
       <h2>Lineas de Rutina</h2>
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
@@ -83,7 +83,10 @@ export const FormRutinaSolicitud = () => {
       </DndContext>
 
       <button onClick={handleAñadir}>Añadir otra linea</button>
-      <button onClick={handleClickButton}>ENsVIAR</button>
+      <br />
+      <button onClick={handleClickButton}>Enviar</button>
+      <br />
+      <Link to="/rutinas/solicitudes" className="bg-rojo-intenso rounded-2xl p-1 ">Volver</Link>
     </div>
   );
 };
