@@ -72,7 +72,7 @@ export const FormRutinaSolicitud = () => {
     return <div>Cargando solicitud...</div>; // Mostrar un indicador de carga mientras se obtiene la solicitud
   }
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center ">
       <h1 className="text-2xl mb-4">Solicitud de Rutina</h1>
       <Solicitud solicitud={solicitud} modo="descripcion" />
   
