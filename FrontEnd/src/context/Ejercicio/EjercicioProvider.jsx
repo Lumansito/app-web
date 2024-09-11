@@ -1,4 +1,4 @@
-import { EjercicioContext } from "./EjercicioContext";
+import { ExerciseContext } from "./EjercicioContext";
 import {getEjercicios} from '../../api/ejercicios.api.js';
 import React, { useContext, useState } from 'react';
 
@@ -7,7 +7,7 @@ import React, { useContext, useState } from 'react';
 
 
 export const useEjercicios = () => {
-    const context = useContext(EjercicioContext);
+    const context = useContext(ExerciseContext);
     if (!context) {
       throw new Error(
         "useEEjercicios debe estar dentro del proveedor EmpleadoProvider"
@@ -75,10 +75,10 @@ export const useEjercicios = () => {
     };
     
     return (
-      <EjercicioContext.Provider
+      <ExerciseContext.Provider
         value={{ ejercicios, loadEjercicios}}>
         {children}
-      </EjercicioContext.Provider>
+      </ExerciseContext.Provider>
     );
   };
   

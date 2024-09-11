@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { authorizeRole } from "./middleware/authorizeRole.js";
+import { authorizeRole, professorAdmin } from "./middleware/authorizeRole.js";
 
 import usersRouter from "./routes/usuarios.routes.js";
 import ejerciciosRouter from "./routes/ejercicios.routes.js";
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 });
 
 app.use(loginRouter); //VALIDAR BIEN QUUIEN REQUIERE QUE ROL, Y SI INTERNAMENETE HAY RUTAS Q SI, PPOR EJEMLPO ESQUEMA_CUPOS
-app.use(authorizeRole([2, 3]), usersRouter);
+app.use(professorAdmin, usersRouter);
 app.use(authorizeRole([2, 3]), membresiasRouter);
 app.use(authorizeRole([2, 3]), ejerciciosRouter);
 app.use(authorizeRole([2, 3]), rutinas_pre_establecidasRouter);

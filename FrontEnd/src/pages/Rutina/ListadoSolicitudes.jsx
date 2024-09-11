@@ -20,10 +20,10 @@ export const ListadoSolicitudes = () => {
   };
 
   return (
-    <div className="flex flex-col w-min-max gap-1">
+    <div className="flex flex-col  gap-1">
       <h1 className="mb-36">Solicitudes de Rutina </h1>
       {solicitudes.length === 0 && <p>No hay solicitudes</p>}
-      <ul className="bg-gris-acero self-center min-w-max">
+      <ul className="bg-gris-acero self-center ">
         {solicitudes.map((sol) => (
           <li key={sol.idRutina}>
             <Solicitud solicitud={sol} onClick={() => handleSelect(sol)} />

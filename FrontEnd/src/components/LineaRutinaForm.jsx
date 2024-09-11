@@ -58,37 +58,54 @@ export function LineaRutinaForm({ id, linea }) {
   };
 
   return (
-    <div ref={setNodeRef} {...attributes} {...listeners} style={style} className="LineaRutinaForm bg-blue-500 rounded-2xl">
-      <label>Seleccionar Ejercicio:</label>
-      <select value={selectedEjercicio} onChange={handleEjercicioChange}>
-        <option value="">--Seleccionar--</option>
-        {ejercicios &&
-          ejercicios.map((ejercicio) => (
-            <option key={ejercicio.codEjercicio} value={ejercicio.codEjercicio}>
-              {ejercicio.nombre}
-            </option>
-          ))}
-      </select>
-
-      <div>
-        <label>Series:</label>
-        <input
-          type="number"
-          name="series"
-          value={lineaActual.series}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div>
-        <label>Repeticiones:</label>
-        <input
-          type="number"
-          name="rep"
-          value={lineaActual.rep}
-          onChange={handleInputChange}
-        />
+    <div 
+      ref={setNodeRef} 
+      {...attributes} 
+      {...listeners} 
+      style={style} 
+      className="LineaRutinaForm bg-blue-500 rounded-2xl p-4 shadow-md mx-auto">
+      
+      <div className="flex items-center space-x-4">
+        <div className="flex flex-col">
+          <label className="text-white">Seleccionar Ejercicio:</label>
+          <select 
+            value={selectedEjercicio} 
+            onChange={handleEjercicioChange} 
+            className="p-2 bg-gray-200 text-black rounded-md">
+            <option value="">--Seleccionar--</option>
+            {ejercicios &&
+              ejercicios.map((ejercicio) => (
+                <option key={ejercicio.codEjercicio} value={ejercicio.codEjercicio}>
+                  {ejercicio.nombre}
+                </option>
+              ))}
+          </select>
+        </div>
+  
+        <div className="flex flex-col">
+          <label className="text-white">Series:</label>
+          <input
+            type="number"
+            name="series"
+            value={lineaActual.series}
+            onChange={handleInputChange}
+            className="p-2 w-20 rounded-md text-black"
+          />
+        </div>
+  
+        <div className="flex flex-col">
+          <label className="text-white">Repeticiones:</label>
+          <input
+            type="number"
+            name="rep"
+            value={lineaActual.rep}
+            onChange={handleInputChange}
+            className="p-2 w-20 rounded-md text-black"
+          />
+        </div>
       </div>
     </div>
   );
+  
+
 }

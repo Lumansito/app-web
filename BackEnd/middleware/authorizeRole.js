@@ -21,3 +21,6 @@ export const authorizeRole = (requiredRoles) => {
     next();
   };
 };
+
+
+export const professorAdmin = authorizeRole([2, 3]);

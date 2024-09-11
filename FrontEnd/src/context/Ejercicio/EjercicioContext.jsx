@@ -1,4 +1,4 @@
 import { createContext } from "react";
 
 
-export const EjercicioContext = createContext();
+export const ExerciseContext = createContext();
