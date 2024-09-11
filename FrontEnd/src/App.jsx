@@ -4,6 +4,7 @@ import { Home } from "./pages/Home";
 import { EjerciciosRoutes } from "./routes/ejercicios.routes";
 import { RutinasRoutes } from "./routes/rutinas.routes";
 import { SeguimientosRoutes } from "./routes/seguimientos.routes";
+import { cuposOtorgadoRoutes } from "./routes/cuposOtorgado.routes";
 
 import UsuarioProvider from "./context/Usuario/UsuarioProvider";
 
@@ -15,8 +16,10 @@ function App() {
         <Route path="/seguimiento/*" element={<SeguimientosRoutes />} />
         <Route path="/ejercicios/*" element={<EjerciciosRoutes />} />
         <Route path="/rutinas/*" element={<RutinasRoutes />}/>
+        <Route path="/cuposOtorgados/*" element={<cuposOtorgadosRoutes />} />
       </Routes>
     </UsuarioProvider>
   );
 }
 export default App;
+
