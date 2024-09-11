@@ -1,15 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import CuposHome from "../pages/Cupos/cuposList"; 
-import CupoDetail from "../pages/Cupos/cupoDetails"; 
+import CuposListPage from "../pages/Cupos/cuposList"; 
+import CupoDetailPage from "../pages/Cupos/cupoDetails"; 
 
-function CuposRoutes() {
+export function CuposRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<CuposHome />} />
-      <Route path="/:id" element={<CupoDetail />} />
+      <Route path="/" element={<CuposListPage />} />
+      <Route path="/:id" element={<CupoDetailPage />} />
     </Routes>
   );
 }
 
-export { CuposRoutes };
