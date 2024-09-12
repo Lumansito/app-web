@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useCupos } from "../context/Cupo/cupoProvider";
+import { useState, useEffect } from "react";
+import { useCupos } from "../context/Cupo/cupoProvider"; 
 
 function CuposHome() {
   const [cupos, setCupos] = useState([]);

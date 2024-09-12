@@ -18,7 +18,7 @@ export const getCupoById = async (idCupo) => {
   }
 };
 
-export const updateCupo = async (id, cupo) => {
+export const updateCupoRequest = async (id, cupo) => {
   try {
     const response = await axiosInstance.put(`/cupos/${id}`, cupo);
     return response;
@@ -27,7 +27,7 @@ export const updateCupo = async (id, cupo) => {
   }
 };
 
-export const createCupo = async (cupo) => {
+export const createCupoRequest = async (cupo) => {
   try {
     const response = await axiosInstance.post(`/cupos`, cupo);
     return response;
@@ -36,7 +36,7 @@ export const createCupo = async (cupo) => {
   }
 };
 
-export const deleteCupo = async (idCupo) => {
+export const deleteCupoRequest = async (idCupo) => {
   try {
     const response = await axiosInstance.delete(`/cupos/${idCupo}`);
     return response;

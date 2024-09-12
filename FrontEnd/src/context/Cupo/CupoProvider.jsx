@@ -1,8 +1,15 @@
 import { CupoContext } from "./cupoContext";
-import { getCupos } from "../../api/cuposOtorgado.api";
-import { useContext, useState } from 'react';
+import {
+  getCupos,
+  getCupoById,
+  updateCupoRequest,
+  createCupoRequest,
+  deleteCupoRequest,
+} from "../../api/cuposOtorgado.api";
+import { useContext, useState } from "react";
 
 export const useCupos = () => {
+  //este warning aca no lo entiendo
   const context = useContext(CupoContext);
   if (!context) {
     throw new Error("useCupos debe estar dentro del proveedor CupoProvider");
@@ -28,7 +35,8 @@ const CupoProvider = ({ children }) => {
       if (!window.confirm("¿Estás seguro de eliminar el cupo?")) {
         return;
       }
-      // Lógica para eliminar el cupo
+      await deleteCupoRequest(id);
+      setCupos(cupos.filter((cupo) => cupo.id !== id));
     } catch (error) {
       alert("Error al eliminar Cupo");
       console.log(error);
@@ -37,7 +45,8 @@ const CupoProvider = ({ children }) => {
 
   const createCupo = async (values) => {
     try {
-      // Lógica para crear un nuevo cupo
+      const response = await createCupoRequest(values);
+      setCupos([...cupos, response.data]); // crea un array con los datos del array original?
     } catch (error) {
       console.log(error);
     }
@@ -45,15 +54,17 @@ const CupoProvider = ({ children }) => {
 
   const getCupo = async (id) => {
     try {
-      // Lógica para obtener un cupo por ID
+      const response = await getCupoById(id);
+      return response.data;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const updateCupo = async (id) => {
+  const updateCupo = async (id, values) => {
     try {
-      // Lógica para actualizar un cupo
+      const response = await updateCupoRequest(id, values);
+      setCupos(cupos.map((cupo) => (cupo.id === id ? response.data : cupo)));
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +72,15 @@ const CupoProvider = ({ children }) => {
 
   return (
     <CupoContext.Provider
-      value={{ cupos, loadCupos, deleteCupo, createCupo, getCupo, updateCupo, error }}
+      value={{
+        cupos,
+        loadCupos,
+        deleteCupo,
+        createCupo,
+        getCupo,
+        updateCupo,
+        error,
+      }}
     >
       {children}
     </CupoContext.Provider>
