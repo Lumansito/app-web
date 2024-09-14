@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import { LineaRutinaForm } from "./LineaRutinaForm";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-export function ConjuntoLineas({ lineas, onClick }) {
+export function ConjuntoLineas({ dia,lineas, onClick }) {
+ 
   return (
     <div
       className="ConjuntoLineas flex flex-col gap-4 "
@@ -15,7 +17,7 @@ export function ConjuntoLineas({ lineas, onClick }) {
         
         {lineas.map((linea) => (
           <div key={linea.id}>
-            <LineaRutinaForm id={linea.id} linea={linea} />            
+            <LineaRutinaForm id={linea.id} linea={linea} dia={dia}/>            
           </div>
         ))}
       </SortableContext>

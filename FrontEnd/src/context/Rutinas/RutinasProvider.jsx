@@ -1,7 +1,10 @@
 import { RutinasContext } from "./RutinasContext.jsx";
 import React, { useContext, useState } from "react";
 
-import { getSolicitudes, getSolicitud } from "../../api/rutinas.api.js";
+import { getSolicitudes, getSolicitud, uploadRutinaApi } from "../../api/rutinas.api.js";
+
+import { useUsuario } from "../Usuario/UsuarioProvider.jsx";
+
 
 export const useRutinas = () => {
   const context = useContext(RutinasContext);
@@ -14,10 +17,15 @@ export const useRutinas = () => {
 };
 
 const RutinasProvider = ({ children }) => {
+
+  const {dni} = useUsuario();
   // Función de ejemplo para mostrar un mensaje en la consola
   const [solicitudes, setSolicitudes] = useState([]);
   const [solicitud, setSolicitud] = useState(null);
-  const [lineas, setLineas] = useState([]);
+  const [diasRutina, setDiasRutina] = useState([
+    { dia: 1, lineas: [] }
+    // Agrega más días si es necesario
+  ]);
   const [indice, setIndice] = useState(1);
 
 
@@ -32,20 +40,48 @@ const RutinasProvider = ({ children }) => {
     
     }
 
-    const updateLineaRutina = (id, nuevaLinea) => {
-        setLineas((prevLineas) => {
-          const nuevasLineas = [...prevLineas];
-          const index = nuevasLineas.findIndex((linea) => linea.id === id);
-          nuevasLineas[index] = nuevaLinea;
-          return nuevasLineas;
+    const updateLineaRutina = (dia, idLinea, nuevaLinea) => {
+      setDiasRutina((prevDiasRutina) => {
+        return prevDiasRutina.map((diaRutina) => {
+          if (diaRutina.dia === dia) {
+            // Actualizar la línea dentro del día específico
+            const nuevasLineas = diaRutina.lineas.map((linea) =>
+              linea.id === idLinea ? nuevaLinea : linea
+            );
+            return { ...diaRutina, lineas: nuevasLineas };
+          }
+          return diaRutina;
         });
-        console.log(lineas)
-      };
+      });
+      console.log(diasRutina);
+    };
+    const uploadRutina = async () => {
+      console.log(diasRutina);
+      console.log(solicitud);
+      let response = await uploadRutinaApi(solicitud.idRutina, diasRutina, dni);
+      if(response.data.message && response.data.message === "Correcto"){
+        return true;
+    }
+    else{
+        return false;
+    }
+    }
 
 
 
   return (
-    <RutinasContext.Provider value={{ loadSolicitudes, solicitudes, loadSolicitud, solicitud ,indice, setIndice, updateLineaRutina, lineas, setLineas}}>
+    <RutinasContext.Provider value={{
+      loadSolicitudes,
+      solicitudes,
+      loadSolicitud,
+      solicitud,
+      indice,
+      setIndice,
+      updateLineaRutina,
+      diasRutina,
+      setDiasRutina,
+      uploadRutina
+    }}>
       {children}
     </RutinasContext.Provider>
   );

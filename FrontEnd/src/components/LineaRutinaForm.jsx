@@ -6,7 +6,7 @@ import { useRutinas } from "../context/Rutinas/RutinasProvider"; // Importar el 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-export function LineaRutinaForm({ id, linea }) {
+export function LineaRutinaForm({ dia,id, linea }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const { ejercicios, loadEjercicios } = useEjercicios();
@@ -21,7 +21,7 @@ export function LineaRutinaForm({ id, linea }) {
   });
 
   useEffect(() => {
-    loadEjercicios();
+    loadEjercicios(); // Cargar los ejercicios disponibles cuando se monta el componente
   }, []);
 
   // Sincronizar lineaActual cuando cambien las props
@@ -30,10 +30,12 @@ export function LineaRutinaForm({ id, linea }) {
       codejercicio: linea.codejercicio || "",
       series: linea.series || 0,
       rep: linea.rep || 0,
-      id: linea.id,  // Asegurar que el id se mantenga
+      id: linea.id,
+      dia: linea.dia  // Asegurar que el id se mantenga actualizado
     });
   }, [linea]);
 
+  // Manejar cambio de ejercicio
   const handleEjercicioChange = (e) => {
     const newCodeEjercicio = e.target.value;
     setSelectedEjercicio(newCodeEjercicio);
@@ -41,15 +43,16 @@ export function LineaRutinaForm({ id, linea }) {
     const updatedLinea = { ...lineaActual, codejercicio: newCodeEjercicio };
 
     setLineaActual(updatedLinea);
-    updateLineaRutina(updatedLinea.id, updatedLinea); // Usar updatedLinea.id para mantener el id
+    updateLineaRutina(dia,updatedLinea.id, updatedLinea); // Actualizar la línea en el contexto
   };
 
+  // Manejar cambios en series o repeticiones
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const updatedLinea = { ...lineaActual, [name]: value };
 
     setLineaActual(updatedLinea);
-    updateLineaRutina(updatedLinea.id, updatedLinea); // Usar updatedLinea.id para mantener el id
+    updateLineaRutina(dia,updatedLinea.id, updatedLinea); // Actualizar la línea en el contexto
   };
 
   const style = {
@@ -106,6 +109,4 @@ export function LineaRutinaForm({ id, linea }) {
       </div>
     </div>
   );
-  
-
 }

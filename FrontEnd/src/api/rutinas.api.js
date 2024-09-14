@@ -18,3 +18,13 @@ export const getSolicitud = async (idRutina) => {
     }
     
 }
+
+export const uploadRutinaApi = async (  idRutina, diasRutina, dni) => {
+    try{
+        return await axiosInstance.put(`/solicitudes/${idRutina}`, {data:diasRutina, dniProf:dni});
+    }
+    catch (error) {
+        return error;
+    }
+    
+}
