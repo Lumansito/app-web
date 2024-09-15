@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCupos } from "../../context/Cupo/cupoProvider";
+import { useCupos } from "../../context/Cupo/CupoProvider";
 import { useNavigate } from "react-router-dom";
 
 function CuposListPage() {
