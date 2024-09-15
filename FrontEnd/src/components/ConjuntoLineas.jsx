@@ -9,7 +9,7 @@ export function ConjuntoLineas({ dia,lineas, onClick }) {
  
   return (
     <div
-      className="ConjuntoLineas flex flex-col gap-4 "
+      className="ConjuntoLineas flex flex-col gap-4 max-w-xs max-h-96 overflow-y-auto overflow-x-clip"
       onClick={onClick}
       
     >

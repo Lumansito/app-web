@@ -128,18 +128,18 @@ export const FormRutinaSolicitud = () => {
 
   
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center  ">
       <h1 className="text-2xl mb-4">Solicitud de Rutina</h1>
       <Solicitud solicitud={solicitud} modo="descripcion" />
 
-      <h2 className="text-lg mb-2">Día {diaActual.dia} de la Rutina</h2>
+      <h2 className="text-2xlg mb-2 text-gray-500 ">Día {diaActual.dia} de la Rutina</h2>
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <ConjuntoLineas lineas={diaActual.lineas} dia={diaActual.dia} />
       </DndContext>
 
       <button 
         onClick={handleAñadirLinea} 
-        className="bg-gris-acero rounded-2xl p-1 text-sm mt-4 w-40 mx-auto">
+        className="bg-blue-400 rounded-2xl p-1 text-sm mt-4 w-40 mx-auto">
         Añadir otra línea
       </button>
 
@@ -161,7 +161,7 @@ export const FormRutinaSolicitud = () => {
 
       <button 
         onClick={handleAñadirDia} 
-        className="bg-verde-intenso rounded-2xl p-1 text-sm mt-4 w-40 mx-auto">
+        className="bg-green-600 rounded-2xl p-1 text-sm mt-4 w-40 mx-auto">
         Añadir Nuevo Día
       </button>
       <button
@@ -173,13 +173,13 @@ export const FormRutinaSolicitud = () => {
       <br />
       <button 
         onClick={handleClickButton} 
-        className="bg-azul-intenso rounded-2xl p-1 text-xl w-40 ">
+        className="bg-green-600 rounded-2xl p-1 text-xl w-40 ">
         Upload Rutina
       </button>
       <br />
       <Link 
         to="/rutinas/solicitudes" 
-        className="bg-rojo-intenso rounded-2xl p-1 text-xl w-40 mx-auto">
+        className="bg-rojo-intenso rounded-2xl p-1 text-xl w-40 mt-auto ">
         Volver
       </Link>
     </div>
