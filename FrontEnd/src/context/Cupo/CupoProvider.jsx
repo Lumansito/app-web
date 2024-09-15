@@ -1,4 +1,4 @@
-import { CupoContext } from "./cupoContext";
+import { CupoContext } from "./CupoContext";
 import {
   getCupos,
   getCupoById,
@@ -9,7 +9,6 @@ import {
 import { useContext, useState } from "react";
 
 export const useCupos = () => {
-  //este warning aca no lo entiendo
   const context = useContext(CupoContext);
   if (!context) {
     throw new Error("useCupos debe estar dentro del proveedor CupoProvider");

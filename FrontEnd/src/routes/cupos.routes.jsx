@@ -7,7 +7,7 @@ export function CuposRoutes() {
   return (
     <CupoProvider>
       <Routes>
-        <Route path="/" element={<CuposListPage />} />
+        <Route path="/lista" element={<CuposListPage />} />
         <Route path="/:id" element={<CupoDetailPage />} />
       </Routes>
     </CupoProvider>
