@@ -17,6 +17,7 @@ function App() {
         <Route path="/ejercicios/*" element={<EjerciciosRoutes />} />
         <Route path="/rutinas/*" element={<RutinasRoutes />}/>
         <Route path="/cuposOtorgados/*" element={<CuposRoutes />} />
+       
       </Routes>
     </UsuarioProvider>
   );

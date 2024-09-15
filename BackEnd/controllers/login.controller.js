@@ -24,7 +24,7 @@ export const login = async (req, res) => {
       const token = jwt.sign(
         { dni: req.body.dni, rol: rol },
         "CLAVE_SUPER_SEGURA",
-        { expiresIn: "5m" }
+        { expiresIn: "1h" }
       );
 
       res.send({ token: token });

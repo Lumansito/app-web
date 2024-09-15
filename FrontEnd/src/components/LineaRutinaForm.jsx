@@ -6,7 +6,7 @@ import { useRutinas } from "../context/Rutinas/RutinasProvider"; // Importar el 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-export function LineaRutinaForm({ id, linea }) {
+export function LineaRutinaForm({ dia,id, linea }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const { ejercicios, loadEjercicios } = useEjercicios();
@@ -21,7 +21,7 @@ export function LineaRutinaForm({ id, linea }) {
   });
 
   useEffect(() => {
-    loadEjercicios();
+    loadEjercicios(); // Cargar los ejercicios disponibles cuando se monta el componente
   }, []);
 
   // Sincronizar lineaActual cuando cambien las props
@@ -30,10 +30,12 @@ export function LineaRutinaForm({ id, linea }) {
       codejercicio: linea.codejercicio || "",
       series: linea.series || 0,
       rep: linea.rep || 0,
-      id: linea.id,  // Asegurar que el id se mantenga
+      id: linea.id,
+      dia: linea.dia  // Asegurar que el id se mantenga actualizado
     });
   }, [linea]);
 
+  // Manejar cambio de ejercicio
   const handleEjercicioChange = (e) => {
     const newCodeEjercicio = e.target.value;
     setSelectedEjercicio(newCodeEjercicio);
@@ -41,15 +43,16 @@ export function LineaRutinaForm({ id, linea }) {
     const updatedLinea = { ...lineaActual, codejercicio: newCodeEjercicio };
 
     setLineaActual(updatedLinea);
-    updateLineaRutina(updatedLinea.id, updatedLinea); // Usar updatedLinea.id para mantener el id
+    updateLineaRutina(dia,updatedLinea.id, updatedLinea); // Actualizar la línea en el contexto
   };
 
+  // Manejar cambios en series o repeticiones
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const updatedLinea = { ...lineaActual, [name]: value };
 
     setLineaActual(updatedLinea);
-    updateLineaRutina(updatedLinea.id, updatedLinea); // Usar updatedLinea.id para mantener el id
+    updateLineaRutina(dia,updatedLinea.id, updatedLinea); // Actualizar la línea en el contexto
   };
 
   const style = {
@@ -63,16 +66,17 @@ export function LineaRutinaForm({ id, linea }) {
       {...attributes} 
       {...listeners} 
       style={style} 
-      className="LineaRutinaForm bg-blue-500 rounded-2xl p-4 shadow-md mx-auto">
-      
-      <div className="flex items-center space-x-4">
-        <div className="flex flex-col">
-          <label className="text-white">Seleccionar Ejercicio:</label>
+      className="LineaRutinaForm bg-blue-500 rounded-2xl p-4 shadow-md mx-auto w-full max-h-28 max-w-2xl mb-4"
+    >
+      <div className="flex items-center justify-between gap-x-4 w-full">
+        {/* Selector del ejercicio ocupa el 50% */}
+        <div className="w-1/2">
+          <label className="text-white text-sm mb-1">Ejercicio:</label>
           <select 
             value={selectedEjercicio} 
             onChange={handleEjercicioChange} 
-            className="p-2 bg-gray-200 text-black rounded-md">
-            <option value="">--Seleccionar--</option>
+            className="p-1 bg-gray-200 text-black rounded-md w-full text-xs">
+            <option value="">Seleccionar</option>
             {ejercicios &&
               ejercicios.map((ejercicio) => (
                 <option key={ejercicio.codEjercicio} value={ejercicio.codEjercicio}>
@@ -82,30 +86,31 @@ export function LineaRutinaForm({ id, linea }) {
           </select>
         </div>
   
-        <div className="flex flex-col">
-          <label className="text-white">Series:</label>
+        {/* Series y Repeticiones ocupan el 25% cada uno */}
+        <div className="w-1/4">
+          <label className="text-white text-sm mb-1">Series:</label>
           <input
             type="number"
             name="series"
             value={lineaActual.series}
             onChange={handleInputChange}
-            className="p-2 w-20 rounded-md text-black"
+            className="p-2 bg-gray-200 rounded-md text-black text-base w-full"
           />
         </div>
   
-        <div className="flex flex-col">
-          <label className="text-white">Repeticiones:</label>
+        <div className="w-1/4">
+          <label className="text-white text-sm mb-1">Repeticiones:</label>
           <input
             type="number"
             name="rep"
             value={lineaActual.rep}
             onChange={handleInputChange}
-            className="p-2 w-20 rounded-md text-black"
+            className="p-2 bg-gray-200 rounded-md text-black text-base w-full"
           />
         </div>
       </div>
     </div>
   );
   
-
+  
 }
