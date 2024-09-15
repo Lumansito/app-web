@@ -1,6 +1,6 @@
 import { UsuarioContext } from "./UsuarioContext.jsx";
 import {Rol_logIn} from '../../api/usuarios.api';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { jwtDecode } from "jwt-decode"
 
 

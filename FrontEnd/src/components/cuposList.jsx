@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useCupos } from "../context/Cupo/cupoProvider"; 
 
-function CuposHome() {
+function CuposList() {
   const [cupos, setCupos] = useState([]);
   const [error, setError] = useState(null);
 
@@ -38,4 +37,4 @@ function CuposHome() {
   );
 }
 
-export default CuposHome;
+export default CuposList;
