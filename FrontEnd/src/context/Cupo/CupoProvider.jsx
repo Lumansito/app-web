@@ -6,7 +6,7 @@ import {
   createCupoRequest,
   deleteCupoRequest,
 } from "../../api/cuposOtorgado.api";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export const useCupos = () => {
   const context = useContext(CupoContext);
@@ -17,62 +17,65 @@ export const useCupos = () => {
 };
 
 const CupoProvider = ({ children }) => {
-  const [cupos, setCupos] = useState([]);
-  const [error, setError] = useState(null);
+  const [cupos, setCupos] = useState([]); //estado local para almacenar cupos
+  const [loading, setLoading] = useState(false); //estado para manejar el loading
+  const [error, setError] = useState(null); //estado para manejar errores
 
-  async function loadCupos() {
-    try {
-      const response = await getCupos();
-      setCupos(response.data);
-    } catch (error) {
-      setError(error.message);
+  const loadCupos = async () => {
+    setLoading(true);
+    const data = await getCupos();
+    if (data) {
+      setCupos(data); //se guarda el cupo en esl estado
+    } else {
+      setError("error al cargar cupo");
     }
-  }
-
-  const deleteCupo = async (id) => {
-    try {
-      if (!window.confirm("¿Estás seguro de eliminar el cupo?")) {
-        return;
-      }
-      await deleteCupoRequest(id);
-      setCupos(cupos.filter((cupo) => cupo.id !== id));
-    } catch (error) {
-      alert("Error al eliminar Cupo");
-      console.log(error);
-    }
+    setLoading(false);
   };
-
-  const createCupo = async (values) => {
-    try {
-      const response = await createCupoRequest(values);
-      setCupos([...cupos, response.data]); // crea un array con los datos del array original?
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const getCupo = async (id) => {
-    try {
-      const response = await getCupoById(id);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
+    setLoading(true);
+    const data = await getCupoById(id);
+    setLoading(false);
+    return data;
   };
-
-  const updateCupo = async (id, values) => {
-    try {
-      const response = await updateCupoRequest(id, values);
-      setCupos(cupos.map((cupo) => (cupo.id === id ? response.data : cupo)));
-    } catch (error) {
-      console.log(error);
+  const createCupo = async (cupo) => {
+    setLoading(true);
+    const newCupo = await createCupoRequest(cupo);
+    if (newCupo) {
+      setCupos((prev) => [...prev, newCupo]); //actualizo lista
+    } else {
+      setError("error al crear cupo");
     }
+    setLoading(false);
   };
+  const updateCupo = async (id, updateCupo) => {
+    setLoading(true);
+    const updated = await updateCupoRequest(id, updateCupo);
+    if (updated) {
+      setCupos((prev) => prev.map((cupo) => (cupo.id === id ? updated : cupo))); //actualiza cupo en el estado
+    } else {
+      setError("error al actualizar cupo");
+    }
+    setLoading(false);
+  };
+  const deleteCupo = async (id) => {
+    setLoading(true);
+    const deleted = await deleteCupoRequest(id);
+    if (deleted) {
+      setCupos((prev) => prev.filter((cupo) => cupo.id !== id)); //elimino el cupo del estado
+    } else {
+      setError("error al eliminar cupo");
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    loadCupos();
+  }, []);
 
   return (
     <CupoContext.Provider
       value={{
         cupos,
+        loading,
         loadCupos,
         deleteCupo,
         createCupo,
