@@ -46,7 +46,8 @@ export const updatePersonalizedRoutine = async (req, res) => {
   let _lineas = [];
   let variables = "";
 
-  console.log(idRutina);
+
+  console.log(data);
 
   let iteraciones = 0;
   for (let i = 0; i < data.length; i++) {
@@ -63,7 +64,7 @@ export const updatePersonalizedRoutine = async (req, res) => {
       });
     }
   }
-  console.log(_lineas);
+  
 
 
   for (let i = 0; i < iteraciones; i++) {
@@ -74,7 +75,7 @@ export const updatePersonalizedRoutine = async (req, res) => {
   const queryInsert = `INSERT INTO lineas_rutina (idRutina, dia, orden, codEjercicio, series, repeticiones) VALUES ${variables}`;
   const queryDelete = `DELETE FROM lineas_rutina WHERE idRutina = ${idRutina} `;
 
-  const queryInsert2 = `UPDATE rutinas SET fechaCarga = NOW(), dniInstructor = ${dniProf} WHERE idRutina = ${idRutina}`;
+  const queryInsert2 = `UPDATE rutinas SET fechaCarga = date(now()), dniInstructor = ${dniProf} WHERE idRutina = ${idRutina}`;
   let connection;
   console.log(queryInsert);
   try {
@@ -88,7 +89,7 @@ export const updatePersonalizedRoutine = async (req, res) => {
     
 
     await connection.commit();
-    res.json({ message: "Correcto" });
+    res.status(200).json({ message: "Correcto" });
   } catch (error) {
     if (connection) await connection.rollback();
     res.status(500).json({ message: error.message });

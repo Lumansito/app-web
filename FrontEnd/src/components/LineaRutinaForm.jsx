@@ -75,7 +75,8 @@ export function LineaRutinaForm({ dia,id, linea }) {
           <select 
             value={selectedEjercicio} 
             onChange={handleEjercicioChange} 
-            className="p-1 bg-gray-200 text-black rounded-md w-full text-xs">
+            className="p-1 bg-gray-200 text-black rounded-md w-full text-xs"
+          >
             <option value="">Seleccionar</option>
             {ejercicios &&
               ejercicios.map((ejercicio) => (
@@ -95,6 +96,8 @@ export function LineaRutinaForm({ dia,id, linea }) {
             value={lineaActual.series}
             onChange={handleInputChange}
             className="p-2 bg-gray-200 rounded-md text-black text-base w-full"
+            min="1" // Solo permite números positivos
+            step="1" // Solo permite enteros
           />
         </div>
   
@@ -106,6 +109,8 @@ export function LineaRutinaForm({ dia,id, linea }) {
             value={lineaActual.rep}
             onChange={handleInputChange}
             className="p-2 bg-gray-200 rounded-md text-black text-base w-full"
+            min="1" // Solo permite números positivos
+            step="1" // Solo permite enteros
           />
         </div>
       </div>

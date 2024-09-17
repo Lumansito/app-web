@@ -18,7 +18,7 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 export const FormRutinaSolicitud = () => {
-  const { solicitud, loadSolicitud, diasRutina, setDiasRutina, indice, setIndice, uploadRutina} = useRutinas();
+  const { solicitud, loadSolicitud, diasRutina, setDiasRutina, indice, setIndice, uploadRutina, comprobarLineasRutina} = useRutinas();
   const [currentPage, setCurrentPage] = useState(0); // Página actual (el día de la rutina que se muestra)
 
   const navigate = useNavigate();
@@ -31,15 +31,25 @@ export const FormRutinaSolicitud = () => {
     }
   }, [idSolicitud, loadSolicitud]);
 
-  const handleClickButton = () => {
-    let ok = uploadRutina(); // Imprimir toda la estructura de diasRutina
-    if(ok){
-      alert("Rutina subida correctamente");
-      setDiasRutina({ dia: 1, lineas: [] });
-      navigate("/rutinas/solicitudes");
+  const handleClickButton = async () => {
+    const dia = comprobarLineasRutina();
+    console.log(dia);
+    if (dia) {
+      alert("Por favor, complete todas las líneas de la rutina. Compruebe dia: " + dia);
+      return;
     }
-    else{
-      alert("Error al subir la rutina");
+    try {
+      const response = await uploadRutina(); 
+      if (response) {
+        alert("Rutina subida correctamente");
+        setDiasRutina({ dia: 1, lineas: [] });
+        navigate("/rutinas/solicitudes");
+      } else {
+        alert("Error al subir la rutina");
+      }
+    } catch (error) {
+      console.error("Error durante la subida de la rutina:", error);
+      alert("Ocurrió un error al subir la rutina");
     }
   };
 
