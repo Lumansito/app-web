@@ -32,7 +32,6 @@ export const useUsuario = () => {
         const decoded = jwtDecode(token);
         setRol(decoded.rol);
         setDni(decoded.dni);
-        window.location.reload(); //recarga la pagina para que se actualice el rol globalmente en los componentes hijos
     }
 
 

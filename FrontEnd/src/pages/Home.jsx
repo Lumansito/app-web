@@ -7,7 +7,7 @@ export function Home() {
   const { rol, comprobarToken, dni } = useUsuario();
   useEffect(() => {
     comprobarToken();
-  }, [comprobarToken]);
+  }, []);
 
   return (
     <div>
