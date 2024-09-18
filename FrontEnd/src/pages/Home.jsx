@@ -1,60 +1,96 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { LogIn } from "./LogIn";
-import { useUsuario } from "../context/Usuario/UsuarioProvider";
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { LogIn } from "./LogIn"
+import { useUsuario } from "../context/Usuario/UsuarioProvider"
 
 export function Home() {
-  const { rol, comprobarToken, dni } = useUsuario();
+  const { rol, comprobarToken, dni, logout } = useUsuario()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
-    comprobarToken();
-  }, []);
+    comprobarToken()
+  }, [])
+
+  const handleLogout = async () => {
+    setLoading(true)
+    try {
+      await logout()
+      alert("Has cerrado sesión exitosamente.")
+      navigate("/login")
+    } catch (error) {
+      alert("No se pudo cerrar la sesión. Intenta de nuevo.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleNavigation = (path) => {
+    navigate(path)
+  }
+
+  if (rol.length === 0) {
+    return <LogIn />
+  }
 
   return (
-    <div>
-      <h1>Gym</h1>
-
-      {rol.length == 0 ? (
-        <LogIn />
-      ) : (
-        <div className="flex flex-col gap-8 items-center">
-          <h2>Bienvenido, usuario con dni: {dni}!</h2>
-          <h2>Estos son los roles que tienes</h2>
-          {rol.includes(1) && <h3>Cliente</h3>}
-          {rol.includes(2) && (
-            <div className="flex flex-col gap-4  items-center">
-              <h3 className="text-gray-600">Profesional</h3>
-
-              <Link
-                to="/rutinas/solicitudes"
-                className="bg-rojo-intenso hover:bg-red-900 w-96 rounded p-1"
-              >
-                Solicitudes de Rutina
-              </Link>
-              <Link
-                to="/seguimiento/lista"
-                className="bg-rojo-intenso hover:bg-red-900 w-96 rounded p-1"
-              >
-                Marcas Clientes
-              </Link>
-            </div>
-          )}
-          {rol.includes(3) && (
-            <div className="flex flex-col gap-4  items-center">
-                <h3 className="text-gray-600">Admin</h3>
-                <Link
-                to="/cupos/lista"
-                className="bg-rojo-intenso hover:bg-red-900 w-96 rounded p-1"
-              >
-                Crear cupo
-              </Link>
-            </div>
-          )}
-          <h1 className="text-gray-600">Opciones</h1>
-          <Link className="bg-rojo-intenso hover:bg-red-900 w-96 rounded p-1">
-            Perfil
-          </Link>
+    <div className="min-h-screen bg-white text-black p-4">
+      <h1 className="text-2xl font-bold text-center mb-6">Gym</h1>
+      <div className="max-w-sm mx-auto bg-gray-100 rounded-lg shadow-md overflow-hidden">
+        <div className="p-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold">Bienvenido, usuario con DNI: {dni}</h2>
         </div>
-      )}
+        <div className="p-4 space-y-4">
+          <p className="text-sm font-medium">Tus roles:</p>
+          <div className="space-y-2">
+            {rol.includes(1) && <span className="block text-sm bg-gray-200 p-2 rounded">Cliente</span>}
+            {rol.includes(2) && (
+              <div className="space-y-2">
+                <span className="block text-sm bg-gray-200 p-2 rounded">Profesional</span>
+                <button
+                  className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+                  onClick={() => handleNavigation("/rutinas/solicitudes")}
+                >
+                  Solicitudes de Rutina
+                </button>
+                <button
+                  className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+                  onClick={() => handleNavigation("/seguimiento/lista")}
+                >
+                  Marcas Clientes
+                </button>
+              </div>
+            )}
+            {rol.includes(3) && (
+              <div className="space-y-2">
+                <span className="block text-sm bg-gray-200 p-2 rounded">Admin</span>
+                <button
+                  className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+                  onClick={() => handleNavigation("/cupos/lista")}
+                >
+                  Crear cupo
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="pt-4 border-t border-gray-200">
+            <p className="text-sm font-medium mb-2">Opciones</p>
+            <button
+              className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors mb-2"
+              onClick={() => handleNavigation("/perfil")}
+            >
+              Perfil
+            </button>
+            <button
+              className="w-full py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+              onClick={handleLogout}
+              disabled={loading}
+            >
+              {loading ? "Cerrando sesión..." : "Cerrar sesión"}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }

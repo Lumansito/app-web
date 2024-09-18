@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { useParams, useNavigate, Link} from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSeguimiento } from "../../context/Seguimiento/SeguimientoProvider";
 import { useUsuario } from "../../context/Usuario/UsuarioProvider";
-
 import { Cliente } from "../../components/Cliente";
 import { Ejercicio } from "../../components/Ejercicio";
 import { Seguimiento } from "../../components/Seguimiento";
@@ -11,7 +10,7 @@ export const ListadoClientesSeguimiento = () => {
   const { dni, codEjercicio } = useParams();
   const navigate = useNavigate();
 
-  const {comprobarToken} =  useUsuario();
+  const { comprobarToken } = useUsuario();
   const {
     clientes,
     loadClientesSeguimiento,
@@ -43,16 +42,14 @@ export const ListadoClientesSeguimiento = () => {
     comprobarToken();
     if (dni) {
       loadCliente(dni);
-      setSeguimientos([]); // Limpiar seguimientos al cambiar de cliente
+      setSeguimientos([]);
     }
   }, [dni]);
-
-
 
   useEffect(() => {
     if (dni && codEjercicio) {
       loadEjercicio(codEjercicio);
-      loadSeguimientos(dni, codEjercicio); // Cargar seguimientos cuando cliente y ejercicio estén disponibles
+      loadSeguimientos(dni, codEjercicio);
     }
   }, [codEjercicio]);
 
@@ -60,6 +57,7 @@ export const ListadoClientesSeguimiento = () => {
     navigate(`/seguimiento/lista/${cliente.dni}`, { replace: false });
     setCliente(cliente);
   };
+
   const handleEjercicioClick = (ejercicio) => {
     navigate(`/seguimiento/lista/${dni}/${ejercicio.codEjercicio}`, {
       replace: false,
@@ -72,32 +70,37 @@ export const ListadoClientesSeguimiento = () => {
   const renderSeguimientos = () => {
     if (dni && codEjercicio) {
       return (
-        <div>
-          <h2>
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">
             Seguimientos del cliente {cliente.nombre} con DNI: {cliente.dni} y
             ejercicio: {ejercicio.nombre}
           </h2>
           {seguimientos.length === 0 ? (
-            <p>No hay seguimientos para este cliente y ejercicio</p>
+            <p className="text-gray-600">No hay seguimientos para este cliente y ejercicio</p>
           ) : (
-            <ul>
+            <ul className="space-y-2">
               {seguimientos.map((seguimiento) => (
-                <li key={seguimiento.idSeguimiento}>
+                <li key={seguimiento.idSeguimiento} className="bg-gray-100 p-3 rounded-lg">
                   <Seguimiento seguimiento={seguimiento} />
                 </li>
               ))}
             </ul>
           )}
-          <Link to ={`/seguimiento/new/${dni}/${codEjercicio}`} >Crear un seg nuevo</Link>
+          <Link
+            to={`/seguimiento/new/${dni}/${codEjercicio}`}
+            className="block w-full py-2 px-4 bg-gray-200 text-black text-center rounded hover:bg-gray-300 transition-colors"
+          >
+            Crear un seguimiento nuevo
+          </Link>
         </div>
       );
     } else if (dni) {
       return (
-        <div>
-          <h2>Seleccione el ejercicio</h2>
-          <ul>
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Seleccione el ejercicio</h2>
+          <ul className="space-y-2">
             {ejercicios.map((ejercicio) => (
-              <li key={ejercicio.codEjercicio}>
+              <li key={ejercicio.codEjercicio} className="bg-gray-100 p-3 rounded-lg">
                 <Ejercicio
                   ejercicio={ejercicio}
                   onClick={() => handleEjercicioClick(ejercicio)}
@@ -109,12 +112,11 @@ export const ListadoClientesSeguimiento = () => {
       );
     } else {
       return (
-        <div>
-          <h2>Selecciona un cliente para ver sus seguimientos</h2>
-          <h2>Clientes</h2>
-          <ul>
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Selecciona un cliente para ver sus seguimientos</h2>
+          <ul className="space-y-2">
             {clientes.map((cliente) => (
-              <li key={cliente.dni}>
+              <li key={cliente.dni} className="bg-gray-100 p-3 rounded-lg">
                 <Cliente
                   cliente={cliente}
                   onClick={() => handleClienteClick(cliente)}
@@ -128,9 +130,15 @@ export const ListadoClientesSeguimiento = () => {
   };
 
   return (
-    <div>
-      <h1>Listado de Clientes con membresía apta para seguimientos</h1>
-      {renderSeguimientos()}
+    <div className="min-h-screen bg-white text-black p-4">
+      <h1 className="text-2xl font-bold text-center mb-6">
+        Listado de Clientes con membresía apta para seguimientos
+      </h1>
+      <div className="max-w-md mx-auto bg-gray-50 rounded-lg shadow-md overflow-hidden">
+        <div className="p-4">
+          {renderSeguimientos()}
+        </div>
+      </div>
     </div>
   );
 };
