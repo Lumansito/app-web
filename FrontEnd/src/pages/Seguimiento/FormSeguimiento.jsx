@@ -32,25 +32,31 @@ export const FormSeguimiento = () => {
   const isNewRoute = location.pathname.includes("/new");
 
   useEffect(() => {
-    async function cargarSeguimiento() {
-      await loadSeguimiento(params.idSeguimiento);
-    }
     if (isEditRoute) {
-      cargarSeguimiento();
-      console.log(cliente);
+      loadSeguimiento(params.idSeguimiento);
+      setClienteInfo("Cargando...");
+      setEjercicioInfo("Cargando...");
     } else if (isNewRoute) {
-      loadCliente(params.dni).then((cliente) => {
-        setClienteInfo(
-          `${cliente.nombre} ${cliente.apellido} (DNI: ${cliente.dni})`
-        );
-      });
-      loadEjercicio(params.codEjercicio).then((ejercicio) => {
-        setEjercicioInfo(
-          `${ejercicio.nombre} (Código: ${ejercicio.codEjercicio})`
-        );
-      });
+      loadCliente(params.dni);
+      loadEjercicio(params.codEjercicio);
     }
   }, []);
+
+  useEffect(() => {
+    if (cliente) {
+      setClienteInfo(
+        `${cliente.nombre} ${cliente.apellido} (DNI: ${cliente.dni})`
+      );
+    }
+  }, [cliente]);
+
+  useEffect(() => {
+    if (ejercicio) {
+      setEjercicioInfo(`${ejercicio.nombre} (Código: ${ejercicio.codEjercicio})`);
+
+    }
+  }, [ejercicio]);
+
 
   useEffect(() => {
     if (isEditRoute && seguimiento) {

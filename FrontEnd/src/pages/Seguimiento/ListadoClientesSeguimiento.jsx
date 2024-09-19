@@ -8,6 +8,7 @@ import { Seguimiento } from "../../components/Seguimiento";
 
 export const ListadoClientesSeguimiento = () => {
   const { dni, codEjercicio } = useParams();
+  const params = useParams();
   const navigate = useNavigate();
 
   const { comprobarToken } = useUsuario();
@@ -68,7 +69,15 @@ export const ListadoClientesSeguimiento = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-1);
+    console.log(params);
+    if (dni && codEjercicio) {
+      navigate(`/seguimiento/lista/${dni}`, { replace: true });
+    }else if (dni && !codEjercicio) {
+      navigate("/seguimiento/lista", { replace: true });
+    } else if (!dni) {
+      navigate("/", { replace: true });
+    }
+    
   };
 
   const renderSeguimientos = () => {

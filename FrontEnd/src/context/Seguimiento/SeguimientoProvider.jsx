@@ -58,13 +58,13 @@ const SeguimientoProvider = ({ children }) => {
 
     async function loadSeguimiento(idSeguimiento) {
         const response = await getSeguimientoByid(idSeguimiento);
+        
         setSeguimiento(response.data);
-        let dni = response.data.dniCliente;
-        let codEjercicio = response.data.codEjercicio;
-        let c = await loadCliente(dni);
-        let e = await loadEjercicio(codEjercicio);
-        setCliente(c);
-        setEjercicio(e);
+        console.log(response.data);
+        
+        await loadCliente(response.data.dniCliente);
+        await loadEjercicio(response.data.codEjercicio);
+        
     }
 
     async function updateSeguimientoId(id, param) {
