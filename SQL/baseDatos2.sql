@@ -123,12 +123,13 @@ CREATE TABLE LINEAS_RUTINA_PRE_ESTABLECIDA (
 );
 
 CREATE TABLE ESQUEMACUPOS (
+    idEsquema INT AUTO_INCREMENT PRIMARY KEY,
     diaSemana VARCHAR(255),
     horario TIME,
     estado VARCHAR(255),
     cupo INT,
     dniInstructor INT,
-    PRIMARY KEY (diaSemana, horario),
+    UNIQUE  (diaSemana, horario),
     FOREIGN KEY (dniInstructor) REFERENCES USUARIOS(dni)
 );
 

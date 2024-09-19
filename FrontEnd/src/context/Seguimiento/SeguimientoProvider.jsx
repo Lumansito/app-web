@@ -60,7 +60,6 @@ const SeguimientoProvider = ({ children }) => {
         const response = await getSeguimientoByid(idSeguimiento);
         
         setSeguimiento(response.data);
-        console.log(response.data);
         
         await loadCliente(response.data.dniCliente);
         await loadEjercicio(response.data.codEjercicio);
