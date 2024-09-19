@@ -67,6 +67,10 @@ export const ListadoClientesSeguimiento = () => {
     loadSeguimientos(cliente.dni, ejercicio.codEjercicio);
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const renderSeguimientos = () => {
     if (dni && codEjercicio) {
       return (
@@ -131,12 +135,20 @@ export const ListadoClientesSeguimiento = () => {
 
   return (
     <div className="min-h-screen bg-white text-black p-4">
-      <h1 className="text-2xl font-bold text-center mb-6">
-        Listado de Clientes con membresía apta para seguimientos
-      </h1>
-      <div className="max-w-md mx-auto bg-gray-50 rounded-lg shadow-md overflow-hidden">
-        <div className="p-4">
-          {renderSeguimientos()}
+      <div className="max-w-md mx-auto">
+        <button
+          onClick={handleGoBack}
+          className="mb-4 px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+        >
+          ← Volver
+        </button>
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Listado de Clientes con membresía apta para seguimientos
+        </h1>
+        <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
+          <div className="p-4">
+            {renderSeguimientos()}
+          </div>
         </div>
       </div>
     </div>
