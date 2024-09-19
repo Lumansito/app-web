@@ -13,6 +13,24 @@ export const getEsquemaCupos = async (req, res) => {
   }
 };
 
+export const getEsquemaCuposById = async (req, res) => {
+  try {
+    const { idEsquema } = req.params; // Obtenemos el ID del parámetro de la solicitud
+    const [result] = await pool.query(
+      "SELECT * FROM esquemaCupos WHERE idEsquema = ?", // Suponiendo que 'idEsquema' es el nombre de la columna en tu base de datos
+      [idEsquema]
+    );
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Cupo no encontrado." });
+    } else {
+      res.json(result[0]); // Devolvemos el primer resultado
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error al obtener el cupo." });
+  }
+};
+
 export const getEsquemaCuposByDate = async (req, res) => {
   try {
     const { diaSemana, horario } = req.params;
@@ -34,7 +52,7 @@ export const getEsquemaCuposByDate = async (req, res) => {
 
 export const getEsquemaCuposByDiaSemana = async (req, res) => {
   try {
-    const { diaSemana} = req.params;
+    const { diaSemana } = req.params;
     const [result] = await pool.query(
       "SELECT * FROM esquemaCupos WHERE diaSemana = ?",
       [diaSemana]
@@ -84,7 +102,7 @@ export const createEsquemaCupos = async (req, res) => {
       estado,
       cupo,
       dniInstructor,
-      
+
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
