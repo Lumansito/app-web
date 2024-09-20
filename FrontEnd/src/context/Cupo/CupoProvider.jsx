@@ -1,10 +1,12 @@
 import { CupoContext } from "./CupoContext";
 import {
-  getCupos,
-  getCupoById,
-  updateCupoRequest,
-  createCupoRequest,
-  deleteCupoRequest,
+  getEsquemaCupos,
+  getEsquemaCuposByDate,
+  getEsquemaCuposToday,
+  getEsquemaCuposById,
+  createEsquemaRequest,
+  updateEsquemaRequest,
+  deleteEsquemaRequest,
 } from "../../api/cuposOtorgado.api";
 import { useContext, useEffect, useState } from "react";
 
@@ -17,56 +19,125 @@ export const useCupos = () => {
 };
 
 const CupoProvider = ({ children }) => {
-  const [cupos, setCupos] = useState([]); //estado local para almacenar cupos
-  const [loading, setLoading] = useState(false); //estado para manejar el loading
-  const [error, setError] = useState(null); //estado para manejar errores
+  const [cupos, setCupos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const loadCupos = async () => {
     setLoading(true);
-    const data = await getCupos();
-    if (data) {
-      setCupos(data); //se guarda el cupo en esl estado
-    } else {
-      setError("error al cargar cupo");
+    try {
+      const data = await getEsquemaCupos();
+      if (data) {
+        setCupos(data);
+      }
+    } catch (error) {
+      setError("Error al cargar cupos");
+      console.error("Error al cargar cupos:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-  const getCupo = async (id) => {
+
+  const loadCuposToday = async () => {
     setLoading(true);
-    const data = await getCupoById(id);
-    setLoading(false);
-    return data;
+    try {
+      const data = await getEsquemaCuposToday();
+      if (data) {
+        setCupos(data);
+      }
+    } catch (error) {
+      setError("Error al cargar los cupos de hoy");
+      console.error("Error al cargar los cupos de hoy:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const loadCuposByDate = async (diaSemana, horario) => {
+    setLoading(true);
+    try {
+      const data = await getEsquemaCuposByDate(diaSemana, horario);
+      return data;
+    } catch (error) {
+      setError("Error al cargar cupo específico");
+      console.error(
+        `Error al obtener el cupo para ${diaSemana} a las ${horario}:`,
+        error
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadCupoById = async (id) => {
+    setLoading(true);
+    try {
+      const data = await getEsquemaCuposById(id);
+      return data;
+    } catch (error) {
+      setError("Error al cargar cupo específico por ID");
+      console.error(`Error al obtener el cupo con ID ${id}:`, error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createCupo = async (cupo) => {
     setLoading(true);
-    const newCupo = await createCupoRequest(cupo);
-    if (newCupo) {
-      setCupos((prev) => [...prev, newCupo]); //actualizo lista
-    } else {
-      setError("error al crear cupo");
+    try {
+      const newCupo = await createEsquemaRequest(cupo);
+      if (newCupo) {
+        setCupos((prev) => [...prev, newCupo]);
+      }
+    } catch (error) {
+      setError("Error al crear cupo");
+      console.error("Error al crear cupo:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-  const updateCupo = async (id, updateCupo) => {
+
+  const updateCupo = async (idEsquema, diaSemana, horario, updateCupo) => {
     setLoading(true);
-    const updated = await updateCupoRequest(id, updateCupo);
-    if (updated) {
-      setCupos((prev) => prev.map((cupo) => (cupo.id === id ? updated : cupo))); //actualiza cupo en el estado
-    } else {
-      setError("error al actualizar cupo");
+    try {
+      const updated = await updateEsquemaRequest(diaSemana, horario, updateCupo);
+      if (updated) {
+        setCupos((prev) =>
+          prev.map((cupo) =>
+            cupo.diaSemana === diaSemana && cupo.horaInicio === horario
+              ? updated
+              : cupo
+          )
+        );
+      }
+    } catch (error) {
+      setError("Error al actualizar cupo");
+      console.error(`Error al actualizar el cupo con ID ${idEsquema}:`, error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-  const deleteCupo = async (id) => {
+
+  const deleteCupo = async (idEsquema, diaSemana, horario) => {
     setLoading(true);
-    const deleted = await deleteCupoRequest(id);
-    if (deleted) {
-      setCupos((prev) => prev.filter((cupo) => cupo.id !== id)); //elimino el cupo del estado
-    } else {
-      setError("error al eliminar cupo");
+    try {
+      const deleted = await deleteEsquemaRequest(diaSemana, horario);
+      if (deleted) {
+        setCupos((prev) =>
+          prev.filter(
+            (cupo) =>
+              !(cupo.diaSemana === diaSemana && cupo.horaInicio === horario)
+          )
+        );
+      }
+    } catch (error) {
+      setError("Error al eliminar cupo");
+      console.error(`Error al eliminar el cupo con ID ${idEsquema}:`, error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
+
   useEffect(() => {
     loadCupos();
   }, []);
@@ -77,9 +148,11 @@ const CupoProvider = ({ children }) => {
         cupos,
         loading,
         loadCupos,
+        loadCuposToday,
         deleteCupo,
         createCupo,
-        getCupo,
+        loadCuposByDate,
+        loadCupoById,
         updateCupo,
         error,
       }}

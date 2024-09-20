@@ -1,51 +1,78 @@
 import axiosInstance from "./axiosInstance";
 
-export const getCupos = async () => {
+// Obtener todos los cupos
+export const getEsquemaCupos = async () => {
   try {
-    const response = await axiosInstance.get("/cupos");
+    const response = await axiosInstance.get("/esquema_cupos");
     return response.data; // Devolvemos los datos
   } catch (error) {
     console.error("Error fetching cupos:", error);
-    return null;
+    throw error; // Lanza el error
   }
 };
 
-export const getCupoById = async (idCupo) => {
+// Obtener cupo por día de la semana y horario
+export const getEsquemaCuposByDate = async (diaSemana, horario) => {
   try {
-    const response = await axiosInstance.get(`/cupos/${idCupo}`);
+    const response = await axiosInstance.get(`/esquema_cupos/${diaSemana}/${horario}`);
     return response.data; // Devolvemos los datos
   } catch (error) {
-    console.error(`Error fetching cupo with ID ${idCupo}:`, error);
-    return null;
+    console.error(`Error fetching cupo on ${diaSemana} at ${horario}:`, error);
+    throw error;
   }
 };
 
-export const updateCupoRequest = async (id, cupo) => {
+// Obtener cupo por idEsquema
+export const getEsquemaCuposById = async (idEsquema) => {
   try {
-    const response = await axiosInstance.put(`/cupos/${id}`, cupo);
+    const response = await axiosInstance.get(`/esquema_cupos/${idEsquema}`);
     return response.data; // Devolvemos los datos
   } catch (error) {
-    console.error(`Error updating cupo with ID ${id}:`, error);
-    return null;
+    console.error(`Error fetching cupo with ID ${idEsquema}:`, error);
+    throw error;
   }
 };
 
-export const createCupoRequest = async (cupo) => {
+// Obtener cupos de hoy
+export const getEsquemaCuposToday = async () => {
   try {
-    const response = await axiosInstance.post(`/cupos`, cupo);
+    const response = await axiosInstance.get("/esquema_cupos/today");
+    return response.data; // Devolvemos los datos
+  } catch (error) {
+    console.error("Error fetching cupos for today:", error);
+    throw error;
+  }
+};
+
+// Crear un nuevo cupo
+export const createEsquemaRequest = async (cupo) => {
+  try {
+    const response = await axiosInstance.post("/esquema_cupos", cupo);
     return response.data; // Devolvemos los datos
   } catch (error) {
     console.error("Error creating new cupo:", error);
-    return null;
+    throw error;
   }
 };
 
-export const deleteCupoRequest = async (idCupo) => {
+// Actualizar un cupo por idEsquema
+export const updateEsquemaRequest = async (idEsquema, cupo) => {
   try {
-    const response = await axiosInstance.delete(`/cupos/${idCupo}`);
+    const response = await axiosInstance.put(`/esquema_cupos/${idEsquema}`, cupo);
     return response.data; // Devolvemos los datos
   } catch (error) {
-    console.error(`Error deleting cupo with ID ${idCupo}:`, error);
-    return null;
+    console.error(`Error updating cupo with ID ${idEsquema}:`, error);
+    throw error;
+  }
+};
+
+// Eliminar un cupo por idEsquema
+export const deleteEsquemaRequest = async (idEsquema) => {
+  try {
+    const response = await axiosInstance.delete(`/esquema_cupos/${idEsquema}`);
+    return response.data; // Devolvemos los datos
+  } catch (error) {
+    console.error(`Error deleting cupo with ID ${idEsquema}:`, error);
+    throw error;
   }
 };
