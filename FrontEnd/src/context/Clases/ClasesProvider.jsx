@@ -1,6 +1,6 @@
 import { ClasesContext } from "./ClasesContext.jsx";
 import React, { useContext, useState } from "react";
-import {getClasesToday} from "../../api/clases.api";
+import { getClasesToday, getCuposOcupados } from "../../api/clases.api";
 
 export const useClases = () => {
   const context = useContext(ClasesContext);
@@ -13,13 +13,26 @@ export const useClases = () => {
 const ClasesProvider = ({ children }) => {
   const [clases, setClases] = useState([]);
 
-  const loadClases = async() => {
-    const response =   await getClasesToday()
-    setClases(response.data)
+  const loadClases = async () => {
+    const response = await getClasesToday();
+    const clases = response.data;
+    const a = await getCuposOcupados();
+    const cuposOcupados = a.data;
+    const clasesConCupos = clases.map((clase) => {
+      const cupos = cuposOcupados.find(
+        (cupos) => cupos.horaInicio === clase.horario
+      );
+      return {
+        ...clase,
+        cuposOcupados: cupos.reservas,
+      };
+    });
+
+    setClases(clasesConCupos);
   };
 
   return (
-    <ClasesContext.Provider value={{ clases, loadClases}}>
+    <ClasesContext.Provider value={{ clases, loadClases }}>
       {children}
     </ClasesContext.Provider>
   );

@@ -62,7 +62,7 @@ export const getCantidadCuposHoy = async (req, res) => {
     try {
         const [result] = await pool.query(`
             SELECT horaInicio, count(*) as reservas from cupo_otorgado 
-            where fecha = CURDATE()
+            where fecha = CURDATE() and estado != "cancelado"
             group by horaInicio`);
         if (result.length === 0) {
             return res.status(404).json({ message: "No hay cupos otorgados" });
