@@ -1,10 +1,11 @@
 import React from "react";
 
-export function Clase({ clase }) {
+export function Clase({ clase , onClick}) {
+
   const availablePercentage = (clase.cuposOcupados / clase.cupo) * 100;
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 mb-4">
+    <div className="bg-white shadow-md rounded-lg p-4 mb-4" onClick={onClick}>
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg font-semibold text-gray-800">Clase</h3>
         <span className="text-sm font-medium text-gray-600">
