@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const Rol_logIn = async (usuario) => {
   try {
-    const response = await axios.post("http://localhost:3000/api/users/login", usuario);
+    const response = await axios.post("http://192.168.100.8:3000/api/users/login", usuario);
     return response;
   } catch (error) {
     return error;

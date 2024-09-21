@@ -57,12 +57,17 @@ export const useUsuario = () => {
       }
     }
     
+    async function  logout(){
+      localStorage.removeItem('token');
+      setRol([]);
+      setDni();
+    }
 
 
 
     return (
       <UsuarioContext.Provider
-        value={{ rol,setRol, login, comprobarToken, dni}}>
+        value={{ rol,setRol, login, comprobarToken, dni, logout}}>
         {children}
       </UsuarioContext.Provider>
     );

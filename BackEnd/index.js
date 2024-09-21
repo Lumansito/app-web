@@ -22,6 +22,8 @@ app.use(cookieParser());
 app.use(express.json()); //para usar json en el body
 
 app.use((req, res, next) => {
+  console.log(req);
+
   let data = null;
   let token = null;
   const authHeader = req.headers.authorization;

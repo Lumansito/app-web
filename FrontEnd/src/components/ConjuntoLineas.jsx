@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { LineaRutinaForm } from "./LineaRutinaForm"
 import {
   SortableContext,

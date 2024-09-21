@@ -17,7 +17,7 @@ export function Home() {
     try {
       await logout()
       alert("Has cerrado sesión exitosamente.")
-      navigate("/login")
+      navigate("/")
     } catch (error) {
       alert("No se pudo cerrar la sesión. Intenta de nuevo.")
     } finally {

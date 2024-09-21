@@ -10,6 +10,7 @@ import {
   useSensor,
   useSensors,
   closestCorners,
+  TouchSensor,
 } from "@dnd-kit/core"
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 
@@ -106,12 +107,13 @@ export const FormRutinaSolicitud = () => {
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 5,
-      },
+      }
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
-  )
+    //,useSensor(TouchSensor)
+  );
 
   const getLineaPos = (lineas, id) =>
     lineas.findIndex((linea) => linea.id === id)
