@@ -96,14 +96,20 @@ export const getCantidadCuposHoy = async (req, res) => {
 
 export const getCuposOcupadosByidEsquema = async (req, res) => {
   try {
+    
     const [result] = await pool.query(`
-            SELECT count(*) as reservas from cupo_otorgado 
-            where fecha = CURDATE() and estado = "reservado" and horaInicio =(select horaInicio from esquemacupos where idEsquema = ${req.params.idEsquema})
-            group by horaInicio`);
+            SELECT  COUNT(*) AS reservas 
+            FROM cupo_otorgado c
+            WHERE c.fecha = CURDATE() 
+              AND c.estado = 'reservado' 
+              AND c.horaInicio IN (SELECT e.horario FROM esquemacupos e WHERE e.idEsquema = ${req.params.idEsquema})
+            
+            `);
+    
     if (result.length === 0) {
       return res.status(404).json({ message: "No hay cupos ocupados" });
     } else {
-      res.json(result);
+      res.json(result[0].reservas);
     }
   } catch (error) {
     console.log(error);

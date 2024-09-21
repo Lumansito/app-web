@@ -66,9 +66,7 @@ const ClasesProvider = ({ children }) => {
       const { data: claseCarga } = await getClase(idClase);
       const { data: cupo } = await getCupoClase(idClase);
 
-      console.log("Clase cargada:", claseCarga);
-      console.log("Cupo cargado:", cupo);
-      setClase({ ...claseCarga, cuposOcupados: cupo[0].reservas || 0 });
+      setClase({ ...claseCarga, cuposOcupados: cupo || 0 });
     } catch (error) {
       console.error("Error al cargar la clase:", error);
     }
@@ -82,12 +80,19 @@ const ClasesProvider = ({ children }) => {
         dniInstructor,
         horaInicio,
       };
-      console.log("Clase a reservar:", clase);
+
       const response = await postClase(clase);
-      return response;
+
+      if (response.status === 200) {
+        return { success: response };
+      } else {
+        return { error: response };
+      }
     } catch (error) {
-      return error;
+      console.error("Error al reservar la clase:", error);
+      return "Error al reservar la clase";
     }
+    
   };
 
   return (

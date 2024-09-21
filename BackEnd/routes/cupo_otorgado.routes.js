@@ -10,8 +10,10 @@ const router = Router();
 
 router.post("/api/cupos", createCupoOtorgado);
 
+router.get("/api/cupos/:idEsquema", getCuposOcupadosByidEsquema);
+
+
 router.get("/api/cupos", getCantidadCuposHoy);
 
-router.get("/api/cupos/:idEsquema", getCuposOcupadosByidEsquema);
 
 export default router;
