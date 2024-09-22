@@ -13,7 +13,7 @@ export const ListClases = () => {
 
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate("/");
   };
 
   const handleGoHome = () => {

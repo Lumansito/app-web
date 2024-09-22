@@ -73,7 +73,6 @@ export const getEsquemaCuposByDiaSemana = async (req, res) => {
 export const getEsquemaCuposToday = async (req, res) => {
   try {
     const diaSemana = new Date().getDay();
-    
     const [result] = await pool.query(
       "SELECT * FROM esquemaCupos WHERE diaSemana = ? and estado = 'active'",
       [diaSemana]
@@ -84,6 +83,7 @@ export const getEsquemaCuposToday = async (req, res) => {
       });
     } else {
       res.json(result);
+      
     }
   } catch (error) {
     console.log(error);
