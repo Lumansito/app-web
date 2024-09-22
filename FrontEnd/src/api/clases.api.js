@@ -30,7 +30,6 @@ export const getClase = async (idClase) => {
 };
 
 export const getCupoClase = async (idClase) => {
-  //problemas con el console log del error, ensucia la consola del usuario innecesariamente
   try {
     const response = await axiosInstance.get(`/cupos/${idClase}`);
     return response;

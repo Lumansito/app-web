@@ -11,11 +11,6 @@ export const ListClases = () => {
     loadClases();
   }, []);
 
-  useEffect(() => {
-    if (clases) {
-      console.log(clases);
-    }
-  }, [clases]);
 
   const handleGoBack = () => {
     navigate(-1);

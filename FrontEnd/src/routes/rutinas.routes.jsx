@@ -6,6 +6,7 @@ import RutinasProvider from "../context/Rutinas/RutinasProvider.jsx";
 import EjercicioProvider from "../context/Ejercicio/EjercicioProvider.jsx";
 import { ListadoSolicitudes } from "../pages/Rutina/ListadoSolicitudes.jsx";
 import { FormRutinaSolicitud } from "../pages/Rutina/FormRutinaSolicitud.jsx";
+import { Validation } from "./validation.jsx";
 
 export function RutinasRoutes() {
   const { rol } = useUsuario();
@@ -16,18 +17,18 @@ export function RutinasRoutes() {
         <Route
           path="/solicitudes"
           element={
-            <ProfesionalElement rol={rol}>
+            <Validation rol={rol} esperado={2}>
               <ListadoSolicitudes />
-            </ProfesionalElement>
+            </Validation>
           }
         />
         <Route
           path="/solicitudes/:idSolicitud"
           element={
             <EjercicioProvider>
-              <ProfesionalElement rol={rol}>
+              <Validation rol={rol} esperado={2}>
                 <FormRutinaSolicitud />
-              </ProfesionalElement>
+              </Validation>
             </EjercicioProvider>
           }
         />
@@ -37,18 +38,4 @@ export function RutinasRoutes() {
       </Routes>
     </RutinasProvider>
   );
-}
-
-function ProfesionalElement({ rol, children }) {
-  //se crea esta fun para rebotar a todos aquellos que no sean profesionales
-  if (rol.includes(2)) {
-    return <>{children}</>;
-  } else {
-    return (
-      <div>
-        <h1>No tienes permisos para ver esta página</h1>
-        <Link to="/">Home</Link>
-      </div>
-    );
-  }
 }

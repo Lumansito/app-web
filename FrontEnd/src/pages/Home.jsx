@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { LogIn } from "./LogIn"
 import { useUsuario } from "../context/Usuario/UsuarioProvider"
 
-export function Home() {
+export  function Home() {
   const { rol, comprobarToken, dni, logout } = useUsuario()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
@@ -43,7 +43,23 @@ export function Home() {
         <div className="p-4 space-y-4">
           <p className="text-sm font-medium">Tus roles:</p>
           <div className="space-y-2">
-            {rol.includes(1) && <span className="block text-sm bg-gray-200 p-2 rounded">Cliente</span>}
+            {rol.includes(1) && (
+              <div className="space-y-2">
+                <span className="block text-sm bg-gray-200 p-2 rounded">Cliente</span>
+                <button
+                  className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+                  onClick={() => handleNavigation("/clases")}
+                >
+                  Realizar Reserva
+                </button>
+                <button
+                  className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+                  onClick={() => handleNavigation("/rutinas")}
+                >
+                  Mis Rutinas
+                </button>
+              </div>
+            )}
             {rol.includes(2) && (
               <div className="space-y-2">
                 <span className="block text-sm bg-gray-200 p-2 rounded">Profesional</span>
@@ -69,6 +85,12 @@ export function Home() {
                   onClick={() => handleNavigation("/cupos/lista")}
                 >
                   Crear cupo
+                </button>
+                <button
+                  className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+                  onClick={() => handleNavigation("/confirmar-asistencia")}
+                >
+                  Confirmar Asistencia
                 </button>
               </div>
             )}

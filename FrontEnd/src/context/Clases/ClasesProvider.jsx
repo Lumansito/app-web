@@ -25,6 +25,9 @@ const ClasesProvider = ({ children }) => {
 
   async function getCuposForClases(arrayClases) {
     let clasesConCupos = [];
+    if (!arrayClases || arrayClases.length === 0) {
+      return clasesConCupos;
+    }
     try {
       const response = await getCuposOcupados();
       const cuposOcupados = response.data;
