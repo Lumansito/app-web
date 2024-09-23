@@ -1,12 +1,10 @@
-// archivo: CuposListPage.js
-
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CupoContext } from "../../context/Cupo/CupoContext";
 import DayList from "../../components/DayList";
 
 function CuposListPage() {
-  const { loadCupos, cupos, error } = useContext(CupoContext); // Usamos el contexto
+  const { loadCupos, cupos, error, deleteCupo } = useContext(CupoContext); // Usamos el contexto
   const [selectedDay, setSelectedDay] = useState("");
   const daysWeek = [
     "Lunes",
@@ -31,6 +29,11 @@ function CuposListPage() {
 
   const handleSelect = (day) => {
     setSelectedDay(day);
+  };
+
+  const handleDelete = (idEsquema) => {
+    console.log(idEsquema)
+    deleteCupo(idEsquema); 
   };
 
   if (error) {
@@ -64,9 +67,11 @@ function CuposListPage() {
             day={selectedDay}
             cupos={cupos.filter(
               (cupo) =>
-                cupo.diaSemana && cupo.diaSemana.toLowerCase() === selectedDay.toLowerCase()
-            )} // Verifica que cupo.diaSemana no sea undefined antes de llamar a toLowerCase
+                cupo.diaSemana &&
+                cupo.diaSemana.toLowerCase() === selectedDay.toLowerCase()
+            )}
             navigate={navigate}
+            onClick={handleDelete} // Asegúrate de que esta línea esté presente
           />
         </div>
       )}

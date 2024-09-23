@@ -9,6 +9,7 @@ export function CuposRoutes() {
       <Routes>
         <Route path="/lista" element={<CuposListPage />} />
         <Route path="/:id" element={<CupoDetailPage />} />
+        <Route path="/new/:nombreDia" element={<CupoDetailPage />} /> {/*deberia renderizar el form*/}
       </Routes>
     </CupoProvider>
   );

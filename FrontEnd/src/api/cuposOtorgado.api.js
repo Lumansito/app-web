@@ -12,14 +12,9 @@ export const getEsquemaCupos = async () => {
 };
 
 // Obtener cupo por día de la semana y horario
-export const getEsquemaCuposByDate = async (diaSemana, horario) => {
-  try {
-    const response = await axiosInstance.get(`/esquema_cupos/${diaSemana}/${horario}`);
-    return response.data; // Devolvemos los datos
-  } catch (error) {
-    console.error(`Error fetching cupo on ${diaSemana} at ${horario}:`, error);
-    throw error;
-  }
+export const getEsquemaCuposByDate = async (diaSemana) => {
+  const response = await axiosInstance.get(`esquema_cupos/${diaSemana}`);
+  return response.data;
 };
 
 // Obtener cupo por idEsquema

@@ -3,23 +3,28 @@ import { useParams } from "react-router-dom";
 import { useCupos } from "../../context/Cupo/CupoProvider";
 
 function CupoDetailPage() {
-  const { id } = useParams();
-  const { getCupo } = useCupos();
+  const { id, nombreDia } = useParams(); // Captura ambos parámetros
+  const { loadCupoById, loadCuposByDate } = useCupos(); // Asegúrate de que loadCuposByDate esté definido
   const [cupo, setCupo] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCupo = async () => {
       try {
-        const data = await getCupo(id);
-        setCupo(data);
+        if (nombreDia) {
+          const data = await loadCuposByDate(nombreDia); // Cargar por nombre de día si está presente
+          setCupo(data);
+        } else if (id) {
+          const data = await loadCupoById(id); // Cargar por ID si está presente
+          setCupo(data);
+        }
       } catch (error) {
         setError(error.message);
       }
     };
 
     fetchCupo();
-  }, [id, getCupo]);
+  }, []); // Dependencias para recargar si cambian
 
   if (error) {
     return (

@@ -53,17 +53,14 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const loadCuposByDate = async (diaSemana, horario) => {
+  const loadCuposByDate = async (diaSemana) => {
     setLoading(true);
     try {
-      const data = await getEsquemaCuposByDate(diaSemana, horario);
+      const data = await getEsquemaCuposByDate(diaSemana); // Solo pasar diaSemana
       return data;
     } catch (error) {
       setError("Error al cargar cupo específico");
-      console.error(
-        `Error al obtener el cupo para ${diaSemana} a las ${horario}:`,
-        error
-      );
+      console.error(`Error al obtener el cupo para ${diaSemana}:`, error);
     } finally {
       setLoading(false);
     }
@@ -100,7 +97,11 @@ const CupoProvider = ({ children }) => {
   const updateCupo = async (idEsquema, diaSemana, horario, updateCupo) => {
     setLoading(true);
     try {
-      const updated = await updateEsquemaRequest(diaSemana, horario, updateCupo);
+      const updated = await updateEsquemaRequest(
+        diaSemana,
+        horario,
+        updateCupo
+      );
       if (updated) {
         setCupos((prev) =>
           prev.map((cupo) =>
@@ -118,17 +119,14 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const deleteCupo = async (idEsquema, diaSemana, horario) => {
+  const deleteCupo = async (idEsquema) => {
     setLoading(true);
     try {
-      const deleted = await deleteEsquemaRequest(diaSemana, horario);
+      // Pasa idEsquema a la función de solicitud de eliminación
+      const deleted = await deleteEsquemaRequest(idEsquema); // Asegúrate de que esto reciba el ID
       if (deleted) {
-        setCupos((prev) =>
-          prev.filter(
-            (cupo) =>
-              !(cupo.diaSemana === diaSemana && cupo.horaInicio === horario)
-          )
-        );
+        // Actualiza el estado de los cupos eliminando el que tiene el idEsquema correspondiente
+        setCupos((prev) => prev.filter((cupo) => cupo.idEsquema !== idEsquema));
       }
     } catch (error) {
       setError("Error al eliminar cupo");

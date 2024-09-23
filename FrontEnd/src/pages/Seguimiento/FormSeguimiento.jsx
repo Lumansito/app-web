@@ -33,7 +33,7 @@ export const FormSeguimiento = () => {
 
   useEffect(() => {
     if (isEditRoute) {
-      loadSeguimiento(params.idSeguimiento);
+      loadSeguimiento(params.idSeguimiento);  
       setClienteInfo("Cargando...");
       setEjercicioInfo("Cargando...");
     } else if (isNewRoute) {

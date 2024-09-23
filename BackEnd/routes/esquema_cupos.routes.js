@@ -12,7 +12,7 @@ import {
 const router = Router();
 
 router.get("/api/esquema_cupos", getEsquemaCupos);
-router.get("/api/esquema_cupos/:diaSemana/:horario", getEsquemaCuposByDate);
+router.get("/api/esquema_cupos/:diaSemana", getEsquemaCuposByDate);
 router.get("/api/esquema_cupos/today", getEsquemaCuposToday);
 router.get("/api/esquema_cupos/:idEsquema", getEsquemaCuposById); // Nueva ruta para obtener por idEsquema
 router.post("/api/esquema_cupos", createEsquemaCupos);

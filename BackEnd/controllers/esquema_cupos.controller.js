@@ -33,10 +33,10 @@ export const getEsquemaCuposById = async (req, res) => {
 
 export const getEsquemaCuposByDate = async (req, res) => {
   try {
-    const { diaSemana, horario } = req.params;
+    const { diaSemana } = req.params;
     const [result] = await pool.query(
-      "SELECT * FROM esquemaCupos WHERE diaSemana = ? and horario = ?",
-      [diaSemana, horario]
+      "SELECT * FROM esquemaCupos WHERE diaSemana = ? ",
+      [diaSemana]
     );
     if (result.length === 0) {
       return res.status(404).json({
@@ -83,7 +83,7 @@ export const getEsquemaCuposToday = async (req, res) => {
       });
     } else {
       res.json(result);
-      
+
     }
   } catch (error) {
     console.log(error);
@@ -128,15 +128,17 @@ export const updateEsquemaCupos = async (req, res) => {
 
 export const deleteEsquemaCupos = async (req, res) => {
   try {
-    const { diaSemana, horario } = req.params;
+    const { idEsquema } = req.params; // Cambia esto para recibir solo idEsquema
     const [result] = await pool.query(
-      "DELETE FROM esquemaCupos WHERE diaSemana = ? and horario = ?",
-      [diaSemana, horario]
+      "DELETE FROM esquemaCupos WHERE idEsquema = ?", // Modifica la consulta para usar solo idEsquema
+      [idEsquema]
     );
+
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "cupo no encontrado." });
+      return res.status(404).json({ message: "Cupo no encontrado." });
     }
-    res.json({ message: "cupo eliminado." });
+
+    res.json({ message: "Cupo eliminado." });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
