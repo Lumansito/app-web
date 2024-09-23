@@ -13,10 +13,7 @@ export const getCuposOcupados = async () => {
     const response = await axiosInstance.get("cupos");
     return response;
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      return { data: [] };
-    }
-    return { data: [], error: "Error desconocido" };
+    return {data : []};
   }
 };
 
@@ -52,3 +49,21 @@ export const postClase = async (clase) => {
     return (error.response.data.message);
   }
 };
+
+export const getClaseReservada = async (dni) => {
+  try {
+    const response = await axiosInstance.get(`/cupos/reservas/${dni}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+export const cancelarReserva = async (dni) => {
+  try {
+    const response = await axiosInstance.post(`/cupos/cancelar/${dni}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}

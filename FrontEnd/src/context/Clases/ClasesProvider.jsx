@@ -7,6 +7,8 @@ import {
   getClase,
   getCupoClase,
   postClase,
+  getClaseReservada,
+  cancelarReserva
 } from "../../api/clases.api";
 
 export const useClases = () => {
@@ -22,6 +24,8 @@ const ClasesProvider = ({ children }) => {
 
   const [clases, setClases] = useState([]);
   const [clase, setClase] = useState(null);
+  const [claseReservada, setClaseReservada] = useState(null);
+
 
   async function getCuposForClases(arrayClases) {
     let clasesConCupos = [];
@@ -75,6 +79,21 @@ const ClasesProvider = ({ children }) => {
     }
   };
 
+  const setClaseRes = async () => {
+    try {
+      comprobarToken();
+      const response = await getClaseReservada(dni);
+      if (response.status === 404) {
+        return null;
+      }else{
+        setClaseReservada(response.data[0]);
+      }
+    } catch (error) {
+      console.error("Error al obtener la clase reservada:", error);
+      return null;
+    }
+  };
+
   const reservarClase = async (dniInstructor, horaInicio) => {
     try {
       comprobarToken();
@@ -98,9 +117,21 @@ const ClasesProvider = ({ children }) => {
     
   };
 
+  const cancelReservasActivas = async () => {
+    
+    const response = await cancelarReserva(dni);
+    if(response.status === 200){
+      setClaseReservada(null);
+      loadClases();
+    }
+    else{
+      console.error("Error al cancelar la reserva:", response);
+    }
+  };
+
   return (
     <ClasesContext.Provider
-      value={{ clases, loadClases, loadClase, clase, reservarClase }}
+      value={{ clases, loadClases, loadClase, clase, reservarClase, setClaseRes, claseReservada,cancelReservasActivas }}
     >
       {children}
     </ClasesContext.Provider>

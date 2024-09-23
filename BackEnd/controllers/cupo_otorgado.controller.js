@@ -82,12 +82,12 @@ export const getCantidadCuposHoy = async (req, res) => {
   try {
     const [result] = await pool.query(`
             SELECT horaInicio, count(*) as reservas from cupo_otorgado 
-            where fecha = CURDATE() and estado != "cancelado"
+            where fecha = CURDATE() and estado != 'cancelado'
             group by horaInicio`);
-    if (result.length === 0) {
+    if (!result || result.length === 0) {
       return res.status(404).json({ message: "No hay cupos otorgados" });
     } else {
-      res.json(result);
+      res.status(200).json(result);
     }
   } catch (error) {
     console.log(error);
@@ -141,11 +141,11 @@ export const confirmarAsistencia = async (req, res) => {
 
 export const cancelarReserva = async (req, res) => {
   try {
-    const { dniCliente } = req.body;
+    const { dniCliente } = req.params;
     const [result] = await pool.query(
       `
             UPDATE  cupo_otorgado
-            SET estado = "cancelado" and horaCancelacion = ?
+            SET estado = "cancelado" , horaCancelacion = ?
             WHERE fecha = CURDATE() and dniCliente = ?`,
       [new Date().toTimeString().split(" ")[0], dniCliente]
     );
@@ -154,7 +154,26 @@ export const cancelarReserva = async (req, res) => {
         .status(400)
         .json({ message: "No se pudo cancelar la reserva" });
     } else {
-      res.json({ message: "Reserva cancelada" });
+      res.status(200).json({ message: "Reserva cancelada" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getReservasCliente = async (req, res) => {
+  try {
+    const { dniCliente } = req.params;
+    const [result] = await pool.query(
+      `
+            SELECT * from cupo_otorgado
+            where fecha = CURDATE() and dniCliente = ? and estado = "reservado"`,
+      [dniCliente]
+    );
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No hay reservas" });
+    } else {
+      res.json(result);
     }
   } catch (error) {
     console.log(error);

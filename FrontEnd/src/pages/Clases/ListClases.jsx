@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { useClases } from "../../context/Clases/ClasesProvider";
 import { Clase } from "../../components/Clase";
+import { Reserva } from "../../components/Reserva";
 
 export const ListClases = () => {
-  const { clases, loadClases } = useClases();
+  const { clases, loadClases, setClaseRes, claseReservada, cancelReservasActivas } = useClases();
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     loadClases();
+    setClaseRes();
   }, []);
 
 
@@ -20,9 +24,24 @@ export const ListClases = () => {
     navigate("/");
   };
 
-  const handleOnClick = (idClase) => {
+  const handleOnClickClase = (idClase) => {
     navigate(`/clases/${idClase}`);
   };
+
+  const handleOnClickCancelReserva = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirmCancel = () => {
+    setShowModal(false);
+    cancelReservasActivas();
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+
 
   return (
     <div className="min-h-screen bg-white text-black p-4 relative">
@@ -58,9 +77,14 @@ export const ListClases = () => {
               </p>
             ) : (
               <ul className="space-y-4">
+                {claseReservada && (
+                  <li>
+                    <Reserva clase={claseReservada} onClick={() => handleOnClickCancelReserva()} />
+                  </li>
+                )}
                 {clases.map((clase) => (
                   <li key={clase.idEsquema}>
-                    <Clase clase={clase} onClick={() => handleOnClick(clase.idEsquema)} />
+                    <Clase clase={clase} onClick={() => handleOnClickClase(clase.idEsquema)} />
                   </li>
                 ))}
               </ul>
@@ -68,6 +92,36 @@ export const ListClases = () => {
           </div>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3 text-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                ¿Realmente quieres cancelar la reserva?
+              </h3>
+              <div className="mt-2 px-7 py-3">
+                <p className="text-sm text-gray-500">
+                  Esta acción no se puede deshacer.
+                </p>
+              </div>
+              <div className="items-center px-4 py-3 space-x-4">
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  onClick={handleConfirmCancel}
+                >
+                  Confirmar
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-300 text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none"
+                  onClick={handleCloseModal}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
