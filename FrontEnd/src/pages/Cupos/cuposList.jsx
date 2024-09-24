@@ -6,14 +6,20 @@ import DayList from "../../components/DayList";
 function CuposListPage() {
   const { loadCupos, cupos, error, deleteCupo } = useContext(CupoContext); // Usamos el contexto
   const [selectedDay, setSelectedDay] = useState("");
-  const daysWeek = [
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-  ];
+  const daysWeek = [1, 2, 3, 4, 5, 6];
+
+  const getDayName = (dayNumber) => {
+    const dayNames = {
+      1: "Lunes",
+      2: "Martes",
+      3: "Miércoles",
+      4: "Jueves",
+      5: "Viernes",
+      6: "Sábado",
+    };
+    return dayNames[dayNumber] || "día no válido";
+  };
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,8 +38,8 @@ function CuposListPage() {
   };
 
   const handleDelete = (idEsquema) => {
-    console.log(idEsquema)
-    deleteCupo(idEsquema); 
+    console.log(idEsquema);
+    deleteCupo(idEsquema);
   };
 
   if (error) {
@@ -55,7 +61,7 @@ function CuposListPage() {
                   : "bg-gray-200 text-black"
               } hover:bg-blue-300 transition-colors`}
             >
-              {day}
+              {getDayName(day)} {/* Mostrar el nombre del día aquí */}
             </li>
           ))}
         </ul>
@@ -64,14 +70,11 @@ function CuposListPage() {
       {selectedDay && (
         <div className="mt-6">
           <DayList
-            day={selectedDay}
-            cupos={cupos.filter(
-              (cupo) =>
-                cupo.diaSemana &&
-                cupo.diaSemana.toLowerCase() === selectedDay.toLowerCase()
-            )}
+            day={getDayName(selectedDay)} // Aquí pasamos el nombre del día
+            cupos={cupos.filter((cupo) => cupo.diaSemana === selectedDay)}
             navigate={navigate}
-            onClick={handleDelete} // Asegúrate de que esta línea esté presente
+            onClick={handleDelete}
+            getDayName={getDayName} // Pasamos la función como prop
           />
         </div>
       )}
