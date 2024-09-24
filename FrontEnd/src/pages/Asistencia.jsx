@@ -1,13 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAsistencia } from '../context/Asitencia/AsistenciaProvider'
 
 export const Asistencia = () => {
   const [dni, setDni] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const navigate = useNavigate()
+  const { confirmAsistencia } = useAsistencia()
 
-  const handleSearch = () => {
-    // Aquí iría la lógica para buscar la asistencia
-    console.log('Buscando asistencia para DNI:', dni)
+  useEffect(() => {
+    let timer
+    if (isSuccess) {
+      timer = setTimeout(() => {
+        setIsModalOpen(false)
+        setIsSuccess(false)
+      }, 2000) // Aumentado a 2 segundos (2000ms)
+    }
+    return () => clearTimeout(timer)
+  }, [isSuccess])
+
+  const handleSearch = async () => {
+    setIsLoading(true)
+    try {
+      const response = await confirmAsistencia(dni)
+      
+      if(response.error) {
+        setModalMessage(`Error: ${response.error}`)
+        setIsSuccess(false)
+      } else {
+        setModalMessage('Asistencia confirmada')
+        setIsSuccess(true)
+        setDni('')
+      }
+    } catch (error) {
+      setModalMessage('Error al confirmar la asistencia')
+      setIsSuccess(false)
+    } finally {
+      setIsLoading(false)
+      setIsModalOpen(true)
+    }
+  }
+
+  const handleCloseModal = () => {
+    if (!isSuccess) {
+      setIsModalOpen(false)
+    }
   }
 
   const handleGoBack = () => {
@@ -59,14 +99,37 @@ export const Asistencia = () => {
             <div className="mt-5">
               <button
                 onClick={handleSearch}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200"
+                disabled={isLoading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 disabled:bg-gray-400"
               >
-                Buscar
+                {isLoading ? "Buscando..." : "Buscar"}
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className={`bg-white rounded-lg p-6 max-w-sm w-full ${isSuccess ? 'bg-green-100' : ''}`}>
+            <p className={`mb-4 ${
+              isSuccess 
+                ? 'text-green-600 text-2xl font-bold' 
+                : 'text-red-600 text-lg'
+            }`}>
+              {modalMessage}
+            </p>
+            {!isSuccess && (
+              <button
+                onClick={handleCloseModal}
+                className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors"
+              >
+                Cerrar
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

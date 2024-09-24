@@ -17,7 +17,7 @@ router.get("/api/cupos/:idEsquema", getCuposOcupadosByidEsquema);
 
 router.get("/api/cupos", getCantidadCuposHoy);
 
-router.post("/api/cupos/confirmar", confirmarAsistencia);
+router.post("/api/cupos/confirmar/:dniCliente", confirmarAsistencia);
 
 router.get("/api/cupos/reservas/:dniCliente", getReservasCliente);
 

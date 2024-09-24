@@ -1,10 +1,10 @@
 import axiosInstance from "./axiosInstance";
 
-export const getConfirmacionAsitencia = async () => {
+export const getConfirmacionAsitencia = async (dniCliente) => {
   try {
-    const response = await axiosInstance.get(`esquema_cupos/today`);
-    return response;
+    const response = await axiosInstance.post(`/cupos/confirmar/${dniCliente}`);
+    return response.success.data.message;
   } catch (error) {
-    return error;
+    return error.response.data.message;
   }
 };

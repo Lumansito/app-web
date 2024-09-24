@@ -118,13 +118,28 @@ export const getCuposOcupadosByidEsquema = async (req, res) => {
 
 export const confirmarAsistencia = async (req, res) => {
   try {
-    const { dniCliente } = req.body;
-    const horaAsistencia = new Date().toTimeString().split(" ")[0]; //SE OBVIA LA DIFERENCIA ENTRE la hora de asistencia y la hora de reserva
+    const { dniCliente } = req.params;
+    const horaAsistencia = new Date().toTimeString().split(" ")[0];
+
+    const [response] = await pool.query(
+      `
+            SELECT * from cupo_otorgado
+            where fecha = CURDATE() and dniCliente = ? and estado = "reservado"`,
+      [dniCliente]
+    );
+
+    if (response.length === 0) {
+      return res.status(404).json({ message: "No se encontro una persona con ese dni con reservas para el dia de hoy" });
+    }
+    if (response[0].horaInicio +30 > horaAsistencia || response[0].horaInicio -30 > horaAsistencia) {
+      return res.status(400).json({ message: "No se puede confirmar la asistencia Fuera de horario" });
+    }
+
     const [result] = await pool.query(
       `
             UPDATE cupo_otorgado
-            SET estado = "asistido" and horaAsistencia = ?
-            WHERE fecha = CURDATE() and dniCliente = ?`,
+            SET estado = "asistido" , horaIngreso = ?
+            WHERE fecha = CURDATE() and dniCliente = ? and estado = "reservado"`,
       [horaAsistencia, dniCliente]
     );
     if (result.affectedRows === 0) {
@@ -132,12 +147,17 @@ export const confirmarAsistencia = async (req, res) => {
         .status(400)
         .json({ message: "No se pudo confirmar la asistencia" });
     } else {
-      res.json({ message: "Asistencia confirmada" });
+      res.status(200).json({ message: "Asistencia confirmada" });
     }
   } catch (error) {
     console.log(error);
   }
 };
+
+
+
+
+
 
 export const cancelarReserva = async (req, res) => {
   try {
