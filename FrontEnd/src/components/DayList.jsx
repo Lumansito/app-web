@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function DayList({ day, cupos, navigate, onClick }) {
+function DayList({ day, cupos, navigate, onClick, getDayName }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedCupoId, setSelectedCupoId] = useState(null);
 
@@ -9,7 +9,6 @@ function DayList({ day, cupos, navigate, onClick }) {
     setShowModal(true); // Muestra el modal
   };
 
-  // Y en la función de confirmación
   const handleConfirmDelete = () => {
     if (selectedCupoId) {
       onClick(selectedCupoId); // Llama a la función deleteCupo
@@ -28,6 +27,9 @@ function DayList({ day, cupos, navigate, onClick }) {
               className="flex justify-between items-center bg-gray-200 p-2 rounded-lg shadow"
             >
               <div>
+                <span className="font-semibold">
+                  {getDayName(cupo.diaSemana)}
+                </span>
                 <span className="font-semibold">{cupo.horario}</span> -{" "}
                 <span>{cupo.dniInstructor}</span>
               </div>
