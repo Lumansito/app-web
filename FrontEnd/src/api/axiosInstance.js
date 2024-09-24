@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api', //coloar la ip de la maquina donde se esta ejecutando el backend
+  baseURL: 'http://192.168.100.8:3000/api', //coloar la ip de la maquina donde se esta ejecutando el backend
 });
 
 

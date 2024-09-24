@@ -73,11 +73,13 @@ export const getEsquemaCuposByDiaSemana = async (req, res) => {
 export const getEsquemaCuposToday = async (req, res) => {
   try {
     const diaSemana = new Date().getDay();
+    
     const [result] = await pool.query(
-      "SELECT * FROM esquemaCupos WHERE diaSemana = ? and estado = 'active' and horario >= CURTIME()",
+      "SELECT * FROM esquemacupos WHERE diaSemana = ? and estado = 'active' and horario >= CURTIME()",
       [diaSemana]
     );
     if (result.length === 0) {
+      console.log(diaSemana);
       return res.status(404).json({
         message: "no hay cupos cargados en el dia de hoy.",
       });
