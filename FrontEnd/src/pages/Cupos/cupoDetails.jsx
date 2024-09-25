@@ -24,7 +24,7 @@ function CupoDetailPage() {
     };
 
     fetchCupo();
-  }, []); // Dependencias para recargar si cambian
+  }, []); 
 
   if (error) {
     return (

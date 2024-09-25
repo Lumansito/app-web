@@ -10,7 +10,8 @@ export function CuposRoutes() {
       <Routes>
         <Route path="/lista" element={<CuposListPage />} />
         <Route path="/:id" element={<CupoDetailPage />} />
-        <Route path="/new/:nombreDia" element={<CuposForm />} />
+        <Route path="/new/:diaSemana" element={<CuposForm />} />
+        <Route path="/edit/:idEsquema" element={<CuposForm />} />
       </Routes>
     </CupoProvider>
   );

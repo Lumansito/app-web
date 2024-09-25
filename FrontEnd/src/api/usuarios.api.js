@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const Rol_logIn = async (usuario) => {
   try {
-    const response = await axios.post("http://192.168.201.179:3000/api/users/login", usuario); //coloar la ip de la maquina donde se esta ejecutando el backend
+    const response = await axios.post("http://localhost:3000/api/users/login", usuario); //coloar la ip de la maquina donde se esta ejecutando el backend
     return response;
   } catch (error) {
     return error;

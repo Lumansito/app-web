@@ -54,7 +54,7 @@ export const createEsquemaRequest = async (cupo) => {
 export const updateEsquemaRequest = async (idEsquema, cupo) => {
   try {
     const response = await axiosInstance.put(`/esquema_cupos/${idEsquema}`, cupo);
-    return response.data; // Devolvemos los datos
+    return response.data;
   } catch (error) {
     console.error(`Error updating cupo with ID ${idEsquema}:`, error);
     throw error;

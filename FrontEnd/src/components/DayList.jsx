@@ -16,6 +16,10 @@ function DayList({ day, cupos, navigate, onClick, getDayName }) {
     }
   };
 
+  const handleEditCupo = (idEsquema) => {
+    navigate(`/cupos/edit/${idEsquema}`); // Redirige a la página de edición
+  };
+
   return (
     <div className="min-h-screen bg-white text-black p-4">
       <h1 className="text-2xl font-bold text-center mb-6">Cupos para {day}</h1>
@@ -27,13 +31,16 @@ function DayList({ day, cupos, navigate, onClick, getDayName }) {
               className="flex justify-between items-center bg-gray-200 p-2 rounded-lg shadow"
             >
               <div>
-                <span className="font-semibold">
-                  {getDayName(cupo.diaSemana)}
-                </span>
                 <span className="font-semibold">{cupo.horario}</span> -{" "}
                 <span>{cupo.dniInstructor}</span>
               </div>
               <div className="flex gap-2">
+                <button
+                  onClick={() => handleEditCupo(cupo.idEsquema)}
+                  className="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600 transition-colors text-sm"
+                >
+                  Editar
+                </button>
                 <button
                   onClick={() => handleDeleteCupo(cupo.idEsquema)} // Asegúrate de que esto llame a la función de eliminación
                   className="bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600 transition-colors text-sm"

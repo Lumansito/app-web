@@ -85,29 +85,26 @@ const CupoProvider = ({ children }) => {
       const newCupo = await createEsquemaRequest(cupo);
       if (newCupo) {
         setCupos((prev) => [...prev, newCupo]);
+        return true; // Devuelve true si todo fue exitoso
       }
+      return false;
     } catch (error) {
       setError("Error al crear cupo");
       console.error("Error al crear cupo:", error);
+      return false; // Devuelve false si hubo un error
     } finally {
       setLoading(false);
     }
   };
 
-  const updateCupo = async (idEsquema, diaSemana, horario, updateCupo) => {
+  const updateCupo = async (idEsquema, cupo) => {
     setLoading(true);
     try {
-      const updated = await updateEsquemaRequest(
-        diaSemana,
-        horario,
-        updateCupo
-      );
+      const updated = await updateEsquemaRequest(idEsquema, cupo);
       if (updated) {
         setCupos((prev) =>
-          prev.map((cupo) =>
-            cupo.diaSemana === diaSemana && cupo.horaInicio === horario
-              ? updated
-              : cupo
+          prev.map((existingCupo) =>
+            existingCupo.idEsquema === idEsquema ? updated : existingCupo
           )
         );
       }

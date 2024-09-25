@@ -73,7 +73,7 @@ export const getEsquemaCuposByDiaSemana = async (req, res) => {
 export const getEsquemaCuposToday = async (req, res) => {
   try {
     const diaSemana = new Date().getDay();
-    
+
     const [result] = await pool.query(
       "SELECT * FROM esquemacupos WHERE diaSemana = ? and estado = 'active' and horario >= CURTIME()",
       [diaSemana]
@@ -91,21 +91,21 @@ export const getEsquemaCuposToday = async (req, res) => {
     console.log(error);
   }
 };
-
 export const createEsquemaCupos = async (req, res) => {
   try {
-    const { diaSemana, horario, estado, cupo, dniInstructor } = req.body;
+    const { diaSemana, horario, estado, dniInstructor, cupo } = req.body; // Eliminar idEsquema
     await pool.query(
-      "INSERT INTO esquemaCupos (diaSemana, horario, estado, cupo, dniInstructor) VALUES (?, ?, ?, ?,  ?)",
-      [diaSemana, horario, estado, cupo, dniInstructor]
+      "INSERT INTO esquemaCupos (diaSemana, horario, estado, dniInstructor, cupo) VALUES (?, ?, ?, ?, ?)",
+      [diaSemana, horario, estado, dniInstructor, cupo]
     );
-    res.json({
+
+    // Devuelve el nuevo esquema creado sin idEsquema, ya que es auto-incremental
+    res.status(201).json({
       diaSemana,
       horario,
       estado,
-      cupo,
       dniInstructor,
-
+      cupo,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -114,25 +114,28 @@ export const createEsquemaCupos = async (req, res) => {
 
 export const updateEsquemaCupos = async (req, res) => {
   try {
-    const { diaSemana, horario } = req.params;
+    const { idEsquema } = req.params;
+    const { dniInstructor, estado, cupo } = req.body;
+
     const [result] = await pool.query(
-      "UPDATE esquemaCupos SET ? WHERE diaSemana = ? and horario = ?", //ESTO ESTA RARO
-      [diaSemana, horario]
-    );
+      "UPDATE esquemaCupos SET dniInstructor = ?, estado = ?, cupo = ? WHERE idEsquema = ?",
+      [dniInstructor, estado, cupo, idEsquema]);
+
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "cupo no encontrado." });
+      return res.status(404).json({ message: "Cupo no encontrado." });
     }
-    res.json({ message: "cupo actualizado." });
+    res.json({ message: "Cupo actualizado." });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
+
 export const deleteEsquemaCupos = async (req, res) => {
   try {
-    const { idEsquema } = req.params; // Cambia esto para recibir solo idEsquema
+    const { idEsquema } = req.params;
     const [result] = await pool.query(
-      "DELETE FROM esquemaCupos WHERE idEsquema = ?", // Modifica la consulta para usar solo idEsquema
+      "DELETE FROM esquemaCupos WHERE idEsquema = ?",
       [idEsquema]
     );
 
