@@ -1,50 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { useCupos } from "../../context/Cupos/CuposProvider";
+import { useCupos } from "../../context/Cupo/CupoProvider.jsx";
 
-export const CuposForm = () => {
+const CuposForm = () => {
   const [values, setValues] = useState({
-    diaSemana: "",
     horario: "",
     estado: "",
-    cupo: "",
+    cupo: 3,
     dniInstructor: "",
   });
+
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  
+
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
 
-  const {
-    loadCupo,
-    cupo,
-    updateCupoId,
-    newCupo,
-  } = useCupos();
+  const { createCupo, loadCupo } = useCupos();
 
-  const isEditRoute = location.pathname.includes("/edit");
   const isNewRoute = location.pathname.includes("/new");
+  const diaPreseleccionado = params.diaSemana;
 
   useEffect(() => {
-    if (isEditRoute) {
-      loadCupo(params.idCupo);
-    }
-  }, [isEditRoute, loadCupo, params.idCupo]);
+    const loadData = async () => {
+      if (!isNewRoute) {
+        const cupoData = await loadCupo(params.idEsquema);
+        if (cupoData) {
+          setValues({
+            horario: cupoData.horario || "",
+            dniInstructor: cupoData.dniInstructor || "",
+            estado: cupoData.estado || "",
+            cupo: cupoData.cupo || 0,
+          });
+        }
+      }
+    };
 
-  useEffect(() => {
-    if (isEditRoute && cupo) {
-      setValues({
-        diaSemana: cupo.diaSemana || "",
-        horario: cupo.horario || "",
-        estado: cupo.estado || "",
-        cupo: cupo.cupo || "",
-        dniInstructor: cupo.dniInstructor || "",
-      });
-    }
-  }, [cupo, isEditRoute]);
+    loadData();
+  }, [isNewRoute, params.idEsquema, loadCupo]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -56,106 +51,97 @@ export const CuposForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let ok;
-    if (isEditRoute) {
-      ok = await updateCupoId(params.idCupo, values);
-      setModalMessage(ok ? "Cupo actualizado correctamente" : "Error al actualizar el cupo");
-    } else {
-      ok = await newCupo(values);
-      setModalMessage(ok ? "Cupo creado correctamente" : "Error al crear el cupo");
+    if (!values.horario || !values.dniInstructor || !values.cupo) {
+      setModalMessage("Por favor, completa todos los campos.");
+      setIsSuccess(false);
+      setShowModal(true);
+      return;
     }
+
+    const cupoData = {
+      ...values,
+      estado: isNewRoute ? "active" : values.estado,
+      diaSemana: diaPreseleccionado,
+    };
+
+    const ok = await createCupo(cupoData);
+    console.log(cupoData);
+    setModalMessage(
+      ok ? "Cupo creado correctamente" : "Error al crear el cupo"
+    );
     setIsSuccess(ok);
     setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    if (isSuccess) {
+      navigate("/cupos/lista"); // Cambiar esta ruta si es necesario
+    }
   };
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    if (isSuccess) {
-      navigate("/cupos/lista");
-    }
-  };
-
   return (
     <div className="min-h-screen bg-white text-black p-4">
+      {/* Botón de Volver encima del formulario */}
+      <div className="mb-4 text-center">
+        <button
+          onClick={handleGoBack}
+          className="px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+        >
+          ← Volver
+        </button>
+      </div>
+
       <div className="max-w-md mx-auto">
-        {/* Contenedor para el botón alineado a la izquierda */}
-        <div className="flex justify-start mb-4">
-          <button
-            onClick={handleGoBack}
-            className="px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
-          >
-            ← Volver
-          </button>
-        </div>
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          {isNewRoute ? "Nuevo Cupo" : "Editar Cupo"}
+        </h1>
         <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6 text-center">
-              {isNewRoute ? "Nuevo" : "Editar"} Cupo
-            </h1>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="diaSemana" className="block text-sm font-medium text-gray-700 mb-1">
-                  Día de la Semana
-                </label>
-                <input
-                  type="text"
-                  id="diaSemana"
-                  name="diaSemana"
-                  value={values.diaSemana}
-                  onChange={handleInputChange}
-                  placeholder="Ingrese el día de la semana"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="horario" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="horario"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Horario
                 </label>
                 <input
-                  type="text"
+                  type="time"
                   id="horario"
                   name="horario"
                   value={values.horario}
                   onChange={handleInputChange}
-                  placeholder="Ingrese el horario"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
               <div>
-                <label htmlFor="estado" className="block text-sm font-medium text-gray-700 mb-1">
-                  Estado
-                </label>
-                <input
-                  type="text"
-                  id="estado"
-                  name="estado"
-                  value={values.estado}
-                  onChange={handleInputChange}
-                  placeholder="Ingrese el estado"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="cupo" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="cupo"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Cupo
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id="cupo"
                   name="cupo"
                   value={values.cupo}
                   onChange={handleInputChange}
-                  placeholder="Ingrese el cupo"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Ingrese el número de cupos"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
               <div>
-                <label htmlFor="dniInstructor" className="block text-sm font-medium text-gray-700 mb-1">
-                  DNI Instructor
+                <label
+                  htmlFor="dniInstructor"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  DNI del Instructor
                 </label>
                 <input
                   type="text"
@@ -164,12 +150,12 @@ export const CuposForm = () => {
                   value={values.dniInstructor}
                   onChange={handleInputChange}
                   placeholder="Ingrese el DNI del instructor"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
               >
                 Guardar
               </button>
@@ -190,11 +176,12 @@ export const CuposForm = () => {
               </div>
               <div className="items-center px-4 py-3">
                 <button
-                  id="ok-btn"
-                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
                   onClick={handleCloseModal}
+                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-${
+                    isSuccess ? "green" : "red"
+                  }-600 text-base font-medium text-white`}
                 >
-                  OK
+                  {isSuccess ? "Aceptar" : "Cerrar"}
                 </button>
               </div>
             </div>
@@ -205,3 +192,4 @@ export const CuposForm = () => {
   );
 };
 
+export default CuposForm;
