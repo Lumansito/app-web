@@ -96,16 +96,15 @@ export const getCantidadCuposHoy = async (req, res) => {
 
 export const getCuposOcupadosByidEsquema = async (req, res) => {
   try {
-    
     const [result] = await pool.query(`
             SELECT  COUNT(*) AS reservas 
             FROM cupo_otorgado c
             WHERE c.fecha = CURDATE() 
-              AND c.estado = 'reservado' 
+              AND c.estado = 'reservado' or c.estado = 'asistido'
               AND c.horaInicio IN (SELECT e.horario FROM esquemacupos e WHERE e.idEsquema = ${req.params.idEsquema})
             
             `);
-    
+
     if (result.length === 0) {
       return res.status(404).json({ message: "No hay cupos ocupados" });
     } else {
@@ -128,11 +127,24 @@ export const confirmarAsistencia = async (req, res) => {
       [dniCliente]
     );
 
-    if (response.length === 0) {
-      return res.status(404).json({ message: "No se encontro una persona con ese dni con reservas para el dia de hoy" });
-    }
-    if (response[0].horaInicio +30 > horaAsistencia || response[0].horaInicio -30 > horaAsistencia) {
-      return res.status(400).json({ message: "No se puede confirmar la asistencia Fuera de horario" });
+    const [hours, minutes, seconds] = response[0].horaInicio.split(":"); // Suponiendo que horaInicio es 'HH:mm:ss'
+    const horaInicio = new Date(horaAsistencia); // Copiamos la fecha actual
+    horaInicio.setHours(hours, minutes, seconds);
+
+
+    const treintaMinutosAntes = new Date(horaInicio.getTime() - 60 * 60000);
+    const treintaMinutosDespues = new Date(horaInicio.getTime() + 60 * 60000);
+
+
+    if (
+      horaAsistencia < treintaMinutosAntes ||
+      horaAsistencia > treintaMinutosDespues
+    ) {
+      return res
+        .status(400)
+        .json({
+          message: "No se puede confirmar la asistencia. Fuera de horario.",
+        });
     }
 
     const [result] = await pool.query(
@@ -154,11 +166,6 @@ export const confirmarAsistencia = async (req, res) => {
   }
 };
 
-
-
-
-
-
 export const cancelarReserva = async (req, res) => {
   try {
     const { dniCliente } = req.params;
@@ -166,7 +173,7 @@ export const cancelarReserva = async (req, res) => {
       `
             UPDATE  cupo_otorgado
             SET estado = "cancelado" , horaCancelacion = ?
-            WHERE fecha = CURDATE() and dniCliente = ?`,
+            WHERE fecha = CURDATE() and dniCliente = ? and estado = "reservado"`,
       [new Date().toTimeString().split(" ")[0], dniCliente]
     );
     if (result.affectedRows === 0) {
