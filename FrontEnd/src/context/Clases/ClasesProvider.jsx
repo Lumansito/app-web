@@ -28,8 +28,8 @@ const ClasesProvider = ({ children }) => {
   const loadClases = async () => {
     try {
       const response = await getClasesToday();
-      const clasesAr = response.data;
-      console.log(clasesAr);
+      const clasesAr = response.data || [];
+      
       setClases(clasesAr);
     } catch (error) {
       console.error("Error al cargar las clases:", error);

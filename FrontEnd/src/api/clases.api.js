@@ -3,7 +3,7 @@ import axiosInstance from "./axiosInstance";
 export const getClasesToday = async () => {
   try {
     const response = await axiosInstance.get("/esquema_cupos/today");
-    console.log(response);
+    
     return response;
   } catch (error) {
     return error;

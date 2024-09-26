@@ -82,13 +82,11 @@ export const getEsquemaCuposToday = async (req, res) => {
         message: "no hay cupos cargados en el dia de hoy.",
       });
     } else {
-      res.json(result);
 
       const [cupos] = await pool.query(
         "SELECT horaInicio, count(*) as reservas from cupo_otorgado where fecha = CURDATE() and estado != 'cancelado' group by horaInicio"
       );
-      
-      
+      console.log(result);
       let clases = result.map((clase) => {
         const cupoEncontrado = cupos.find(
           (cupo) => cupo.horaInicio === clase.horario
@@ -98,9 +96,8 @@ export const getEsquemaCuposToday = async (req, res) => {
           cuposOcupados: cupoEncontrado ? cupoEncontrado.reservas : 0,
         };
       });
-  
+      console.log(clases);
       res.status(200).json(clases);
-    
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -134,7 +131,8 @@ export const updateEsquemaCupos = async (req, res) => {
 
     const [result] = await pool.query(
       "UPDATE esquemaCupos SET dniInstructor = ?, estado = ?, cupo = ? WHERE idEsquema = ?",
-      [dniInstructor, estado, cupo, idEsquema]);
+      [dniInstructor, estado, cupo, idEsquema]
+    );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Cupo no encontrado." });
@@ -144,7 +142,6 @@ export const updateEsquemaCupos = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 
 export const deleteEsquemaCupos = async (req, res) => {
   try {
