@@ -69,7 +69,6 @@ export const getEsquemaCuposByDiaSemana = async (req, res) => {
   }
 };
 
-
 export const getEsquemaCuposToday = async (req, res) => {
   try {
     const diaSemana = new Date().getDay();
@@ -84,8 +83,23 @@ export const getEsquemaCuposToday = async (req, res) => {
         message: "no hay cupos cargados en el dia de hoy.",
       });
     } else {
-      res.json(result);
-
+      const [cupos] = await pool.query(
+        "SELECT horaInicio, count(*) as reservas from cupo_otorgado where fecha = CURDATE() and estado != 'cancelado' group by horaInicio"
+      );
+      
+      
+      let clases = result.map((clase) => {
+        const cupoEncontrado = cupos.find(
+          (cupo) => cupo.horaInicio === clase.horario
+        );
+        return {
+          ...clase,
+          cuposOcupados: cupoEncontrado ? cupoEncontrado.reservas : 0,
+        };
+      });
+  
+      res.status(200).json(clases);
+    
     }
   } catch (error) {
     console.log(error);
@@ -105,7 +119,10 @@ export const createEsquemaCupos = async (req, res) => {
       horario,
       estado,
       dniInstructor,
+<<<<<<< Updated upstream
       cupo,
+=======
+>>>>>>> Stashed changes
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

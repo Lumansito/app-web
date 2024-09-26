@@ -58,6 +58,7 @@ const CuposForm = () => {
       return;
     }
 
+<<<<<<< Updated upstream
     const cupoData = {
       ...values,
       estado: isNewRoute ? "active" : values.estado,
@@ -67,6 +68,10 @@ const CuposForm = () => {
     const ok = await createCupo(cupoData);
     console.log(cupoData);
     setModalMessage(
+=======
+    const ok = await createCupo(values);
+     setModalMessage(
+>>>>>>> Stashed changes
       ok ? "Cupo creado correctamente" : "Error al crear el cupo"
     );
     setIsSuccess(ok);

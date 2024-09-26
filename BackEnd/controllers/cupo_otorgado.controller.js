@@ -198,7 +198,7 @@ export const getReservasCliente = async (req, res) => {
       [dniCliente]
     );
     if (result.length === 0) {
-      return res.status(404).json({ message: "No hay reservas" });
+      return res.status(200).json({ message: "No hay reservas" });
     } else {
       res.json(result);
     }

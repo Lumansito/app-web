@@ -3,12 +3,11 @@ import { useUsuario } from "../Usuario/UsuarioProvider.jsx";
 import React, { useContext, useState } from "react";
 import {
   getClasesToday,
-  getCuposOcupados,
   getClase,
   getCupoClase,
   postClase,
   getClaseReservada,
-  cancelarReserva
+  cancelarReserva,
 } from "../../api/clases.api";
 
 export const useClases = () => {
@@ -26,43 +25,11 @@ const ClasesProvider = ({ children }) => {
   const [clase, setClase] = useState(null);
   const [claseReservada, setClaseReservada] = useState(null);
 
-
-  async function getCuposForClases(arrayClases) {
-    let clasesConCupos = [];
-    if (!arrayClases || arrayClases.length === 0) {
-      return clasesConCupos;
-    }
-    try {
-      const response = await getCuposOcupados();
-      const cuposOcupados = response.data;
-
-      clasesConCupos = arrayClases.map((clase) => {
-        const cupoEncontrado = cuposOcupados.find(
-          (cupo) => cupo.horaInicio === clase.horario
-        );
-
-        return {
-          ...clase,
-          cuposOcupados: cupoEncontrado ? cupoEncontrado.reservas : 0,
-        };
-      });
-    } catch (error) {
-      console.error("Error obteniendo los cupos:", error);
-      clasesConCupos = arrayClases.map((clase) => ({
-        ...clase,
-        cuposOcupados: 0,
-      }));
-    }
-    return clasesConCupos;
-  }
-
   const loadClases = async () => {
     try {
       const response = await getClasesToday();
       const clasesAr = response.data;
-      const clasesConCupos = await getCuposForClases(clasesAr);
-
-      setClases(clasesConCupos);
+      setClases(clasesAr);
     } catch (error) {
       console.error("Error al cargar las clases:", error);
     }
@@ -72,7 +39,6 @@ const ClasesProvider = ({ children }) => {
     try {
       const { data: claseCarga } = await getClase(idClase);
       const { data: cupo } = await getCupoClase(idClase);
-
       setClase({ ...claseCarga, cuposOcupados: cupo || 0 });
     } catch (error) {
       console.error("Error al cargar la clase:", error);
@@ -85,7 +51,7 @@ const ClasesProvider = ({ children }) => {
       const response = await getClaseReservada(dni);
       if (response.status === 404) {
         return null;
-      }else{
+      } else {
         setClaseReservada(response.data[0]);
       }
     } catch (error) {
@@ -114,24 +80,30 @@ const ClasesProvider = ({ children }) => {
       console.error("Error al reservar la clase:", error);
       return "Error al reservar la clase";
     }
-    
   };
 
   const cancelReservasActivas = async () => {
-    
     const response = await cancelarReserva(dni);
-    if(response.status === 200){
+    if (response.status === 200) {
       setClaseReservada(null);
       loadClases();
-    }
-    else{
+    } else {
       console.error("Error al cancelar la reserva:", response);
     }
   };
 
   return (
     <ClasesContext.Provider
-      value={{ clases, loadClases, loadClase, clase, reservarClase, setClaseRes, claseReservada,cancelReservasActivas }}
+      value={{
+        clases,
+        loadClases,
+        loadClase,
+        clase,
+        reservarClase,
+        setClaseRes,
+        claseReservada,
+        cancelReservasActivas,
+      }}
     >
       {children}
     </ClasesContext.Provider>
