@@ -1,11 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-<<<<<<< Updated upstream
   baseURL: 'http://localhost:3000/api', //coloar la ip de la maquina donde se esta ejecutando el backend
-=======
-  baseURL: "http://localhost:3000/api", //coloar la ip de la maquina donde se esta ejecutando el backend
->>>>>>> Stashed changes
 });
 
 axiosInstance.interceptors.request.use(
