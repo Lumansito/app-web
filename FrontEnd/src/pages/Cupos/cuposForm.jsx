@@ -6,7 +6,7 @@ const CuposForm = () => {
   const [values, setValues] = useState({
     horario: "",
     estado: "",
-    cupo: 3,
+    cupo: "",
     dniInstructor: "",
   });
 
@@ -22,6 +22,19 @@ const CuposForm = () => {
 
   const isNewRoute = location.pathname.includes("/new");
   const diaPreseleccionado = params.diaSemana;
+
+  const getDayNumber = (dayName) => {
+    const dayMapping = {
+      domingo: 0,
+      lunes: 1,
+      martes: 2,
+      miércoles: 3,
+      jueves: 4,
+      viernes: 5,
+      sábado: 6,
+    };
+    return dayMapping[dayName.toLowerCase()] || null; // Convierte a minúsculas para evitar errores
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -61,7 +74,7 @@ const CuposForm = () => {
     const cupoData = {
       ...values,
       estado: isNewRoute ? "active" : values.estado,
-      diaSemana: diaPreseleccionado,
+      diaSemana: getDayNumber(diaPreseleccionado), // Convertir el día a número antes de enviarlo
     };
 
     const ok = await createCupo(cupoData);
@@ -76,7 +89,7 @@ const CuposForm = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     if (isSuccess) {
-      navigate("/cupos/lista"); // Cambiar esta ruta si es necesario
+      navigate("/cupos/lista");
     }
   };
 
