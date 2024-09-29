@@ -92,6 +92,12 @@ export  function Home() {
                 >
                   Confirmar Asistencia
                 </button>
+                <button
+                  className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
+                  onClick={() => handleNavigation("/ejercicios")}
+                >
+                  Ejercicios 
+                </button>
               </div>
             )}
           </div>

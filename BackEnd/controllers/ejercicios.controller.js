@@ -33,7 +33,7 @@ export const createEjercicio = async (req, res) => {
         const { nombre } = req.body;
         //no guardamos la respuesta ya que solamente subimos los datos del nuevo ejercicio
         await pool.query(
-        "INSERT INTO ejercicios (nombre) VALUES (?)",[nombre]);
+        "INSERT INTO ejercicios (nombre, estado) VALUES (?, 'activo')",[nombre]);
         res.json({nombre});
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -58,7 +58,7 @@ export const updateEjercicio = async (req, res) => {
 
 export const deleteEjercicio = async (req, res) => {
     try {
-        const [result] = await pool.query("DELETE FROM ejercicios WHERE codEjercicio = ?", [
+        const [result] = await pool.query("UPDATE ejercicios set estado='eliminado' WHERE codEjercicio = ?", [
         req.params.codEjercicio,
         ]);
         if (result.affectedRows === 0) {
