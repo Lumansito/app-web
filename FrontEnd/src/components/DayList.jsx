@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function DayList({ day, cupos, navigate, onClick, getDayName }) {
+function DayList({ day, cupos, navigate, onClick }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedCupoId, setSelectedCupoId] = useState(null);
 
