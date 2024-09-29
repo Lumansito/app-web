@@ -21,17 +21,14 @@ function CuposListPage() {
     return dayNames[dayNumber] || "día no válido";
   };
 
-  // Cargar todos los cupos al montar la página
   useEffect(() => {
     loadCupos();
   }, []);
 
-  // Función para manejar la selección de un día
   const handleSelect = (day) => {
     setSelectedDay(day);
   };
 
-  // Función para eliminar un cupo
   const handleDelete = (idEsquema) => {
     deleteCupo(idEsquema);
   };
@@ -49,7 +46,6 @@ function CuposListPage() {
     const cupoDayNumber =
       dayNamesToNumbers[cupo.diaSemana] || parseInt(cupo.diaSemana);
 
-    // Comprobar si el número del cupo coincide con el día seleccionado
     return cupoDayNumber === day;
   };
 
@@ -66,36 +62,30 @@ function CuposListPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black p-4">
-      {/* Botón de navegación a la página de inicio */}
-      <div className="absolute top-4 left-4">
-        <button
-          onClick={handleGoHome}
-          className="px-4 py-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
-          aria-label="Ir al inicio"
+    <div className="min-h-screen bg-white text-black p-4 relative">
+      <button
+        onClick={handleGoHome}
+        className="absolute top-4 left-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
+        aria-label="Ir al inicio"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-          </svg>
-        </button>
-      </div>
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+        </svg>
+      </button>
+      <button
+        onClick={handleGoBack}
+        className="absolute top-4 right-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
+        aria-label="Volver"
+      >
+        ←
+      </button>
 
       <h1 className="text-2xl font-bold text-center mb-6">Cupos por Día</h1>
-
-      {/* Botón de Volver encima del div principal */}
-      <div className="mb-4 text-center">
-        <button
-          onClick={handleGoBack}
-          className="px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
-        >
-          ← Volver
-        </button>
-      </div>
 
       <div className="max-w-sm mx-auto bg-gray-100 rounded-lg shadow-md overflow-hidden">
         <ul className="p-4 space-y-4">
@@ -118,8 +108,8 @@ function CuposListPage() {
       {selectedDay !== null && (
         <div className="mt-6">
           <DayList
-            day={getDayName(selectedDay)} // Nombre del día seleccionado
-            cupos={cupos.filter((cupo) => isMatchingDay(cupo, selectedDay))} // Filtrar por el día seleccionado usando números
+            day={getDayName(selectedDay)}
+            cupos={cupos.filter((cupo) => isMatchingDay(cupo, selectedDay))}
             navigate={navigate}
             onClick={handleDelete}
             getDayName={getDayName}

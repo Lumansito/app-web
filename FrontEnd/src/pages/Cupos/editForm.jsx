@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useCupos } from "../../context/Cupo/CupoProvider.jsx";
 
-const CuposForm = () => {
+const EditCupoForm = () => {
   const [values, setValues] = useState({
     horario: "",
-    estado: "",
-    cupo: 3,
+    estado: "active",
+    cupo: "",
     dniInstructor: "",
   });
 
@@ -14,27 +14,26 @@ const CuposForm = () => {
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
 
-  const { editCupo, loadCupo } = useCupos();
+  const { updateCupo, loadCupos } = useCupos();
 
   useEffect(() => {
     const loadData = async () => {
-      const cupoData = await loadCupo(params.idEsquema);
+      const cupoData = await loadCupos(params.idEsquema);
       if (cupoData) {
         setValues({
           horario: cupoData.horario || "",
           dniInstructor: cupoData.dniInstructor || "",
-          estado: cupoData.estado || "",
+          estado: cupoData.estado || "active",
           cupo: cupoData.cupo || 0,
         });
       }
     };
 
     loadData();
-  }, [params.idEsquema, loadCupo]);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -46,7 +45,6 @@ const CuposForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Validación de campos
     if (!values.horario || !values.dniInstructor || !values.cupo) {
       setModalMessage("Por favor, completa todos los campos.");
       setIsSuccess(false);
@@ -56,10 +54,11 @@ const CuposForm = () => {
 
     const cupoData = {
       ...values,
-      diaSemana: params.diaSemana,
+      estado: values.estado || "active",
     };
 
-    const ok = await editCupo(params.idEsquema, cupoData);
+    const ok = await updateCupo(params.idEsquema, cupoData);
+    console.log(cupoData);
     setModalMessage(
       ok ? "Cupo editado correctamente" : "Error al editar el cupo"
     );
@@ -70,14 +69,36 @@ const CuposForm = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     if (isSuccess) {
-      navigate("/cupos/lista");  
+      navigate("/cupos/lista");
     }
   };
 
   return (
-    <div className="min-h-screen bg-white text-black p-4">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-2xl font-bold mb-6 text-center">Editar Cupo</h1>
+    <div className="min-h-screen bg-white text-black p-4 relative">
+      <button
+        onClick={() => navigate("/")} // Cambiar a la ruta de inicio
+        className="absolute top-4 left-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
+        aria-label="Ir al inicio"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+        </svg>
+      </button>
+      <div className="max-w-md mx-auto mt-12">
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={() => navigate(-1)} // Volver a la página anterior
+            className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"
+          >
+            ← Volver
+          </button>
+          <h1 className="text-2xl font-bold">Editar Cupo</h1>
+        </div>
         <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -133,7 +154,7 @@ const CuposForm = () => {
               </div>
               <button
                 type="submit"
-                className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+                className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Guardar
               </button>
@@ -141,7 +162,6 @@ const CuposForm = () => {
           </div>
         </div>
       </div>
-
       {showModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
@@ -170,4 +190,4 @@ const CuposForm = () => {
   );
 };
 
-export default CuposForm;
+export default EditCupoForm;

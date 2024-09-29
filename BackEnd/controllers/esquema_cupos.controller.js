@@ -111,7 +111,9 @@ export const createEsquemaCupos = async (req, res) => {
       "INSERT INTO esquemaCupos (diaSemana, horario, estado, dniInstructor, cupo) VALUES (?, ?, ?, ?, ?)",
       [diaSemana, horario, estado, dniInstructor, cupo]
     );
-
+    if (typeof diaSemana !== 'number') {
+      return res.status(400).json({ error: "El día de la semana debe ser un número" });
+    }
     // Devuelve el nuevo esquema creado sin idEsquema, ya que es auto-incremental
     res.status(201).json({
       diaSemana,
@@ -127,17 +129,16 @@ export const createEsquemaCupos = async (req, res) => {
 export const updateEsquemaCupos = async (req, res) => {
   try {
     const { idEsquema } = req.params;
-    const { dniInstructor, estado, cupo } = req.body;
-
+    const { dniInstructor, estado, cupo, horario } = req.body; 
     const [result] = await pool.query(
-      "UPDATE esquemaCupos SET dniInstructor = ?, estado = ?, cupo = ? WHERE idEsquema = ?",
-      [dniInstructor, estado, cupo, idEsquema]
+      "UPDATE esquemaCupos SET dniInstructor = ?, estado = ?, cupo = ?, horario = ? WHERE idEsquema = ?",
+      [dniInstructor, estado, cupo, horario, idEsquema]  
     );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Cupo no encontrado." });
     }
-    res.json({ message: "Cupo actualizado." });
+    res.json({ message: "Cupo actualizado.", success: true });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

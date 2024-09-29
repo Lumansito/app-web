@@ -98,7 +98,23 @@ const CuposForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black p-4">
+    <div className="min-h-screen bg-white text-black p-4 relative">
+      {/* Botón de Home */}
+      <button
+        onClick={handleGoBack}
+        className="absolute top-4 left-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
+        aria-label="Ir al inicio"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+        </svg>
+      </button>
+
       {/* Botón de Volver encima del formulario */}
       <div className="mb-4 text-center">
         <button
