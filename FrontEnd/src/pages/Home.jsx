@@ -99,6 +99,7 @@ export function Home() {
                     className="flex-1 py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
                     onClick={() => handleNavigation("/seguimiento/lista")}
                   >
+                  
                     Marcas Clientes
                   </button>
                 </div>
