@@ -2,6 +2,7 @@
 export const authorizeRole = (requiredRoles) => {
   return (req, res, next) => {
     const userRoles = req.session.rol;
+    console.log(userRoles);
     if (!userRoles) {
       return res
         .status(401)

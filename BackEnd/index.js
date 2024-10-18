@@ -39,17 +39,16 @@ app.use((req, res, next) => {
   }
   next();
 });
-
+app.use(cuposRouter);
+app.use(esquema_cuposRouter);
 app.use(loginRouter); //VALIDAR BIEN QUUIEN REQUIERE QUE ROL, Y SI INTERNAMENETE HAY RUTAS Q SI, PPOR EJEMLPO ESQUEMA_CUPOS
 app.use(professorAdmin, usersRouter);
 app.use(authorizeRole([2, 3]), membresiasRouter);
 app.use(authorizeRole([2, 3]), ejerciciosRouter);
 app.use(authorizeRole([2, 3]), rutinas_pre_establecidasRouter);
-app.use(esquema_cuposRouter);
 app.use(authorizeRole([2]) ,rutiasRouter);
 app.use(authorizeRole([3]), pagosRouter);
 app.use(authorizeRole([2]), seguimientosRouter);
-app.use(cuposRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
