@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useClases } from "../../context/Clases/ClasesProvider"
+import { useClases } from "../../context/Clases/proveedorClases.jsx"
 import { Clase } from "../../components/Clase"
 
 export const ConfirmClases = () => {

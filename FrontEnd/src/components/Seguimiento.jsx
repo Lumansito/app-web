@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom"
-import { useSeguimiento } from "../context/Seguimiento/SeguimientoProvider"
+import { useSeguimiento } from "../context/Seguimiento/proveedorSeguimiento.jsx"
 
 export function Seguimiento({ seguimiento }) {
   const [showModal, setShowModal] = useState(false)

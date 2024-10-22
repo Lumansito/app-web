@@ -1,22 +1,22 @@
 import { Router } from "express";
 import {
-  getEjercicios,
-  getEjercicioBycodEjercicios,
-  createEjercicio,
-  updateEjercicio,
-  deleteEjercicio,
+  obtenerEjercicios,
+  obtenerEjerciciosXcodigoEj,
+  crearEjercicio,
+  actualizarEjercicio,
+  eliminarEjercicio,
 } from "../controllers/ejercicios.controller.js";
 
 const router = Router();
 
-router.get("/api/ejercicios", getEjercicios);
+router.get("/api/ejercicios", obtenerEjercicios);
 
-router.get("/api/ejercicios/:codEjercicio", getEjercicioBycodEjercicios);
+router.get("/api/ejercicios/:codEjercicio", obtenerEjerciciosXcodigoEj);
 
-router.post("/api/ejercicios", createEjercicio);
+router.post("/api/ejercicios", crearEjercicio);
 
-router.put("/api/ejercicios/:codEjercicio", updateEjercicio);
+router.put("/api/ejercicios/:codEjercicio", actualizarEjercicio);
 
-router.delete("/api/ejercicios/:codEjercicio", deleteEjercicio);
+router.delete("/api/ejercicios/:codEjercicio", eliminarEjercicio);
 
 export default router;

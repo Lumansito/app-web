@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-export const getEjercicios = async () => {
+export const obtenerEjerciciosAPI = async () => {
   try {
     const response = await axiosInstance.get("/ejercicios");
     return response;
@@ -9,7 +9,7 @@ export const getEjercicios = async () => {
   }
 };
 
-export const getEjercicio = async (codEjercicio) => {
+export const obtenerEjerciciosXcodigoEjAPI = async (codEjercicio) => {
     try {
         const response = await axiosInstance.get("/ejercicios/"+codEjercicio);
         return response;
@@ -18,7 +18,7 @@ export const getEjercicio = async (codEjercicio) => {
       }
 };
 
-export const createEjercicioRequest = async (values) => {
+export const crearEjercicioAPI = async (values) => {
   try {
     const response = await axiosInstance.post("/ejercicios", values);
     return response;
@@ -27,7 +27,7 @@ export const createEjercicioRequest = async (values) => {
   }
 };
 
-export const deleteEjercicioRequest = async (codEjercicio) => {
+export const eliminarEjercicioAPI = async (codEjercicio) => {
   try {
     const response = await axiosInstance.delete("/ejercicios/"+codEjercicio);
     return response;
@@ -36,7 +36,7 @@ export const deleteEjercicioRequest = async (codEjercicio) => {
   }
 }
 
-export const updateEjercicioRequest = async (codEjercicio, values) => {
+export const actualizarEjercicioAPI = async (codEjercicio, values) => {
   try {
     const response = await axiosInstance.put("/ejercicios/"+codEjercicio, values);
     return response;

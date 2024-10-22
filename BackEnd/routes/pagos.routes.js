@@ -1,19 +1,19 @@
 import { Router } from "express";
 import {
-  getPagos,
-  getPagosByDNI,
-  createPago,
-  updatePago,
+  obtenerPagos,
+  obtenerPagosXdni,
+  crearPago,
+  actualizarPago,
 } from "../controllers/pagos.controller.js";
 
 const router = Router();
 
-router.get("/api/pagos", getPagos);
+router.get("/api/pagos", obtenerPagos);
 
-router.get("/api/pagos/:dniCliente", getPagosByDNI);
+router.get("/api/pagos/:dniCliente", obtenerPagosXdni);
 
-router.post("/api/pagos", createPago);
+router.post("/api/pagos", crearPago);
 
-router.put("/api/pagos/:idPago", updatePago);
+router.put("/api/pagos/:idPago", actualizarPago);
 
 export default router;

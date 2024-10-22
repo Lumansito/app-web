@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { useRutinas } from "../../context/Rutinas/RutinasProvider"
+import { useRutinas } from "../../context/Rutinas/proveedorRutinas.jsx"
 import { Solicitud } from "../../components/Solicitud"
 import { ConjuntoLineas } from "../../components/ConjuntoLineas"
 import {

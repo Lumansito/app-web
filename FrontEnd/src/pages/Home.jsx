@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogIn } from "./LogIn";
-import { useUsuario } from "../context/Usuario/UsuarioProvider";
+import { useUsuario } from "../context/Usuario/proveedorUsuario.jsx";
 
 export function Home() {
   const { rol, comprobarToken, dni, logout } = useUsuario();

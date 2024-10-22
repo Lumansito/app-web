@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRutinas } from "../../context/Rutinas/RutinasProvider";
-import { useUsuario } from "../../context/Usuario/UsuarioProvider";
+import { useRutinas } from "../../context/Rutinas/proveedorRutinas.jsx";
+import { useUsuario } from "../../context/Usuario/proveedorUsuario.jsx";
 import { Solicitud } from "../../components/Solicitud";
 
 export const ListadoSolicitudes = () => {

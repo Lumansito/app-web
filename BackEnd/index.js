@@ -7,11 +7,11 @@ import { authorizeRole, professorAdmin } from "./middleware/authorizeRole.js";
 import usersRouter from "./routes/usuarios.routes.js";
 import ejerciciosRouter from "./routes/ejercicios.routes.js";
 import membresiasRouter from "./routes/membresias.routes.js";
-import rutinas_pre_establecidasRouter from "./routes/rutinas_pre_establecidas.routes.js";
-import esquema_cuposRouter from "./routes/esquema_cupos.routes.js";
+import rutinas_pre_establecidasRouter from "./routes/rutinasPreestablecidas.routes.js";
+import esquema_cuposRouter from "./routes/esquemaCupos.routes.js";
 import pagosRouter from "./routes/pagos.routes.js";
 import seguimientosRouter from "./routes/seguimientos.routes.js";
-import cuposRouter from "./routes/cupo_otorgado.routes.js";
+import cuposRouter from "./routes/cupoOtorgado.routes.js";
 import loginRouter from "./routes/login.routes.js";
 import rutiasRouter from "./routes/rutinas.routes.js";
 

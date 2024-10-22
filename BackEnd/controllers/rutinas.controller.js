@@ -1,13 +1,13 @@
 import { pool } from "../bd.js";
 
 // usuario agrega un comentario a una rutina personalizada
-export const createSolicitudRutinas = async (req, res) => {
+export const crearSolicitudRutinas = async (req, res) => {
   try {
     const { dni } = req.params;
     const { peticion } = req.body;
     const fecha = new Date().toISOString().split("T")[0];
 
-    cosnt[valido] = await pool.query(
+    const[valido] = await pool.query(
       `
       SELECT condMembresia FROM usuarios WHERE dni = ?`,
       [dni]
@@ -37,7 +37,7 @@ export const createSolicitudRutinas = async (req, res) => {
  */
 
 // administrador cree o modifique una rutina personalizada
-export const updatePersonalizedRoutine = async (req, res) => {
+export const actualizarRutina = async (req, res) => {
   const {idRutina } = req.params;
 
 
@@ -100,7 +100,7 @@ export const updatePersonalizedRoutine = async (req, res) => {
 };
 
 // obtener las rutinas personalizadas de un usuario
-export const getRutinaByDni = async (req, res) => {
+export const obtenerRutinaXdni = async (req, res) => {
   try {
     const { dniCliente } = req.params;
 
@@ -129,7 +129,7 @@ export const getRutinaByDni = async (req, res) => {
   }
 };
 
-export const getSoliciutdesRutinas = async (req, res) => {
+export const obtenerSolicitudRutinas = async (req, res) => {
   try {
     const [result] = await pool.query(
       "SELECT r.*, u.nombre, u.apellido FROM rutinas r INNER JOIN usuarios u ON r.dniCliente = u.dni where r.fechaCarga is null"
@@ -141,7 +141,7 @@ export const getSoliciutdesRutinas = async (req, res) => {
   }
 };
 
-export const getRutinaById = async (req, res) => {
+export const obtenerRutinaXid = async (req, res) => {
   try {
     const { idRutina } = req.params;
 

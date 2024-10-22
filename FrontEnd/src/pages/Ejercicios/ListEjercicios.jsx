@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useEjercicios } from "../../context/Ejercicio/EjercicioProvider";
+import { useEjercicios } from "../../context/Ejercicio/proveedorEjercicio.jsx";
 import { EjercicioForm } from "../../components/EjercicioForm";
 
 

@@ -1,33 +1,33 @@
-import { ClasesContext } from "./ClasesContext.jsx";
-import { useUsuario } from "../Usuario/UsuarioProvider.jsx";
+import { ContextoClases } from "./contextoClases.jsx";
+import { useUsuario } from "../Usuario/proveedorUsuario.jsx";
 import React, { useContext, useState } from "react";
 import {
-  getClasesToday,
-  getClase,
-  getCupoClase,
-  postClase,
-  getClaseReservada,
-  cancelarReserva,
+  obtenerClasesHoyAPI,
+  obtenerClaseAPI,
+  obtenerCupoClaseAPI,
+  crearResevaClaseAPI,
+  obtenerClaseReservadaXdniAPI,
+  cancelarReservaClaseAPI,
 } from "../../api/clases.api";
 
 export const useClases = () => {
-  const context = useContext(ClasesContext);
+  const context = useContext(ContextoClases);
   if (!context) {
-    throw new Error("useClases debe estar dentro del proveedor ClasesProvider");
+    throw new Error("useClases debe estar dentro del proveedor ProveedorClases");
   }
   return context;
 };
 
-const ClasesProvider = ({ children }) => {
+const ProveedorClases = ({ children }) => {
   const { dni, comprobarToken } = useUsuario();
 
   const [clases, setClases] = useState([]);
   const [clase, setClase] = useState(null);
   const [claseReservada, setClaseReservada] = useState(null);
 
-  const loadClases = async () => {
+  const cargarClases = async () => {
     try {
-      const response = await getClasesToday();
+      const response = await obtenerClasesHoyAPI();
       const clasesAr = response.data || [];
       
       setClases(clasesAr);
@@ -36,20 +36,20 @@ const ClasesProvider = ({ children }) => {
     }
   };
 
-  const loadClase = async (idClase) => {
+  const cargarClase = async (idClase) => {
     try {
-      const { data: claseCarga } = await getClase(idClase);
-      const { data: cupo } = await getCupoClase(idClase);
+      const { data: claseCarga } = await obtenerClaseAPI(idClase);
+      const { data: cupo } = await obtenerCupoClaseAPI(idClase);
       setClase({ ...claseCarga, cuposOcupados: cupo || 0 });
     } catch (error) {
       console.error("Error al cargar la clase:", error);
     }
   };
 
-  const setClaseRes = async () => {
+  const asignarClaseReservada = async () => {
     try {
       comprobarToken();
-      const response = await getClaseReservada(dni);
+      const response = await obtenerClaseReservadaXdniAPI(dni);
       if (response.status === 404) {
         return null;
       } else {
@@ -70,7 +70,7 @@ const ClasesProvider = ({ children }) => {
         horaInicio,
       };
 
-      const response = await postClase(clase);
+      const response = await crearResevaClaseAPI(clase);
 
       if (response.status === 200) {
         return { success: response };
@@ -83,32 +83,32 @@ const ClasesProvider = ({ children }) => {
     }
   };
 
-  const cancelReservasActivas = async () => {
-    const response = await cancelarReserva(dni);
+  const cancelarReservasActivas = async () => {
+    const response = await cancelarReservaClaseAPI(dni);
     if (response.status === 200) {
       setClaseReservada(null);
-      loadClases();
+      cargarClases();
     } else {
       console.error("Error al cancelar la reserva:", response);
     }
   };
 
   return (
-    <ClasesContext.Provider
+    <ContextoClases.Provider
       value={{
         clases,
-        loadClases,
-        loadClase,
+        cargarClases,
+        cargarClase,
         clase,
         reservarClase,
-        setClaseRes,
+        asignarClaseReservada,
         claseReservada,
-        cancelReservasActivas,
+        cancelarReservasActivas,
       }}
     >
       {children}
-    </ClasesContext.Provider>
+    </ContextoClases.Provider>
   );
 };
 
-export default ClasesProvider;
+export default ProveedorClases;

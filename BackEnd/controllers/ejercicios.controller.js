@@ -1,6 +1,6 @@
 import {pool } from "../bd.js";
 
-export const getEjercicios = async (req, res) => {
+export const obtenerEjercicios = async (req, res) => {
 try {
         const [result] = await pool.query("SELECT * FROM ejercicios");
         if (result.length === 0) {
@@ -13,7 +13,7 @@ try {
     }
     };
 
-export const getEjercicioBycodEjercicios = async (req, res) => {
+export const obtenerEjerciciosXcodigoEj = async (req, res) => {
     try {
         const [result] = await pool.query("SELECT * FROM ejercicios WHERE codEjercicio = ?", [
         req.params.codEjercicio,
@@ -28,7 +28,7 @@ export const getEjercicioBycodEjercicios = async (req, res) => {
     }
     };
 
-export const createEjercicio = async (req, res) => {
+export const crearEjercicio = async (req, res) => {
     try {
         const { nombre } = req.body;
         //no guardamos la respuesta ya que solamente subimos los datos del nuevo ejercicio
@@ -40,7 +40,7 @@ export const createEjercicio = async (req, res) => {
     }
     }
 
-export const updateEjercicio = async (req, res) => {
+export const actualizarEjercicio = async (req, res) => {
     try {
         const [result] = await pool.query("UPDATE ejercicios SET nombre = ? WHERE codEjercicio = ?", [
         req.body.nombre,
@@ -56,7 +56,7 @@ export const updateEjercicio = async (req, res) => {
     }
 
 
-export const deleteEjercicio = async (req, res) => {
+export const eliminarEjercicio = async (req, res) => {
     try {
         const [result] = await pool.query("UPDATE ejercicios set estado='eliminado' WHERE codEjercicio = ?", [
         req.params.codEjercicio,

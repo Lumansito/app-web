@@ -1,19 +1,19 @@
 import { Router } from "express";
 import {
     
-    getSoliciutdesRutinas,
-    getRutinaById,
-    updatePersonalizedRoutine
+    obtenerSolicitudRutinas,
+    obtenerRutinaXid,
+    actualizarRutina
 } from "../controllers/rutinas.controller.js";
 
 const router = Router();
 
 
 
-router.get("/api/solicitudes", getSoliciutdesRutinas);
+router.get("/api/solicitudes", obtenerSolicitudRutinas);
 
-router.get("/api/solicitudes/:idRutina", getRutinaById);
+router.get("/api/solicitudes/:idRutina", obtenerRutinaXid);
 
-router.put("/api/solicitudes/:idRutina", updatePersonalizedRoutine);
+router.put("/api/solicitudes/:idRutina", actualizarRutina);
 
 export default router;

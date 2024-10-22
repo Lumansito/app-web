@@ -1,15 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import AsistenciaProvider from "../context/Asitencia/AsistenciaProvider";
+import ProveedorAsistencia from "../context/Asitencia/proveedorAsistencia.jsx";
 
 import { Asistencia } from "../pages/Asistencia";
 
 export function AsistenciaRoutes() {
   return (
-    <AsistenciaProvider>
+    <ProveedorAsistencia>
       <Routes>
         <Route path="/" element={<Asistencia />} />
         
       </Routes>
-    </AsistenciaProvider>
+    </ProveedorAsistencia>
   );
 }

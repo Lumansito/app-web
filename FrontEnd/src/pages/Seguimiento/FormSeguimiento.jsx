@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { useSeguimiento } from "../../context/Seguimiento/SeguimientoProvider";
+import { useSeguimiento } from "../../context/Seguimiento/proveedorSeguimiento.jsx";
 
 export const FormSeguimiento = () => {
   const [values, setValues] = useState({

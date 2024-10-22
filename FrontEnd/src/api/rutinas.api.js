@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-export const getSolicitudes = async () => {
+export const obtenerSolicitudesRutinasAPI = async () => {
     try{
         return await axiosInstance.get("/solicitudes");
     }
@@ -9,7 +9,8 @@ export const getSolicitudes = async () => {
     }
     
 }
-export const getSolicitud = async (idRutina) => {
+
+export const obtenerSolicitudRutinaXidRutinaAPI = async (idRutina) => {
     try{
         return await axiosInstance.get(`/solicitudes/${idRutina}`);
     }
@@ -19,7 +20,7 @@ export const getSolicitud = async (idRutina) => {
     
 }
 
-export const uploadRutinaApi = async (  idRutina, diasRutina, dni) => {
+export const actualizarRutinaAPI = async (idRutina, diasRutina, dni) => {
     try{
         return await axiosInstance.put(`/solicitudes/${idRutina}`, {data:diasRutina, dniProf:dni});
     }

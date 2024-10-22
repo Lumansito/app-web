@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useSeguimiento } from "../../context/Seguimiento/SeguimientoProvider";
-import { useUsuario } from "../../context/Usuario/UsuarioProvider";
+import { useSeguimiento } from "../../context/Seguimiento/proveedorSeguimiento.jsx";
+import { useUsuario } from "../../context/Usuario/proveedorUsuario.jsx";
 import { Cliente } from "../../components/Cliente";
 import { Ejercicio } from "../../components/Ejercicio";
 import { Seguimiento } from "../../components/Seguimiento";

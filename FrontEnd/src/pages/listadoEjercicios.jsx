@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useEjercicios } from "../context/Ejercicio/EjercicioProvider";
+import { useEjercicios } from "../context/Ejercicio/proveedorEjercicio.jsx";
 
 export const ListadoEjercicios = () => {
     const { ejercicios, loadEjercicios } = useEjercicios();

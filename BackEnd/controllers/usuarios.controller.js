@@ -1,8 +1,6 @@
 import { pool } from "../bd.js";
 
-
-
-export const getUsers = async (req, res) => {
+export const obtenerUsuarios = async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM usuarios");
     if (result.length === 0) {
@@ -15,7 +13,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const getUserByDni = async (req, res) => {
+export const obtenerUsuarioXdni = async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM usuarios WHERE dni = ?", [
       req.params.dni,
@@ -31,7 +29,7 @@ export const getUserByDni = async (req, res) => {
 };
 
 // los roles vienen en un arreglo si es cliente roles = [1] si es cleinte y profesor roles = [1,2] si es admin roles = [3]
-export const createUser = async (req, res) => {
+export const crearUsuario = async (req, res) => {
   const { nombre, apellido, dni, roles, fechaNac, sexo, telefono, mail } =
     req.body;
   try {
@@ -52,7 +50,7 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
+export const actualizarUsuario = async (req, res) => {
   try {
     const [result] = await pool.query("UPDATE usuarios SET / WHERE dni = ?", [
       req.body,
@@ -67,7 +65,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
-export const deleteUser = async (req, res) => {
+export const eliminarUsuario = async (req, res) => {
   try {
     const { tipoUsuario } = req.body;
     const [result] = await pool.query("DELETE FROM usuarios WHERE dni = ?  ", [
@@ -84,8 +82,7 @@ export const deleteUser = async (req, res) => {
 };
 
 //obtener los clientes con la membresia suficiente para tener seguimientos
-
-export const getClientesConMembresia = async (req, res) => {
+export const obtenerClientesXcodMembresiaActiva = async (req, res) => {
   try {
     const { codMembresia } = req.params;
     const [result] = await pool.query(

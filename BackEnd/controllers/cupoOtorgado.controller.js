@@ -5,7 +5,7 @@
 
 import { pool } from "../bd.js";
 
-export const createCupoOtorgado = async (req, res) => {
+export const crearCupoOtorgado = async (req, res) => {
   try {
     const { dniCliente, dniInstructor, horaInicio } = req.body;
     //verifica si hay cupos disponibles PARA TURNO QEU SE QUEIRE RESERVAR
@@ -78,7 +78,7 @@ export const createCupoOtorgado = async (req, res) => {
   }
 };
 
-export const getCantidadCuposHoy = async (req, res) => {
+export const obtenerCantCuposHoy = async (req, res) => {
   try {
     const [result] = await pool.query(`
             SELECT horaInicio, count(*) as reservas from cupo_otorgado 
@@ -94,7 +94,7 @@ export const getCantidadCuposHoy = async (req, res) => {
   }
 };
 
-export const getCuposOcupadosByidEsquema = async (req, res) => {
+export const obtenerCuposOcupadosXidEsquema = async (req, res) => {
   try {
     const [result] = await pool.query(`
             SELECT  COUNT(*) AS reservas 
@@ -188,7 +188,7 @@ export const cancelarReserva = async (req, res) => {
   }
 };
 
-export const getReservasCliente = async (req, res) => {
+export const obtenerReservasCliente = async (req, res) => {
   try {
     const { dniCliente } = req.params;
     const [result] = await pool.query(

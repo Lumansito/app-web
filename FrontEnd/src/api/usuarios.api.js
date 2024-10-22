@@ -1,7 +1,7 @@
 import axiosInstance from "./axiosInstance";
 import axios from "axios";
 
-export const Rol_logIn = async (usuario) => {
+export const iniciarSesionAPI = async (usuario) => {
   try {
     const response = await axios.post("http://localhost:3000/api/users/login", usuario); //coloar la ip de la maquina donde se esta ejecutando el backend
     return response;
@@ -9,7 +9,8 @@ export const Rol_logIn = async (usuario) => {
     return error;
   }
 };
-export const createUser = async (usuario) => {
+
+export const crearUsuarioAPI = async (usuario) => {
   try {
     const response = await axiosInstance.post("/users", usuario);
     return response;
@@ -18,7 +19,7 @@ export const createUser = async (usuario) => {
   }
 };
 
-export const usuariosConMembresia = async (codMembresia) => {
+export const usuariosConMembresiaAPI = async (codMembresia) => {
   try {
     const response = await axiosInstance.get(
       `/users/membresia/${codMembresia}`
@@ -29,7 +30,7 @@ export const usuariosConMembresia = async (codMembresia) => {
   }
 };
 
-export const getCliente = async (dni) => {
+export const obtenerClienteXdniAPI = async (dni) => {
   try {
     const response = await axiosInstance.get(`/users/${dni}`);
     return response;
@@ -37,4 +38,4 @@ export const getCliente = async (dni) => {
     catch (error) {
         return error;
     }
-};
+}; 

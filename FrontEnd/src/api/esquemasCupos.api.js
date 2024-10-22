@@ -1,9 +1,9 @@
 import axiosInstance from "./axiosInstance";
 
 // Obtener todos los cupos
-export const getEsquemaCupos = async () => {
+export const obtenerEsquemaCuposAPI = async () => {
   try {
-    const response = await axiosInstance.get("/esquema_cupos");
+    const response = await axiosInstance.get("/esquemaCupos");
     return response.data; // Devolvemos los datos
   } catch (error) {
     console.error("Error fetching cupos:", error);
@@ -12,15 +12,15 @@ export const getEsquemaCupos = async () => {
 };
 
 // Obtener cupo por día de la semana y horario
-export const getEsquemaCuposByDate = async (diaSemana) => {
-  const response = await axiosInstance.get(`esquema_cupos/dia/${diaSemana}`);
+export const obtenerEsquemaCuposXfechaAPI = async (diaSemana) => {
+  const response = await axiosInstance.get(`esquemaCupos/dia/${diaSemana}`);
   return response.data;
 };
 
 // Obtener cupo por idEsquema
-export const getEsquemaCuposById = async (idEsquema) => {
+export const obtenerCuposOcupadosXidEsquemaAPI = async (idEsquema) => {
   try {
-    const response = await axiosInstance.get(`/esquema_cupos/${idEsquema}`);
+    const response = await axiosInstance.get(`/esquemaCupos/${idEsquema}`);
     return response.data; // Devolvemos los datos
   } catch (error) {
     console.error(`Error fetching cupo with ID ${idEsquema}:`, error);
@@ -29,9 +29,9 @@ export const getEsquemaCuposById = async (idEsquema) => {
 };
 
 // Obtener cupos de hoy
-export const getEsquemaCuposToday = async () => {
+export const obtenerEsquemaCuposHoyAPI = async () => {
   try {
-    const response = await axiosInstance.get("/esquema_cupos/today");
+    const response = await axiosInstance.get("/esquemaCupos/today");
     return response.data; // Devolvemos los datos
   } catch (error) {
     console.error("Error fetching cupos for today:", error);
@@ -40,9 +40,9 @@ export const getEsquemaCuposToday = async () => {
 };
 
 // Crear un nuevo cupo
-export const createEsquemaRequest = async (cupo) => {
+export const crearEsquemaCuposAPI = async (cupo) => {
   try {
-    const response = await axiosInstance.post("/esquema_cupos", cupo);
+    const response = await axiosInstance.post("/esquemaCupos", cupo);
     return response.data; // Devolvemos los datos
   } catch (error) {
     console.error("Error creating new cupo:", error);
@@ -51,9 +51,9 @@ export const createEsquemaRequest = async (cupo) => {
 };
 
 // Actualizar un cupo por idEsquema
-export const updateEsquemaRequest = async (idEsquema, cupo) => {
+export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
   try {
-    const response = await axiosInstance.put(`/esquema_cupos/${idEsquema}`, cupo);
+    const response = await axiosInstance.put(`/esquemaCupos/${idEsquema}`, cupo);
     return response.data;
   } catch (error) {
     console.error(`Error updating cupo with ID ${idEsquema}:`, error);
@@ -62,9 +62,9 @@ export const updateEsquemaRequest = async (idEsquema, cupo) => {
 };
 
 // Eliminar un cupo por idEsquema
-export const deleteEsquemaRequest = async (idEsquema) => {
+export const eliminarEsquemaCuposAPI = async (idEsquema) => {
   try {
-    const response = await axiosInstance.delete(`/esquema_cupos/${idEsquema}`);
+    const response = await axiosInstance.delete(`/esquemaCupos/${idEsquema}`);
     return response.data; // Devolvemos los datos
   } catch (error) {
     console.error(`Error deleting cupo with ID ${idEsquema}:`, error);

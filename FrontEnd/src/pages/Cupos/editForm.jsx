@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useCupos } from "../../context/Cupo/CupoProvider.jsx";
+import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 
 const EditCupoForm = () => {
   const [values, setValues] = useState({

@@ -1,6 +1,6 @@
 import { pool } from "../bd.js";
 
-export const getMembresias = async (req, res) => {
+export const obtenerMembresias = async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM membresias");
     if (result.length === 0) {
@@ -13,7 +13,7 @@ export const getMembresias = async (req, res) => {
   }
 };
 
-export const getMembresiaBycodMembresia = async (req, res) => {
+export const obtenerMembresiasXcodMembresia = async (req, res) => {
   try {
     const [result] = await pool.query(
       "SELECT * FROM membresias WHERE codMembresia = ?",
@@ -29,7 +29,7 @@ export const getMembresiaBycodMembresia = async (req, res) => {
   }
 };
 
-export const createMembresia = async (req, res) => {
+export const crearMembresia = async (req, res) => {
   try {
     const { nombre, costo, descripcion, costoDia } = req.body;
     await pool.query(
@@ -47,7 +47,7 @@ export const createMembresia = async (req, res) => {
   }
 };
 
-export const updateMembresia = async (req, res) => {
+export const actualizarMembresia = async (req, res) => {
   try {
     const [result] = await pool.query(
       "UPDATE membresias SET ? WHERE codMembresia = ?",
@@ -62,7 +62,7 @@ export const updateMembresia = async (req, res) => {
   }
 };
 
-export const deleteMembresia = async (req, res) => {
+export const eliminarMembresia = async (req, res) => {
   try {
     const [result] = await pool.query(
       "DELETE FROM membresias WHERE codMembresia = ?",

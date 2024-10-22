@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUsuario } from '../context/Usuario/UsuarioProvider';
+import { useUsuario } from '../context/Usuario/proveedorUsuario.jsx';
 
 
 

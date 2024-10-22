@@ -6,7 +6,7 @@
 import { pool } from "../bd.js";
 
 
-export const getSeguimientosByDni_CodEje = async (req, res) => {
+export const obtenerSeguimientosXdni_codEjercicio = async (req, res) => {
     try{
         const {dniCliente, codEjercicio} = req.params;
         const [result]= await pool.query("SELECT * from seguimientos_gym where dniCliente = ? and codEjercicio = ?", [dniCliente, codEjercicio]);
@@ -22,7 +22,7 @@ export const getSeguimientosByDni_CodEje = async (req, res) => {
     }
 }
 
-export const createSeguimiento = async (req, res) => {
+export const crearSeguimiento = async (req, res) => {
     try {
         const {dniCliente, codEjercicio,  repeticiones, peso } = req.body;
         const fecha = new Date();
@@ -35,7 +35,7 @@ export const createSeguimiento = async (req, res) => {
     }
 }
 
-export const updateSeguimiento = async (req, res) => {
+export const actualizarSeguimiento = async (req, res) => {
     try {
         const {idSeguimiento} = req.params;
         const { repeticiones, peso } = req.body;   //presentar esta actualizacion nen forma de modal
@@ -47,7 +47,7 @@ export const updateSeguimiento = async (req, res) => {
     }
 }
 
-export const deleteSeguimiento = async (req, res) => {
+export const eliminarSeguimiento = async (req, res) => {
     try {
         const {idSeguimiento} = req.params;
         const [result] = await pool.query("DELETE FROM seguimientos_gym WHERE idSeguimiento = ?", [idSeguimiento]);
@@ -62,7 +62,7 @@ export const deleteSeguimiento = async (req, res) => {
     }
 }
 
-export const getSeguimiento = async (req, res) => {
+export const obtenerSeguimiento = async (req, res) => {
     try {
         const {idSeguimiento} = req.params;
         const [result] = await pool.query("SELECT * FROM seguimientos_gym WHERE idSeguimiento = ?", [idSeguimiento]);

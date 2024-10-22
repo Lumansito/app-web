@@ -1,28 +1,28 @@
 import { Router } from "express";
 import {
-  getUsers,
-  getUserByDni,
-  getClientesConMembresia,
-  createUser,
-  updateUser,
-  deleteUser,
+  obtenerUsuarios,
+  obtenerUsuarioXdni,
+  obtenerClientesXcodMembresiaActiva,
+  crearUsuario,
+  actualizarUsuario,
+  eliminarUsuario,
 } from "../controllers/usuarios.controller.js";
 
 const router = Router();
 
 
 
-router.get("/api/users", getUsers);
+router.get("/api/users", obtenerUsuarios);
 
-router.get("/api/users/:dni", getUserByDni);
+router.get("/api/users/:dni", obtenerUsuarioXdni);
 
-router.get("/api/users/membresia/:codMembresia", getClientesConMembresia);
+router.get("/api/users/membresia/:codMembresia", obtenerClientesXcodMembresiaActiva);
 
-router.post("/api/users", createUser);
+router.post("/api/users", crearUsuario);
 
-router.put("/api/users/:dni", updateUser);
+router.put("/api/users/:dni", actualizarUsuario);
 
-router.delete("/api/users/:dni", deleteUser);
+router.delete("/api/users/:dni", eliminarUsuario);
 
 
 export default router;

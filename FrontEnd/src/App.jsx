@@ -6,12 +6,12 @@ import { SeguimientosRoutes } from "./routes/seguimientos.routes";
 import { CuposRoutes } from "./routes/cupos.routes";
 import { ClasesRoutes } from "./routes/clases.routes";
 import { PerfilRoutes } from "./routes/perfil.routes";
-import UsuarioProvider from "./context/Usuario/UsuarioProvider";
+import ProveedorUsuario from "./context/Usuario/proveedorUsuario.jsx";
 import { Asistencia } from "./pages/Asistencia";
 
 function App() {
   return (
-    <UsuarioProvider>
+    <ProveedorUsuario>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/confirmar-asistencia" element={<Asistencia />} />
@@ -24,7 +24,7 @@ function App() {
         <Route path="*" element={<h1>Not Found</h1>} />
        
       </Routes>
-    </UsuarioProvider>
+    </ProveedorUsuario>
   );
 }
 export default App;

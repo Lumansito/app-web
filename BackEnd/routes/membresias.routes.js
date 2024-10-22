@@ -1,22 +1,22 @@
 import { Router } from "express";
 import {
-  getMembresias,
-  getMembresiaBycodMembresia,
-  createMembresia,
-  updateMembresia,
-  deleteMembresia,
+  obtenerMembresias,
+  obtenerMembresiasXcodMembresia,
+  crearMembresia,
+  actualizarMembresia,
+  eliminarMembresia,
 } from "../controllers/membresias.controller.js";
 
 const router = Router();
 
-router.get("/api/membresias", getMembresias);
+router.get("/api/membresias", obtenerMembresias);
 
-router.get("/api/membresias/:codMembresia", getMembresiaBycodMembresia);
+router.get("/api/membresias/:codMembresia", obtenerMembresiasXcodMembresia);
 
-router.post("/api/membresias", createMembresia);
+router.post("/api/membresias", crearMembresia);
 
-router.put("/api/membresias/:codMembresia", updateMembresia);
+router.put("/api/membresias/:codMembresia", actualizarMembresia);
 
-router.delete("/api/membresias/:codMembresia", deleteMembresia);
+router.delete("/api/membresias/:codMembresia", eliminarMembresia);
 
 export default router;

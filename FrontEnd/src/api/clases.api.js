@@ -1,8 +1,8 @@
 import axiosInstance from "./axiosInstance";
 
-export const getClasesToday = async () => {
+export const obtenerClasesHoyAPI = async () => {
   try {
-    const response = await axiosInstance.get("/esquema_cupos/today");
+    const response = await axiosInstance.get("/esquemaCupos/today");
     
     return response;
   } catch (error) {
@@ -10,16 +10,16 @@ export const getClasesToday = async () => {
   }
 };
 
-export const getClase = async (idClase) => {
+export const obtenerClaseAPI = async (idClase) => {
   try {
-    const response = await axiosInstance.get(`esquema_cupos/${idClase}`);
+    const response = await axiosInstance.get(`esquemaCupos/${idClase}`);
     return response;
   } catch (error) {
     return error;
   }
 };
 
-export const getCupoClase = async (idClase) => {
+export const obtenerCupoClaseAPI = async (idClase) => {
   try {
     const response = await axiosInstance.get(`/cupos/${idClase}`);
     return response;
@@ -34,7 +34,7 @@ export const getCupoClase = async (idClase) => {
   }
 };
 
-export const postClase = async (clase) => {
+export const crearResevaClaseAPI = async (clase) => {
   try {
     const response = await axiosInstance.post(`cupos`, clase);
     return response;
@@ -43,7 +43,7 @@ export const postClase = async (clase) => {
   }
 };
 
-export const getClaseReservada = async (dni) => {
+export const obtenerClaseReservadaXdniAPI = async (dni) => {
   try {
     const response = await axiosInstance.get(`/cupos/reservas/${dni}`);
     return response;
@@ -52,7 +52,7 @@ export const getClaseReservada = async (dni) => {
   }
 }
 
-export const cancelarReserva = async (dni) => {
+export const cancelarReservaClaseAPI = async (dni) => {
   try {
     const response = await axiosInstance.post(`/cupos/cancelar/${dni}`);
     return response;

@@ -1,25 +1,25 @@
-import { RutinasContext } from "./RutinasContext.jsx";
+import { ContextoRutinas } from "./contextoRutinas.jsx";
 import React, { useContext, useState } from "react";
 
 import {
-  getSolicitudes,
-  getSolicitud,
-  uploadRutinaApi,
+  obtenerSolicitudesRutinasAPI,
+  obtenerSolicitudRutinaXidRutinaAPI,
+  actualizarRutinaAPI,
 } from "../../api/rutinas.api.js";
 
-import { useUsuario } from "../Usuario/UsuarioProvider.jsx";
+import { useUsuario } from "../Usuario/proveedorUsuario.jsx";
 
 export const useRutinas = () => {
-  const context = useContext(RutinasContext);
+  const context = useContext(ContextoRutinas);
   if (!context) {
     throw new Error(
-      "useRutinas debe estar dentro del proveedor RutinasProvider"
+      "useRutinas debe estar dentro del proveedor ProveedorRutinas"
     );
   }
   return context;
 };
 
-const RutinasProvider = ({ children }) => {
+const ProveedorRutinas = ({ children }) => {
   const { dni } = useUsuario();
   // Función de ejemplo para mostrar un mensaje en la consola
   const [solicitudes, setSolicitudes] = useState([]);
@@ -30,16 +30,16 @@ const RutinasProvider = ({ children }) => {
   ]);
   const [indice, setIndice] = useState(1);
 
-  async function loadSolicitudes() {
-    const response = await getSolicitudes();
+  async function cargarSolicitudes() {
+    const response = await obtenerSolicitudesRutinasAPI();
     setSolicitudes(response.data);
   }
-  async function loadSolicitud(id) {
-    const response = await getSolicitud(id);
+  async function cargarSolicitudXid(id) {
+    const response = await obtenerSolicitudRutinaXidRutinaAPI(id);
     setSolicitud(response.data);
   }
 
-  const updateLineaRutina = (dia, idLinea, nuevaLinea) => {
+  const actualizarLineaRutina = (dia, idLinea, nuevaLinea) => {
     setDiasRutina((prevDiasRutina) => {
       return prevDiasRutina.map((diaRutina) => {
         if (diaRutina.dia === dia) {
@@ -54,10 +54,10 @@ const RutinasProvider = ({ children }) => {
     });
     console.log(diasRutina);
   };
-  const uploadRutina = async () => {
+  const actualizarRutina = async () => {
     console.log(diasRutina);
     console.log(solicitud);
-    let response = await uploadRutinaApi(solicitud.idRutina, diasRutina, dni);
+    let response = await actualizarRutinaAPI(solicitud.idRutina, diasRutina, dni);
     if (response.data.message && response.data.message === "Correcto") {
       return true;
     } else {
@@ -79,24 +79,24 @@ const RutinasProvider = ({ children }) => {
   };
 
   return (
-    <RutinasContext.Provider
+    <ContextoRutinas.Provider
       value={{
-        loadSolicitudes,
+        cargarSolicitudes,
         solicitudes,
-        loadSolicitud,
+        cargarSolicitudXid,
         solicitud,
         indice,
         setIndice,
-        updateLineaRutina,
+        actualizarLineaRutina,
         diasRutina,
         setDiasRutina,
-        uploadRutina,
+        actualizarRutina,
         comprobarLineasRutina,
       }}
     >
       {children}
-    </RutinasContext.Provider>
+    </ContextoRutinas.Provider>
   );
 };
 
-export default RutinasProvider;
+export default ProveedorRutinas;

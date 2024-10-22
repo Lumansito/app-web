@@ -1,10 +1,11 @@
-import { ExerciseContext } from "./EjercicioContext";
+import { ExerciseContext } from "./contextoEjercicio.jsx";
 import {
-  getEjercicios,
-  createEjercicioRequest,
-  deleteEjercicioRequest,
-  updateEjercicioRequest
+  obtenerEjerciciosAPI,
+  crearEjercicioAPI,
+  eliminarEjercicioAPI,
+  actualizarEjercicioAPI
 } from "../../api/ejercicios.api.js";
+
 import React, { useContext, useState } from "react";
 
 export const useEjercicios = () => {
@@ -17,12 +18,12 @@ export const useEjercicios = () => {
   return context;
 };
 
-const EjercicioProvider = ({ children }) => {
+const ProveedorEjercicio = ({ children }) => {
   //proveedor para acceder a los datos de los empleados desde cualquier componente
   const [ejercicios, setEjercicios] = useState([]);
 
-  async function loadEjercicios() {
-    const response = await getEjercicios();
+  async function cargarEjercicio() {
+    const response = await obtenerEjerciciosAPI();
     let data = response.data;
     data = data
       .map((ejercicio) => {
@@ -38,23 +39,23 @@ const EjercicioProvider = ({ children }) => {
     setEjercicios(data);
   }
 
-  const deleteEjercicio = async (codEjercicio) => {
+  const eliminarEjercicio = async (codEjercicio) => {
     try {
-      await deleteEjercicioRequest(codEjercicio);
-      loadEjercicios();
+      await eliminarEjercicioAPI(codEjercicio);
+      cargarEjercicio();
     } catch (error) {}
   };
 
-  const createEjercicio = async (values) => {
+  const crearEjercicio = async (values) => {
     try {
-      await createEjercicioRequest(values);
-      loadEjercicios();
+      await crearEjercicioAPI(values);
+      cargarEjercicio();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getEjercicio = async (id) => {
+  const obtenerEjercicioXid = async (id) => {
     try {
       /* const response = await getPersonaByIdRequest(dni, rol);
         return response.data;*/
@@ -63,10 +64,10 @@ const EjercicioProvider = ({ children }) => {
     }
   };
 
-  const updateEjercicio = async (codEjercicio, values) => {
+  const actualizarEjercicio = async (codEjercicio, values) => {
     try {
-      await updateEjercicioRequest(codEjercicio, values);
-      loadEjercicios();
+      await actualizarEjercicioAPI(codEjercicio, values);
+      cargarEjercicio();
     } catch (error) {
       console.log(error);
     }
@@ -74,11 +75,11 @@ const EjercicioProvider = ({ children }) => {
 
   return (
     <ExerciseContext.Provider
-      value={{ ejercicios, loadEjercicios, createEjercicio, deleteEjercicio , updateEjercicio}}
+      value={{ ejercicios, cargarEjercicio, crearEjercicio, eliminarEjercicio, actualizarEjercicio}}
     >
       {children}
     </ExerciseContext.Provider>
   );
 };
 
-export default EjercicioProvider;
+export default ProveedorEjercicio;

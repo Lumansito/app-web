@@ -1,7 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-
-export const getSeguimientos = async (dni, codEjercicio) => {
+export const obtenerSeguimientosXdni_codEjercicioAPI = async (dni, codEjercicio) => {
     try {
       const response = await axiosInstance.get(`/seguimientos/clientes/${dni}/${codEjercicio}`);
       return response;
@@ -10,8 +9,7 @@ export const getSeguimientos = async (dni, codEjercicio) => {
     }
   };
 
-
-export const getSeguimientoByid = async (idSeguimiento) => {
+export const obtenerSeguimientosXdniAPI = async (idSeguimiento) => {
     try {
       const response = await axiosInstance.get(`/seguimientos/${idSeguimiento}`);
       return response;
@@ -20,7 +18,7 @@ export const getSeguimientoByid = async (idSeguimiento) => {
     }
   };
 
-export const updateSeguimiento = async (id, seguimiento) => {
+export const actualizarSeguimientoXidAPI = async (id, seguimiento) => {
     try {
       const response = await axiosInstance.put(`/seguimientos/${id}`, seguimiento);
       return response;
@@ -29,7 +27,7 @@ export const updateSeguimiento = async (id, seguimiento) => {
     }
   };
 
-export const createSeguimiento = async (seguimiento) => {
+export const crearSeguimientoAPI = async (seguimiento) => {
     try {
       const response = await axiosInstance.post(`/seguimientos`, seguimiento);
       return response;
@@ -38,7 +36,7 @@ export const createSeguimiento = async (seguimiento) => {
     }
   }
 
-export const deleteSeguimiento = async (idSeguimiento) => {
+export const eliminarSeguimientoAPI = async (idSeguimiento) => {
     try {
       const response = await axiosInstance.delete(`/seguimientos/${idSeguimiento}`);
       return response;

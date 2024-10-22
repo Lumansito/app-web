@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useCupos } from "../../context/Cupo/CupoProvider";
+import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 
 function CupoDetailPage() {
   const { id, nombreDia } = useParams(); // Captura ambos parámetros

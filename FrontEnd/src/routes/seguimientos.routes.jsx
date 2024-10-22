@@ -1,6 +1,6 @@
 import { Routes, Route , Link} from "react-router-dom";
-import SeguimientoProvider from "../context/Seguimiento/SeguimientoProvider.jsx";
-import { useUsuario } from "../context/Usuario/UsuarioProvider.jsx";
+import ProveedorSeguimiento from "../context/Seguimiento/proveedorSeguimiento.jsx";
+import { useUsuario } from "../context/Usuario/proveedorUsuario.jsx";
 import {ListadoClientesSeguimiento} from "../pages/Seguimiento/listadoClientesSeguimiento";
 import {FormSeguimiento} from "../pages/Seguimiento/FormSeguimiento";
 import { Validation } from "./validation.jsx";
@@ -9,7 +9,7 @@ export function SeguimientosRoutes() {
   const { rol } = useUsuario();
 
   return (
-    <SeguimientoProvider>
+    <ProveedorSeguimiento>
       <Validation rol={rol} esperado={2}>
         <Routes>
         <Route path="/edit/:idSeguimiento" element={<FormSeguimiento/>} />
@@ -22,7 +22,7 @@ export function SeguimientosRoutes() {
           
         </Routes>
       </Validation>
-    </SeguimientoProvider>
+    </ProveedorSeguimiento>
   );
 }
 

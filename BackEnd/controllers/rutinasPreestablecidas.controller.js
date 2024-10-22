@@ -1,7 +1,7 @@
 import e from "cors";
 import {pool} from "../bd.js";
 
-export const getRutinas_pre_establecidasBySexoNroDias = async (req, res) => {
+export const obtenerRutinaPreestablecidaXsexo_nroDias = async (req, res) => {
 
   try{
     const { sexo, nrodias } = req.params;
@@ -16,7 +16,7 @@ export const getRutinas_pre_establecidasBySexoNroDias = async (req, res) => {
   }
 };
 
-export const getRutinas_pre_establecidas = async (req, res) => {
+export const obtenerRutinasPreestablecidas = async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM rutinas_pre_establecidas");
     if (result.length === 0) {
@@ -30,7 +30,7 @@ export const getRutinas_pre_establecidas = async (req, res) => {
   }
 };
 
-export const updateRutinas_pre_establecidas = async (req, res) => {
+export const actualizarRutinasPreestablecidas = async (req, res) => {
   
     const lineas = req.body;
     let variables = "";

@@ -2,7 +2,7 @@ import React from "react";
 
 export function Clase({ clase , onClick}) {
 
-  const availablePercentage = (clase.cuposOcupados / clase.cupo) * 100;
+  const PorcentajeDisponible = (clase.cuposOcupados / clase.cupo) * 100;
 
   return ( //className={`bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 ease-in-out
     //${modo !== "descripcion" ? "hover:shadow-lg cursor-pointer transform hover:-translate-y-1" : ""}
@@ -26,7 +26,7 @@ export function Clase({ clase , onClick}) {
           <div className="w-full bg-gray-200 rounded-full h-2.5">
             <div
               className="bg-blue-600 h-2.5 rounded-full"
-              style={{ width: `${availablePercentage}%` }}
+              style={{ width: `${PorcentajeDisponible}%` }}
             ></div>
           </div>
         </div>

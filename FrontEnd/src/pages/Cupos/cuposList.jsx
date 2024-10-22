@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { CupoContext } from "../../context/Cupo/CupoContext";
+import { ContextoCupo } from "../../context/Cupo/contextoCupo.jsx";
 import DayList from "../../components/DayList";
 
 function CuposListPage() {
-  const { loadCupos, cupos, error, deleteCupo } = useContext(CupoContext);
+  const { loadCupos, cupos, error, deleteCupo } = useContext(ContextoCupo);
   const [selectedDay, setSelectedDay] = useState(null);
   const daysWeek = [1, 2, 3, 4, 5, 6];
   const navigate = useNavigate();

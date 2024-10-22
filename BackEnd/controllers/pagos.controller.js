@@ -2,7 +2,7 @@
 //se selecciona la membresia a pagar, para poder actualizar la q tiene el cliente activa.
 import { pool } from "../bd.js";
 
-export const getPagos = async (req, res) => {
+export const obtenerPagos = async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM pagos");
     if (result.length === 0) {
@@ -15,7 +15,7 @@ export const getPagos = async (req, res) => {
   }
 };
 
-export const getPagosByDNI = async (req, res) => {
+export const obtenerPagosXdni = async (req, res) => {
   try {
     const { dniCliente } = req.params;
     const [result] = await pool.query(
@@ -32,7 +32,7 @@ export const getPagosByDNI = async (req, res) => {
   }
 };
 
-export const createPago = async (req, res) => {
+export const crearPago = async (req, res) => {
   try {
 
     /*
@@ -85,7 +85,6 @@ export const createPago = async (req, res) => {
     await pool.query("COMMIT");
 
     res.json({
-      fecha,
       descripcion,
       monto,
       metodo,
@@ -100,8 +99,9 @@ export const createPago = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 // Actualizar un pago existente y recalcular el estado del cliente
-export const updatePago = async (req, res) => {
+export const actualizarPago = async (req, res) => {
   try {
     const {descripcion, monto, metodo, dniCliente, codMembresia } =   req.body;
     const fecha = new Date().toISOString().split("T")[0];

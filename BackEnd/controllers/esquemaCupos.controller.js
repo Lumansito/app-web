@@ -1,6 +1,6 @@
 import { pool } from "../bd.js";
 
-export const getEsquemaCupos = async (req, res) => {
+export const obtenerEsquemaCupos = async (req, res) => {
   try {
     const [results] = await pool.query("SELECT * FROM esquemaCupos");
     if (results.length === 0) {
@@ -13,7 +13,7 @@ export const getEsquemaCupos = async (req, res) => {
   }
 };
 
-export const getEsquemaCuposById = async (req, res) => {
+export const obtenerEsquemaCuposXid = async (req, res) => {
   try {
     const { idEsquema } = req.params; // Obtenemos el ID del parámetro de la solicitud
     const [result] = await pool.query(
@@ -31,7 +31,7 @@ export const getEsquemaCuposById = async (req, res) => {
   }
 };
 
-export const getEsquemaCuposByDate = async (req, res) => {
+export const obtenerEsquemaCuposXfecha = async (req, res) => {
   try {
     const { diaSemana } = req.params;
     const [result] = await pool.query(
@@ -50,7 +50,7 @@ export const getEsquemaCuposByDate = async (req, res) => {
   }
 };
 
-export const getEsquemaCuposByDiaSemana = async (req, res) => {
+export const obtenerEsquemaCuposXdiaSemana = async (req, res) => {
   try {
     const { diaSemana } = req.params;
     const [result] = await pool.query(
@@ -69,7 +69,7 @@ export const getEsquemaCuposByDiaSemana = async (req, res) => {
   }
 };
 
-export const getEsquemaCuposToday = async (req, res) => {
+export const obtenerEsquemaCuposHoy = async (req, res) => {
   try {
     const diaSemana = new Date().getDay();
     const [result] = await pool.query(
@@ -104,7 +104,8 @@ export const getEsquemaCuposToday = async (req, res) => {
     console.log(error);
   }
 };
-export const createEsquemaCupos = async (req, res) => {
+
+export const crearEsquemaCupos = async (req, res) => {
   try {
     const { diaSemana, horario, estado, dniInstructor, cupo } = req.body; // Eliminar idEsquema
     await pool.query(
@@ -126,7 +127,7 @@ export const createEsquemaCupos = async (req, res) => {
   }
 };
 
-export const updateEsquemaCupos = async (req, res) => {
+export const actualizarEsquemaCupos = async (req, res) => {
   try {
     const { idEsquema } = req.params;
     const { dniInstructor, estado, cupo, horario } = req.body; 
@@ -144,7 +145,7 @@ export const updateEsquemaCupos = async (req, res) => {
   }
 };
 
-export const deleteEsquemaCupos = async (req, res) => {
+export const eliminarEsquemaCupos = async (req, res) => {
   try {
     const { idEsquema } = req.params;
     const [result] = await pool.query(

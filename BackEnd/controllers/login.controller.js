@@ -1,7 +1,7 @@
 import { pool } from "../bd.js";
 import jwt from "jsonwebtoken";
 
-export const login = async (req, res) => {
+export const iniciarSesion = async (req, res) => {
   try {
     const [result] = await pool.query(
       "SELECT * FROM usuarios WHERE dni = ? AND contrasenia = ?",

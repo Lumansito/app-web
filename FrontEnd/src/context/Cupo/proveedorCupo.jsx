@@ -1,32 +1,32 @@
-import { CupoContext } from "./CupoContext";
+import { ContextoCupo } from "./contextoCupo.jsx";
 import {
-  getEsquemaCupos,
-  getEsquemaCuposByDate,
-  getEsquemaCuposToday,
-  getEsquemaCuposById,
-  createEsquemaRequest,
-  updateEsquemaRequest,
-  deleteEsquemaRequest,
-} from "../../api/cuposOtorgado.api";
+  obtenerEsquemaCuposAPI,
+  obtenerEsquemaCuposXfechaAPI,
+  obtenerEsquemaCuposHoyAPI,
+  obtenerCuposOcupadosXidEsquemaAPI,
+  crearEsquemaCuposAPI,
+  actualizarEsquemaCuposAPI,
+  eliminarEsquemaCuposAPI,
+} from "../../api/esquemasCupos.api.js";
 import { useContext, useEffect, useState } from "react";
 
 export const useCupos = () => {
-  const context = useContext(CupoContext);
+  const context = useContext(ContextoCupo);
   if (!context) {
-    throw new Error("useCupos debe estar dentro del proveedor CupoProvider");
+    throw new Error("useCupos debe estar dentro del proveedor ProveedorCupo");
   }
   return context;
 };
 
-const CupoProvider = ({ children }) => {
+const ProveedorCupo = ({ children }) => {
   const [cupos, setCupos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const loadCupos = async () => {
+  const cargarCupos = async () => {
     setLoading(true);
     try {
-      const data = await getEsquemaCupos();
+      const data = await obtenerEsquemaCuposAPI();
       if (data) {
         setCupos(data);
       }
@@ -38,10 +38,10 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const loadCuposToday = async () => {
+  const cargarCuposHoy = async () => {
     setLoading(true);
     try {
-      const data = await getEsquemaCuposToday();
+      const data = await obtenerEsquemaCuposHoyAPI();
       if (data) {
         setCupos(data);
       }
@@ -53,10 +53,10 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const loadCuposByDate = async (diaSemana) => {
+  const cargarCuposXfecha = async (diaSemana) => {
     setLoading(true);
     try {
-      const data = await getEsquemaCuposByDate(diaSemana); // Solo pasar diaSemana
+      const data = await obtenerEsquemaCuposXfechaAPI(diaSemana); // Solo pasar diaSemana
       return data;
     } catch (error) {
       setError("Error al cargar cupo específico");
@@ -66,10 +66,10 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const loadCupoById = async (id) => {
+  const cargarCupoXid = async (id) => {
     setLoading(true);
     try {
-      const data = await getEsquemaCuposById(id);
+      const data = await obtenerCuposOcupadosXidEsquemaAPI(id);
       return data;
     } catch (error) {
       setError("Error al cargar cupo específico por ID");
@@ -79,10 +79,10 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const createCupo = async (cupo) => {
+  const crearCupo = async (cupo) => {
     setLoading(true);
     try {
-      const newCupo = await createEsquemaRequest(cupo);
+      const newCupo = await crearEsquemaCuposAPI(cupo);
       if (newCupo) {
         setCupos((prev) => [...prev, newCupo]);
         return true; // Devuelve true si todo fue exitoso
@@ -97,10 +97,10 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const updateCupo = async (idEsquema, cupo) => {
+  const actualizarCupo = async (idEsquema, cupo) => {
     setLoading(true);
     try {
-      const updated = await updateEsquemaRequest(idEsquema, cupo);
+      const updated = await actualizarEsquemaCuposAPI(idEsquema, cupo);
       if (updated) {
         setCupos((prev) =>
           prev.map((existingCupo) =>
@@ -116,11 +116,11 @@ const CupoProvider = ({ children }) => {
     }
   };
 
-  const deleteCupo = async (idEsquema) => {
+  const eliminarCupo = async (idEsquema) => {
     setLoading(true);
     try {
       // Pasa idEsquema a la función de solicitud de eliminación
-      const deleted = await deleteEsquemaRequest(idEsquema); // Asegúrate de que esto reciba el ID
+      const deleted = await eliminarEsquemaCuposAPI(idEsquema); // Asegúrate de que esto reciba el ID
       if (deleted) {
         // Actualiza el estado de los cupos eliminando el que tiene el idEsquema correspondiente
         setCupos((prev) => prev.filter((cupo) => cupo.idEsquema !== idEsquema));
@@ -134,27 +134,27 @@ const CupoProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    loadCupos();
+    cargarCupos();
   }, []);
 
   return (
-    <CupoContext.Provider
+    <ContextoCupo.Provider
       value={{
         cupos,
         loading,
-        loadCupos,
-        loadCuposToday,
-        deleteCupo,
-        createCupo,
-        loadCuposByDate,
-        loadCupoById,
-        updateCupo,
+        cargarCupos,
+        cargarCuposHoy,
+        eliminarCupo,
+        crearCupo,
+        cargarCuposXfecha,
+        cargarCupoXid,
+        actualizarCupo,
         error,
       }}
     >
       {children}
-    </CupoContext.Provider>
+    </ContextoCupo.Provider>
   );
 };
 
-export default CupoProvider;
+export default ProveedorCupo;

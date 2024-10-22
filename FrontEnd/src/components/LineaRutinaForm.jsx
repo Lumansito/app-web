@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { useEjercicios } from "../context/Ejercicio/EjercicioProvider"
-import { useRutinas } from "../context/Rutinas/RutinasProvider"
+import { useEjercicios } from "../context/Ejercicio/proveedorEjercicio.jsx"
+import { useRutinas } from "../context/Rutinas/proveedorRutinas.jsx"
 
 export  function LineaRutinaForm({ dia, id, linea }) {
   const {
