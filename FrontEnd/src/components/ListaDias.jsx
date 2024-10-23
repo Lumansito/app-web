@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function DayList({ day, cupos, navigate, onClick }) {
+function ListaDias({ day, cupos, navigate, onClick }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedCupoId, setSelectedCupoId] = useState(null);
 
@@ -95,4 +95,4 @@ function DayList({ day, cupos, navigate, onClick }) {
   );
 }
 
-export default DayList;
+export default ListaDias;

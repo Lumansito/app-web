@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContextoCupo } from "../../context/Cupo/contextoCupo.jsx";
-import DayList from "../../components/DayList";
+import ListaDias from "../../components/ListaDias.jsx";
 
-function CuposListPage() {
+function ListaCupos() {
   const { loadCupos, cupos, error, deleteCupo } = useContext(ContextoCupo);
   const [selectedDay, setSelectedDay] = useState(null);
   const daysWeek = [1, 2, 3, 4, 5, 6];
@@ -107,7 +107,7 @@ function CuposListPage() {
 
       {selectedDay !== null && (
         <div className="mt-6">
-          <DayList
+          <ListaDias
             day={getDayName(selectedDay)}
             cupos={cupos.filter((cupo) => isMatchingDay(cupo, selectedDay))}
             navigate={navigate}
@@ -120,4 +120,4 @@ function CuposListPage() {
   );
 }
 
-export default CuposListPage;
+export default ListaCupos;

@@ -1,7 +1,7 @@
 //aca es donde queda el registro de los cupos por cada clase que se da,
 //tmb hay q hacer el aparta de exportar cupos para determianda hora
 //para la carga de las barras de progresion  a la hora de la reserva
-// y colocar el metodo para que se confirme la asistencia a los turnos.
+// y colocar el metodo para que se confirme la Asistencia a los turnos.
 
 import { pool } from "../bd.js";
 
@@ -143,7 +143,7 @@ export const confirmarAsistencia = async (req, res) => {
       return res
         .status(400)
         .json({
-          message: "No se puede confirmar la asistencia. Fuera de horario.",
+          message: "No se puede confirmar la Asistencia. Fuera de horario.",
         });
     }
 
@@ -157,7 +157,7 @@ export const confirmarAsistencia = async (req, res) => {
     if (result.affectedRows === 0) {
       return res
         .status(400)
-        .json({ message: "No se pudo confirmar la asistencia" });
+        .json({ message: "No se pudo confirmar la Asistencia" });
     } else {
       res.status(200).json({ message: "Asistencia confirmada" });
     }

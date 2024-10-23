@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useEjercicios } from "../../context/Ejercicio/proveedorEjercicio.jsx";
-import { EjercicioForm } from "../../components/EjercicioForm";
+import React, {useState, useEffect} from "react";
+import {useEjercicios} from "../../context/Ejercicio/proveedorEjercicio.jsx";
+import {FormularioEjercicio} from "../../components/FormularioEjercicio.jsx";
 
 
-export const ListEjercicios = () => {
-    const { ejercicios, loadEjercicios, createEjercicio, deleteEjercicio, updateEjercicio } = useEjercicios();
+export const ListaEjercicios = () => {
+    const {ejercicios, loadEjercicios, createEjercicio, deleteEjercicio, updateEjercicio} = useEjercicios();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [newEjercicio, setNewEjercicio] = useState({ nombre: ''});
+    const [newEjercicio, setNewEjercicio] = useState({nombre: ''});
 
     useEffect(() => {
         loadEjercicios();
@@ -15,7 +15,7 @@ export const ListEjercicios = () => {
     const handleCreateEjercicio = () => {
         createEjercicio(newEjercicio);
         setIsCreateModalOpen(false);
-        setNewEjercicio({ nombre: ''});
+        setNewEjercicio({nombre: ''});
     };
 
     return (
@@ -32,7 +32,7 @@ export const ListEjercicios = () => {
             <ul className="space-y-4">
                 {ejercicios.map(ejercicio => (
                     <li key={ejercicio.codEjercicio}>
-                        <EjercicioForm ejercicio={ejercicio}  onDelete={deleteEjercicio} onEdit={updateEjercicio}/>
+                        <FormularioEjercicio ejercicio={ejercicio} onDelete={deleteEjercicio} onEdit={updateEjercicio}/>
                     </li>
                 ))}
             </ul>
@@ -58,7 +58,7 @@ export const ListEjercicios = () => {
                                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                                     />
                                 </div>
-                                
+
                             </div>
                             <div className="mt-4 flex justify-end space-x-2">
                                 <button

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 
-function CupoDetailPage() {
+function DetalleCupo() {
   const { id, nombreDia } = useParams(); // Captura ambos parámetros
   const { loadCupoById, loadCuposByDate } = useCupos(); // Asegúrate de que loadCuposByDate esté definido
   const [cupo, setCupo] = useState(null);
@@ -54,4 +54,4 @@ function CupoDetailPage() {
   );
 }
 
-export default CupoDetailPage;
+export default DetalleCupo;

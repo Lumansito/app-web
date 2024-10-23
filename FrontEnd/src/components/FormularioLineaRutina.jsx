@@ -4,7 +4,7 @@ import { CSS } from "@dnd-kit/utilities"
 import { useEjercicios } from "../context/Ejercicio/proveedorEjercicio.jsx"
 import { useRutinas } from "../context/Rutinas/proveedorRutinas.jsx"
 
-export  function LineaRutinaForm({ dia, id, linea }) {
+export  function FormularioLineaRutina({ dia, id, linea }) {
   const {
     attributes,
     listeners,

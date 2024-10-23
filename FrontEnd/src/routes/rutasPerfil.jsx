@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import ProveedorUsuario, { useUsuario } from "../context/Usuario/proveedorUsuario.jsx";
-import { Perfil } from "../pages/Perfil/Perfil.jsx";
+import { Perfil } from "../pages/Perfil/perfil.jsx";
 //import { CambiarContrasena } from "../pages/Perfil/CambiarContrasena.jsx"; // Página para cambiar contraseña
 //<Route path="/perfil/cambiar-contrasena" element={<CambiarContrasena />} />
 
-export function PerfilRoutes() {
+export function rutasPerfil() {
   const { rol } = useUsuario(); 
 
   return (

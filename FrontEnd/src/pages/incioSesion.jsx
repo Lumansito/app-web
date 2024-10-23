@@ -1,26 +1,17 @@
 import React, { useState } from 'react';
 import { useUsuario } from '../context/Usuario/proveedorUsuario.jsx';
 
-
-
-
-export function LogIn() {
+export function IncioSesion() {
     const { login } = useUsuario();
-
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-   
 
     const handleLogin = async () => {
-
         let usuario = {
             dni: username,
             contrasenia: password
         }
         await login(usuario);
-        
-        
     };
 
     return (
@@ -44,5 +35,4 @@ export function LogIn() {
             </button>
         </div>
     );
-    
 }

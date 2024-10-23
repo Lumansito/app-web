@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export function EjercicioForm({ ejercicio, onEdit, onDelete }) {
+export function FormularioEjercicio({ ejercicio, onEdit, onDelete }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [nombre, setNombre] = useState(ejercicio.nombre)

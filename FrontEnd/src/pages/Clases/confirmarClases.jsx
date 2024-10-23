@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useClases } from "../../context/Clases/proveedorClases.jsx"
 import { Clase } from "../../components/Clase"
 
-export const ConfirmClases = () => {
+export const ConfirmarClases = () => {
   const { clase, loadClase, reservarClase } = useClases()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState("")

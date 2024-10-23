@@ -4,7 +4,7 @@ import { useClases } from "../../context/Clases/proveedorClases.jsx";
 import { Clase } from "../../components/Clase";
 import { Reserva } from "../../components/Reserva";
 
-export const ListClases = () => {
+export const ListaClases = () => {
   const { clases, loadClases, setClaseRes, claseReservada, cancelReservasActivas } = useClases();
   const navigate = useNavigate();
 

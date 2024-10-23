@@ -36,7 +36,7 @@ export const Asistencia = () => {
         setDni('')
       }
     } catch (error) {
-      setModalMessage('Error al confirmar la asistencia')
+      setModalMessage('Error al confirmar la Asistencia')
       setIsSuccess(false)
     } finally {
       setIsLoading(false)

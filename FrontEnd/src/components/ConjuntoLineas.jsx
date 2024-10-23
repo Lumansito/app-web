@@ -1,4 +1,4 @@
-import { LineaRutinaForm } from "./LineaRutinaForm"
+import { FormularioLineaRutina } from "./FormularioLineaRutina.jsx"
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -16,7 +16,7 @@ export  function ConjuntoLineas({ dia, lineas, onClick }) {
           <div className="space-y-4">
             {lineas.map((linea) => (
               <div key={linea.id} className="bg-gray-100 p-4 rounded-md">
-                <LineaRutinaForm id={linea.id} linea={linea} dia={dia} />
+                <FormularioLineaRutina id={linea.id} linea={linea} dia={dia} />
               </div>
             ))}
           </div>
