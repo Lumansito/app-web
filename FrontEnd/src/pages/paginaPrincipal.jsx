@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {IncioSesion} from "./incioSesion.jsx";
+import {InicioSesion} from "./InicioSesion.jsx";
 import {useUsuario} from "../context/Usuario/proveedorUsuario.jsx";
 
 export function PaginaPrincipal() {
@@ -30,7 +30,7 @@ export function PaginaPrincipal() {
     };
 
     if (rol.length === 0) {
-        return <IncioSesion/>;
+        return <InicioSesion/>;
     }
 
     return (

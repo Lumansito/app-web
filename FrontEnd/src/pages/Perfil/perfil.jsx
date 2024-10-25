@@ -1,4 +1,3 @@
-import React from 'react'
 import {FaUser, FaCalendarAlt, FaLock, FaSignOutAlt} from 'react-icons/fa'
 
 export function Perfil({

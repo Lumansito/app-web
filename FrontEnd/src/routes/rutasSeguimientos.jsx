@@ -3,14 +3,14 @@ import ProveedorSeguimiento from "../context/Seguimiento/proveedorSeguimiento.js
 import {useUsuario} from "../context/Usuario/proveedorUsuario.jsx";
 import {ListadoClientesSeguimiento} from "../pages/Seguimiento/listadoClientesSeguimiento.jsx";
 import {FormularioSeguimiento} from "../pages/Seguimiento/formularioSeguimiento.jsx";
-import {validacion} from "./validacion.jsx";
+import {Validacion} from "./Validacion.jsx";
 
-export function rutasSeguimientos() {
+export function RutasSeguimientos() {
     const {rol} = useUsuario();
 
     return (
         <ProveedorSeguimiento>
-            <validacion rol={rol} esperado={2}>
+            <Validacion rol={rol} esperado={2}>
                 <Routes>
                     <Route path="/edit/:idSeguimiento" element={<FormularioSeguimiento/>}/>
                     <Route path="/new/:dni/:codEjercicio" element={<FormularioSeguimiento/>}/>
@@ -21,7 +21,7 @@ export function rutasSeguimientos() {
 
 
                 </Routes>
-            </validacion>
+            </Validacion>
         </ProveedorSeguimiento>
     );
 }

@@ -6,19 +6,19 @@ import {useUsuario} from "../context/Usuario/proveedorUsuario.jsx";
 import {ListaClases} from "../pages/Clases/listaClases.jsx";
 import {ConfirmarClases} from "../pages/Clases/confirmarClases.jsx";
 
-import {validacion} from "./validacion.jsx";
+import {Validacion} from "./Validacion.jsx";
 
-export function rutasClases() {
+export function RutasClases() {
     const {rol} = useUsuario();
 
     return (
         <ProveedorClases>
-            <validacion rol={rol} esperado={1}>
+            <Validacion rol={rol} esperado={1}>
                 <Routes>
                     <Route path="/" element={<ListaClases/>}/>
                     <Route path="/:idClase" element={<ConfirmarClases/>}/>
                 </Routes>
-            </validacion>
+            </Validacion>
         </ProveedorClases>
     );
 }

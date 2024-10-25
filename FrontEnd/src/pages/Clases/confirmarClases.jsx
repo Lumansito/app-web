@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
+import  { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useClases } from "../../context/Clases/proveedorClases.jsx"
-import { Clase } from "../../components/Clase"
+import { Clase } from "../../components/Clase.jsx"
 
 export const ConfirmarClases = () => {
-  const { clase, loadClase, reservarClase } = useClases()
+  const { clase, cargarClase, reservarClase } = useClases()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -14,7 +14,7 @@ export const ConfirmarClases = () => {
   const { idClase } = params
 
   useEffect(() => {
-    loadClase(idClase)
+    cargarClase(idClase)
   }, [idClase])
 
   const handleConfirm = async () => {

@@ -1,18 +1,18 @@
-import React, { useEffect , useState} from "react";
+import  { useEffect , useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { useClases } from "../../context/Clases/proveedorClases.jsx";
-import { Clase } from "../../components/Clase";
-import { Reserva } from "../../components/Reserva";
+import { useClases } from "../../context/Clases/ProveedorClases.jsx";
+import { Clase } from "../../components/Clase.jsx";
+import { Reserva } from "../../components/Reserva.jsx";
 
 export const ListaClases = () => {
-  const { clases, loadClases, setClaseRes, claseReservada, cancelReservasActivas } = useClases();
+  const { clases,  cargarClases,  asignarClaseReservada, claseReservada,  cancelarReservasActivas } = useClases();
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    loadClases();
-    setClaseRes();
+    cargarClases();
+    asignarClaseReservada();
   }, []);
 
 
@@ -34,7 +34,7 @@ export const ListaClases = () => {
 
   const handleConfirmCancel = () => {
     setShowModal(false);
-    cancelReservasActivas();
+    cancelarReservasActivas();
   };
 
   const handleCloseModal = () => {

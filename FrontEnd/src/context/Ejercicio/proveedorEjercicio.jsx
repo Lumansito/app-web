@@ -6,13 +6,13 @@ import {
   actualizarEjercicioAPI
 } from "../../api/ejercicios.api.js";
 
-import React, { useContext, useState } from "react";
+import  { useContext, useState } from "react";
 
 export const useEjercicios = () => {
   const context = useContext(ExerciseContext);
   if (!context) {
     throw new Error(
-      "useEEjercicios debe estar dentro del proveedor EmpleadoProvider"
+      "useEjercicios debe estar dentro del proveedor EmpleadoProvider"
     );
   }
   return context;
@@ -22,7 +22,7 @@ const ProveedorEjercicio = ({ children }) => {
   //proveedor para acceder a los datos de los empleados desde cualquier componente
   const [ejercicios, setEjercicios] = useState([]);
 
-  async function cargarEjercicio() {
+  async function cargarEjercicios() {
     const response = await obtenerEjerciciosAPI();
     let data = response.data;
     data = data
@@ -42,32 +42,34 @@ const ProveedorEjercicio = ({ children }) => {
   const eliminarEjercicio = async (codEjercicio) => {
     try {
       await eliminarEjercicioAPI(codEjercicio);
-      cargarEjercicio();
+      cargarEjercicios();
     } catch (error) {}
   };
 
   const crearEjercicio = async (values) => {
     try {
       await crearEjercicioAPI(values);
-      cargarEjercicio();
+      cargarEjercicios();
     } catch (error) {
       console.log(error);
     }
   };
 
+  /*
   const obtenerEjercicioXid = async (id) => {
     try {
-      /* const response = await getPersonaByIdRequest(dni, rol);
-        return response.data;*/
+       const response = await getPersonaByIdRequest(dni, rol);
+        return response.data;
     } catch (error) {
       console.log(error);
     }
   };
+    */
 
   const actualizarEjercicio = async (codEjercicio, values) => {
     try {
       await actualizarEjercicioAPI(codEjercicio, values);
-      cargarEjercicio();
+      cargarEjercicios();
     } catch (error) {
       console.log(error);
     }
@@ -75,7 +77,7 @@ const ProveedorEjercicio = ({ children }) => {
 
   return (
     <ExerciseContext.Provider
-      value={{ ejercicios, cargarEjercicio, crearEjercicio, eliminarEjercicio, actualizarEjercicio}}
+      value={{ ejercicios, cargarEjercicios, crearEjercicio, eliminarEjercicio, actualizarEjercicio, }}
     >
       {children}
     </ExerciseContext.Provider>

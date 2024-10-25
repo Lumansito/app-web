@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRutinas } from "../../context/Rutinas/proveedorRutinas.jsx";
-import { useUsuario } from "../../context/Usuario/proveedorUsuario.jsx";
+import { useRutinas } from "../../context/Rutinas/ProveedorRutinas.jsx";
+import { useUsuario } from "../../context/Usuario/ProveedorUsuario.jsx";
 import { Solicitud } from "../../components/Solicitud";
 
 export const ListadoSolicitudes = () => {
-  const { loadSolicitudes, solicitudes } = useRutinas();
+  const {  cargarSolicitudes, solicitudes } = useRutinas();
   const { comprobarToken } = useUsuario();
   const navigate = useNavigate();
 
   useEffect(() => {
     comprobarToken();
-    loadSolicitudes();
+    cargarSolicitudes();
   }, []);
 
   const handleSelect = (solicitud) => {

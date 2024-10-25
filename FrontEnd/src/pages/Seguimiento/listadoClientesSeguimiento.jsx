@@ -128,17 +128,23 @@ export const ListadoClientesSeguimiento = () => {
             return (
                 <div className="space-y-4">
                     <h2 className="text-xl font-semibold">Selecciona un cliente para ver sus seguimientos</h2>
-                    <ul className="space-y-2">
-                        {clientes.map((cliente) => (
-                            <li key={cliente.dni} className="bg-gray-100 p-3 rounded-lg">
-                                <Cliente
-                                    cliente={cliente}
-                                    onClick={() => handleClienteClick(cliente)}
-                                />
-                            </li>
-                        ))}
-                    </ul>
+
+                    {clientes.length > 0 ? (
+                        <ul className="space-y-2">
+                            {clientes.map((cliente) => (
+                                <li key={cliente.dni} className="bg-gray-100 p-3 rounded-lg">
+                                    <Cliente
+                                        cliente={cliente}
+                                        onClick={() => handleClienteClick(cliente)}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-500">No hay clientes disponibles.</p>
+                    )}
                 </div>
+
             );
         }
     };

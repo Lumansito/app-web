@@ -14,8 +14,8 @@ export  function FormularioLineaRutina({ dia, id, linea }) {
     isDragging
   } = useSortable({ id })
   
-  const { ejercicios, loadEjercicios } = useEjercicios()
-  const { updateLineaRutina } = useRutinas()
+  const { ejercicios, cargarEjercicios } = useEjercicios()
+  const {  actualizarLineaRutina } = useRutinas()
   const [selectedEjercicio, setSelectedEjercicio] = useState(linea.codejercicio || "")
 
   const [lineaActual, setLineaActual] = useState({
@@ -27,7 +27,7 @@ export  function FormularioLineaRutina({ dia, id, linea }) {
   })
 
   useEffect(() => {
-    loadEjercicios()
+    cargarEjercicios()
   }, [])
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export  function FormularioLineaRutina({ dia, id, linea }) {
     setSelectedEjercicio(newCodeEjercicio)
     const updatedLinea = { ...lineaActual, codejercicio: newCodeEjercicio }
     setLineaActual(updatedLinea)
-    updateLineaRutina(dia, updatedLinea.id, updatedLinea)
+    actualizarLineaRutina(dia, updatedLinea.id, updatedLinea)
   }
 
   const handleInputChange = (e) => {
@@ -54,7 +54,7 @@ export  function FormularioLineaRutina({ dia, id, linea }) {
     const { name, value } = e.target
     const updatedLinea = { ...lineaActual, [name]: parseInt(value, 10) || 0 }
     setLineaActual(updatedLinea)
-    updateLineaRutina(dia, updatedLinea.id, updatedLinea)
+    actualizarLineaRutina(dia, updatedLinea.id, updatedLinea)
   }
 
   const style = {

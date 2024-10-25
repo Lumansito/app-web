@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAsistencia } from '../context/Asitencia/proveedorAsistencia.jsx'
+import { useAsistencia } from '../context/Asitencia/ProveedorAsistencia.jsx'
 
 export const Asistencia = () => {
   const [dni, setDni] = useState('')

@@ -4,7 +4,7 @@ import { ContextoCupo } from "../../context/Cupo/contextoCupo.jsx";
 import ListaDias from "../../components/ListaDias.jsx";
 
 function ListaCupos() {
-  const { loadCupos, cupos, error, deleteCupo } = useContext(ContextoCupo);
+  const { cargarCupos, cupos, error,  eliminarCupo } = useContext(ContextoCupo);
   const [selectedDay, setSelectedDay] = useState(null);
   const daysWeek = [1, 2, 3, 4, 5, 6];
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ function ListaCupos() {
   };
 
   useEffect(() => {
-    loadCupos();
+    cargarCupos();
   }, []);
 
   const handleSelect = (day) => {
@@ -30,7 +30,7 @@ function ListaCupos() {
   };
 
   const handleDelete = (idEsquema) => {
-    deleteCupo(idEsquema);
+    eliminarCupo(idEsquema);
   };
 
   const isMatchingDay = (cupo, day) => {

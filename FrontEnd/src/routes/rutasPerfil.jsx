@@ -4,7 +4,7 @@ import { Perfil } from "../pages/Perfil/perfil.jsx";
 //import { CambiarContrasena } from "../pages/Perfil/CambiarContrasena.jsx"; // Página para cambiar contraseña
 //<Route path="/perfil/cambiar-contrasena" element={<CambiarContrasena />} />
 
-export function rutasPerfil() {
+export function RutasPerfil() {
   const { rol } = useUsuario(); 
 
   return (

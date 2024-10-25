@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from "react";
+import  {useState, useEffect} from "react";
 import {useEjercicios} from "../../context/Ejercicio/proveedorEjercicio.jsx";
 import {FormularioEjercicio} from "../../components/FormularioEjercicio.jsx";
 
 
 export const ListaEjercicios = () => {
-    const {ejercicios, loadEjercicios, createEjercicio, deleteEjercicio, updateEjercicio} = useEjercicios();
+    const {ejercicios, cargarEjercicios,  crearEjercicio,  eliminarEjercicio,  actualizarEjercicio} = useEjercicios();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [newEjercicio, setNewEjercicio] = useState({nombre: ''});
 
     useEffect(() => {
-        loadEjercicios();
+        cargarEjercicios();
     }, []);
 
     const handleCreateEjercicio = () => {
-        createEjercicio(newEjercicio);
+        crearEjercicio(newEjercicio);
         setIsCreateModalOpen(false);
         setNewEjercicio({nombre: ''});
     };
@@ -32,7 +32,7 @@ export const ListaEjercicios = () => {
             <ul className="space-y-4">
                 {ejercicios.map(ejercicio => (
                     <li key={ejercicio.codEjercicio}>
-                        <FormularioEjercicio ejercicio={ejercicio} onDelete={deleteEjercicio} onEdit={updateEjercicio}/>
+                        <FormularioEjercicio ejercicio={ejercicio} onDelete={eliminarEjercicio} onEdit={actualizarEjercicio}/>
                     </li>
                 ))}
             </ul>

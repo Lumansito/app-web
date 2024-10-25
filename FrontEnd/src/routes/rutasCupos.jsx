@@ -5,7 +5,7 @@ import FormularioEditarCupo from "../pages/Cupos/formularioEditar.jsx";
 import DetalleCupo from "../pages/Cupos/detalleCupo.jsx";
 import ProveedorCupo from "../context/Cupo/proveedorCupo.jsx";
 
-export function rutasCupos() {
+export function RutasCupos() {
   return (
     <ProveedorCupo>
       <Routes>

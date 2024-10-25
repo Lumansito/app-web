@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react"
+import {useEffect, useState} from "react"
 import {useParams, useNavigate} from "react-router-dom"
-import {useRutinas} from "../../context/Rutinas/proveedorRutinas.jsx"
-import {Solicitud} from "../../components/Solicitud"
-import {ConjuntoLineas} from "../../components/ConjuntoLineas"
+import {useRutinas} from "../../context/Rutinas/ProveedorRutinas.jsx"
+import {Solicitud} from "../../components/Solicitud.jsx"
+import {ConjuntoLineas} from "../../components/ConjuntoLineas.jsx"
 import {
     DndContext,
     KeyboardSensor,
@@ -10,14 +10,14 @@ import {
     useSensor,
     useSensors,
     closestCorners,
-    TouchSensor,
+
 } from "@dnd-kit/core"
 import {arrayMove, sortableKeyboardCoordinates} from "@dnd-kit/sortable"
 
 export const FormularioSolicitudRutina = () => {
     const {
         solicitud,
-        cargarSolicitud,
+        cargarSolicitudXid,
         diasRutina,
         asignarDiasRutina,
         indice,
@@ -33,9 +33,9 @@ export const FormularioSolicitudRutina = () => {
 
     useEffect(() => {
         if (idSolicitud) {
-            cargarSolicitud(idSolicitud)
+            cargarSolicitudXid(idSolicitud)
         }
-    }, [idSolicitud, cargarSolicitud])
+    }, [idSolicitud, cargarSolicitudXid])
 
     const handleClickButton = async () => {
         const dia = comprobarLineasRutina()

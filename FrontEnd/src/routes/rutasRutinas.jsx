@@ -6,9 +6,9 @@ import ProveedorRutinas from "../context/Rutinas/proveedorRutinas.jsx";
 import ProveedorEjercicio from "../context/Ejercicio/proveedorEjercicio.jsx";
 import { ListadoSolicitudes } from "../pages/Rutina/listadoSolicitudes.jsx";
 import { FormularioSolicitudRutina } from "../pages/Rutina/formularioSolicitudRutina.jsx";
-import { validacion } from "./validacion.jsx";
+import { Validacion } from "./Validacion.jsx";
 
-export function rutasRutinas() {
+export function RutasRutinas() {
   const { rol } = useUsuario();
 
   return (
@@ -17,18 +17,18 @@ export function rutasRutinas() {
         <Route
           path="/solicitudes"
           element={
-            <validacion rol={rol} esperado={2}>
+            <Validacion rol={rol} esperado={2}>
               <ListadoSolicitudes />
-            </validacion>
+            </Validacion>
           }
         />
         <Route
           path="/solicitudes/:idSolicitud"
           element={
             <ProveedorEjercicio>
-              <validacion rol={rol} esperado={2}>
+              <Validacion rol={rol} esperado={2}>
                 <FormularioSolicitudRutina />
-              </validacion>
+              </Validacion>
             </ProveedorEjercicio>
           }
         />

@@ -1,5 +1,5 @@
-import {ContextoUsuario} from "./contextoUsuario.jsx";
-import {iniciarSesionAPI} from '../../api/usuarios.api';
+import {ContextoUsuario} from "./ContextoUsuario.jsx";
+import {iniciarSesionAPI} from '../../api/usuarios.api.js';
 import {useContext, useEffect, useState} from 'react';
 import {jwtDecode} from "jwt-decode"
 

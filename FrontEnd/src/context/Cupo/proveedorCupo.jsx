@@ -1,4 +1,4 @@
-import { ContextoCupo } from "./contextoCupo.jsx";
+import { ContextoCupo } from "./ContextoCupo.jsx";
 import {
   obtenerEsquemaCuposAPI,
   obtenerEsquemaCuposXfechaAPI,

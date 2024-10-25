@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 
-export function validacion({rol, children, esperado}) {
+export function Validacion({rol, children, esperado}) {
     if (rol.includes(esperado)) {
         return <>{children}</>;
     } else {

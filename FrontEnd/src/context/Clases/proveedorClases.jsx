@@ -1,6 +1,6 @@
 import { ContextoClases } from "./contextoClases.jsx";
-import { useUsuario } from "../Usuario/proveedorUsuario.jsx";
-import React, { useContext, useState } from "react";
+import { useUsuario } from "../Usuario/ProveedorUsuario.jsx";
+import { useContext, useState } from "react";
 import {
   obtenerClasesHoyAPI,
   obtenerClaseAPI,
@@ -8,7 +8,7 @@ import {
   crearResevaClaseAPI,
   obtenerClaseReservadaXdniAPI,
   cancelarReservaClaseAPI,
-} from "../../api/clases.api";
+} from "../../api/clases.api.js";
 
 export const useClases = () => {
   const context = useContext(ContextoClases);

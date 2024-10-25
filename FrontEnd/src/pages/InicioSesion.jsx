@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useUsuario } from '../context/Usuario/proveedorUsuario.jsx';
 
-export function IncioSesion() {
-    const { login } = useUsuario();
+export function InicioSesion() {
+    const { iniciarSesion } = useUsuario();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -11,7 +11,7 @@ export function IncioSesion() {
             dni: username,
             contrasenia: password
         }
-        await login(usuario);
+        await iniciarSesion(usuario);
     };
 
     return (

@@ -34,7 +34,8 @@ const ProveedorSeguimiento = ({children}) => {
 
     async function cargarSeguimientoClientes() {
         const response = await usuariosConMembresiaAPI(3); //suponemos que el cod de membresia 3 es el que habilita tener seguimientos
-        setClientes(response.data);
+        if(response.data)
+        (response.data);
     }
 
     async function cargarEjercicios() {

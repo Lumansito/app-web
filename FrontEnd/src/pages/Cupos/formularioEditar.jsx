@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 
@@ -17,11 +17,11 @@ const FormularioEditarCupo = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { updateCupo, loadCupos } = useCupos();
+  const {  actualizarCupo, cargarCupos } = useCupos();
 
   useEffect(() => {
     const loadData = async () => {
-      const cupoData = await loadCupos(params.idEsquema);
+      const cupoData = await cargarCupos(params.idEsquema);
       if (cupoData) {
         setValues({
           horario: cupoData.horario || "",
@@ -57,7 +57,7 @@ const FormularioEditarCupo = () => {
       estado: values.estado || "active",
     };
 
-    const ok = await updateCupo(params.idEsquema, cupoData);
+    const ok = await actualizarCupo(params.idEsquema, cupoData);
     console.log(cupoData);
     setModalMessage(
       ok ? "Cupo editado correctamente" : "Error al editar el cupo"

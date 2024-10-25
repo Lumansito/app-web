@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useEjercicios } from "../context/Ejercicio/proveedorEjercicio.jsx";
 
 export const ListadoEjercicios = () => {
-    const { ejercicios, loadEjercicios } = useEjercicios();
+    const { ejercicios, cargarEjercicios } = useEjercicios();
     useEffect(() => {
-        loadEjercicios();
+        cargarEjercicios();
     }, []);
 
     console.log(ejercicios);

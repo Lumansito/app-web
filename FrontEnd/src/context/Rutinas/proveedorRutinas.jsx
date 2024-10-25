@@ -1,5 +1,5 @@
-import { ContextoRutinas } from "./contextoRutinas.jsx";
-import React, { useContext, useState } from "react";
+import { ContextoRutinas } from "./ContextoRutinas.jsx";
+import  { useContext, useState } from "react";
 
 import {
   obtenerSolicitudesRutinasAPI,
@@ -7,7 +7,7 @@ import {
   actualizarRutinaAPI,
 } from "../../api/rutinas.api.js";
 
-import { useUsuario } from "../Usuario/proveedorUsuario.jsx";
+import { useUsuario } from "../Usuario/ProveedorUsuario.jsx";
 
 export const useRutinas = () => {
   const context = useContext(ContextoRutinas);
@@ -24,11 +24,11 @@ const ProveedorRutinas = ({ children }) => {
   // Función de ejemplo para mostrar un mensaje en la consola
   const [solicitudes, setSolicitudes] = useState([]);
   const [solicitud, setSolicitud] = useState(null);
-  const [diasRutina, setDiasRutina] = useState([
+  const [diasRutina, asignarDiasRutina] = useState([
     { dia: 1, lineas: [] },
     // Agrega más días si es necesario
   ]);
-  const [indice, setIndice] = useState(1);
+  const [indice, asignarIndice] = useState(1);
 
   async function cargarSolicitudes() {
     const response = await obtenerSolicitudesRutinasAPI();
@@ -40,7 +40,7 @@ const ProveedorRutinas = ({ children }) => {
   }
 
   const actualizarLineaRutina = (dia, idLinea, nuevaLinea) => {
-    setDiasRutina((prevDiasRutina) => {
+    asignarDiasRutina((prevDiasRutina) => {
       return prevDiasRutina.map((diaRutina) => {
         if (diaRutina.dia === dia) {
           // Actualizar la línea dentro del día específico
@@ -86,10 +86,10 @@ const ProveedorRutinas = ({ children }) => {
         cargarSolicitudXid,
         solicitud,
         indice,
-        setIndice,
+         asignarIndice,
         actualizarLineaRutina,
         diasRutina,
-        setDiasRutina,
+        asignarDiasRutina,
         actualizarRutina,
         comprobarLineasRutina,
       }}

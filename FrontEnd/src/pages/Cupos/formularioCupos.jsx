@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 
@@ -18,7 +18,7 @@ const FormularioCupos = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { createCupo, loadCupo } = useCupos();
+  const {  crearCupo, cargarCupoXid } = useCupos();
 
   const isNewRoute = location.pathname.includes("/new");
   const diaPreseleccionado = params.diaSemana;
@@ -37,9 +37,9 @@ const FormularioCupos = () => {
   };
 
   useEffect(() => {
-    const loadData = async () => {
+    const cargarData = async () => {
       if (!isNewRoute) {
-        const cupoData = await loadCupo(params.idEsquema);
+        const cupoData = await cargarCupoXid(params.idEsquema);
         if (cupoData) {
           setValues({
             horario: cupoData.horario || "",
@@ -51,8 +51,8 @@ const FormularioCupos = () => {
       }
     };
 
-    loadData();
-  }, [isNewRoute, params.idEsquema, loadCupo]);
+    cargarData();
+  }, [isNewRoute, params.idEsquema, cargarCupoXid]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -77,7 +77,7 @@ const FormularioCupos = () => {
       diaSemana: getDayNumber(diaPreseleccionado), // Convertir el día a número antes de enviarlo
     };
 
-    const ok = await createCupo(cupoData);
+    const ok = await crearCupo(cupoData);
     console.log(cupoData);
     setModalMessage(
       ok ? "Cupo creado correctamente" : "Error al crear el cupo"
