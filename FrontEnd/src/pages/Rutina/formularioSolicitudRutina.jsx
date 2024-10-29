@@ -35,7 +35,7 @@ export const FormularioSolicitudRutina = () => {
         if (idSolicitud) {
             cargarSolicitudXid(idSolicitud)
         }
-    }, [idSolicitud, cargarSolicitudXid])
+    }, [])
 
     const handleClickButton = async () => {
         const dia = comprobarLineasRutina()
@@ -112,7 +112,7 @@ export const FormularioSolicitudRutina = () => {
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
-        //,useSensor(TouchSensor)
+        
     );
 
     const getLineaPos = (lineas, id) =>

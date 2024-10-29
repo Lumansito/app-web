@@ -47,7 +47,6 @@ export const actualizarRutina = async (req, res) => {
   let variables = "";
 
 
-  console.log(data);
 
   let iteraciones = 0;
   for (let i = 0; i < data.length; i++) {
@@ -77,7 +76,7 @@ export const actualizarRutina = async (req, res) => {
 
   const queryInsert2 = `UPDATE rutinas SET fechaCarga = date(now()), dniInstructor = ${dniProf} WHERE idRutina = ${idRutina}`;
   let connection;
-  console.log(queryInsert);
+  
   try {
     connection = await pool.getConnection();
     await connection.beginTransaction();

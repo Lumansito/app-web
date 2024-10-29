@@ -7,14 +7,14 @@ import { RutasCupos } from "./routes/RutasCupos.jsx";
 import { RutasClases } from "./routes/RutasClases.jsx";
 import { RutasPerfil } from "./routes/RutasPerfil.jsx";
 import ProveedorUsuario from "./context/Usuario/ProveedorUsuario.jsx";
-import { Asistencia } from "./pages/Asistencia.jsx";
+import {RutasAsistencia} from "./routes/RutasAsistencia.jsx";
 
 function Aplicacion() {
   return (
     <ProveedorUsuario>
       <Routes>
         <Route path="/" element={<PaginaPrincipal />} />
-        <Route path="/confirmar-Asistencia" element={<Asistencia />} />
+        <Route path="/asistencia" element={<RutasAsistencia />} />
         <Route path="/seguimiento/*" element={<RutasSeguimientos />} />
         <Route path="/ejercicios/*" element={<RutasEjercicios />} />
         <Route path="/rutinas/*" element={<RutasRutinas />}/>

@@ -97,11 +97,12 @@ export const obtenerCantCuposHoy = async (req, res) => {
 export const obtenerCuposOcupadosXidEsquema = async (req, res) => {
   try {
     const [result] = await pool.query(`
-            SELECT  COUNT(*) AS reservas 
+            SELECT COUNT(*) AS reservas 
             FROM cupo_otorgado c
             WHERE c.fecha = CURDATE() 
-              AND c.estado = 'reservado' or c.estado = 'asistido'
-              AND c.horaInicio IN (SELECT e.horario FROM esquemacupos e WHERE e.idEsquema = ${req.params.idEsquema})
+              AND (c.estado = 'reservado' OR c.estado = 'asistido')
+              AND c.horaInicio IN (SELECT e.horario FROM esquemacupos e WHERE e.idEsquema = ${req.params.idEsquema});
+
             
             `);
 

@@ -3,7 +3,7 @@ import ProveedorAsistencia from "../context/Asitencia/proveedorAsistencia.jsx";
 
 import {Asistencia} from "../pages/Asistencia.jsx";
 
-export function rutasAsistencia() {
+export function RutasAsistencia() {
     return (
         <ProveedorAsistencia>
             <Routes>

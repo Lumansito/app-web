@@ -119,7 +119,7 @@ export function PaginaPrincipal() {
                                 </button>
                                 <button
                                     className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
-                                    onClick={() => handleNavigation("/Asistencia")}
+                                    onClick={() => handleNavigation("/asistencia")}
                                 >
                                     Confirmar Asistencia
                                 </button>

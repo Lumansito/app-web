@@ -39,7 +39,10 @@ const ProveedorClases = ({ children }) => {
   const cargarClase = async (idClase) => {
     try {
       const { data: claseCarga } = await obtenerClaseAPI(idClase);
+      
       const { data: cupo } = await obtenerCupoClaseAPI(idClase);
+      console.log(idClase)
+      console.log("response al cargarCupo", cupo);
       setClase({ ...claseCarga, cuposOcupados: cupo || 0 });
     } catch (error) {
       console.error("Error al cargar la clase:", error);

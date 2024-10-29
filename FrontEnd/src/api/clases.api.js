@@ -21,7 +21,7 @@ export const obtenerClaseAPI = async (idClase) => {
 
 export const obtenerCupoClaseAPI = async (idClase) => {
   try {
-    const response = await axiosInstance.get(`/cupos/${idClase}`);
+    const response = await axiosInstance.get(`/cupoOtorgado/${idClase}`);
     return response;
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -36,7 +36,7 @@ export const obtenerCupoClaseAPI = async (idClase) => {
 
 export const crearResevaClaseAPI = async (clase) => {
   try {
-    const response = await axiosInstance.post(`cupos`, clase);
+    const response = await axiosInstance.post(`cupoOtorgado`, clase);
     return response;
   } catch (error) {
     return (error.response.data.message);
@@ -45,7 +45,7 @@ export const crearResevaClaseAPI = async (clase) => {
 
 export const obtenerClaseReservadaXdniAPI = async (dni) => {
   try {
-    const response = await axiosInstance.get(`/cupos/reservas/${dni}`);
+    const response = await axiosInstance.get(`/cupoOtorgado/reservas/${dni}`);
     return response;
   } catch (error) {
     return error;
@@ -54,7 +54,7 @@ export const obtenerClaseReservadaXdniAPI = async (dni) => {
 
 export const cancelarReservaClaseAPI = async (dni) => {
   try {
-    const response = await axiosInstance.post(`/cupos/cancelar/${dni}`);
+    const response = await axiosInstance.post(`/cupoOtorgado/cancelar/${dni}`);
     return response;
   } catch (error) {
     return error;
