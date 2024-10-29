@@ -17,9 +17,9 @@ export const ListadoClientesSeguimiento = () => {
         ejercicios,
         cargarEjercicios,
         seguimientos,
-        cargarSeguimientos,
+        cargarSeguimientosXdni_codEjercicio,
         cliente,
-        cargarCliente,
+        cargarClienteXdni,
         ejercicio,
         cargarEjercicio,
         asignarCliente,
@@ -31,7 +31,7 @@ export const ListadoClientesSeguimiento = () => {
         cargarSeguimientoClientes();
         cargarEjercicios();
         if (dni) {
-            cargarCliente(dni);
+            cargarClienteXdni(dni);
         }
         if (codEjercicio) {
             cargarEjercicio(codEjercicio);
@@ -41,7 +41,7 @@ export const ListadoClientesSeguimiento = () => {
     useEffect(() => {
         comprobarToken();
         if (dni) {
-            cargarCliente(dni);
+            cargarClienteXdni(dni);
             asignarSeguimientos([]);
         }
     }, [dni]);
@@ -49,7 +49,7 @@ export const ListadoClientesSeguimiento = () => {
     useEffect(() => {
         if (dni && codEjercicio) {
             cargarEjercicio(codEjercicio);
-            cargarSeguimientos(dni, codEjercicio);
+            cargarSeguimientosXdni_codEjercicio(dni, codEjercicio);
         }
     }, [codEjercicio]);
 
@@ -64,7 +64,7 @@ export const ListadoClientesSeguimiento = () => {
         });
         asignarEjercicio(ejercicio);
         asignarSeguimientos([]);
-        cargarSeguimientos(cliente.dni, ejercicio.codEjercicio);
+        cargarSeguimientosXdni_codEjercicio(cliente.dni, ejercicio.codEjercicio);
     };
 
     const handleGoBack = () => {

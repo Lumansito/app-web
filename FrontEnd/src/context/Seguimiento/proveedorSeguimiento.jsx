@@ -24,49 +24,49 @@ export const useSeguimiento = () => {
 
 const ProveedorSeguimiento = ({children}) => {
     // Función de ejemplo para mostrar un mensaje en la consola
-    const [seguimientos, setSeguimientos] = useState([]);
-    const [clientes, setClientes] = useState([]);
-    const [cliente, setCliente] = useState({});
-    const [ejercicio, setEjercicio] = useState({});
-    const [ejercicios, setEjercicios] = useState([]);
-    const [seguimiento, setSeguimiento] = useState({});
+    const [seguimientos, asignarSeguimientos] = useState([]);
+    const [clientes, asignarClientes] = useState([]);
+    const [cliente, asignarCliente] = useState({});
+    const [ejercicio, asignarEjercicio] = useState({});
+    const [ejercicios, asignarEjercicios] = useState([]);
+    const [seguimiento, asignarSeguimiento] = useState({});
 
 
     async function cargarSeguimientoClientes() {
         const response = await usuariosConMembresiaAPI(3); //suponemos que el cod de membresia 3 es el que habilita tener seguimientos
         if(response.data)
-        (response.data);
+            asignarClientes(response.data);
     }
 
     async function cargarEjercicios() {
         const response = await obtenerEjerciciosAPI();
 
-        setEjercicios(response.data);
+        asignarEjercicios(response.data);
     }
 
     async function cargarSeguimientosXdni_codEjercicio(dni, codEjercicio) {
         const response = await obtenerSeguimientosXdni_codEjercicioAPI(dni, codEjercicio);
         if (response) {
-            setSeguimientos(response.data);
+            asignarSeguimientos(response.data);
         } else {
-            setSeguimientos([]);
+            asignarSeguimientos([]);
         }
     }
 
     async function cargarClienteXdni(dni) {
         const response = await obtenerClienteXdniAPI(dni);
-        setCliente(response.data);
+        asignarCliente(response.data);
     }
 
     async function cargarEjercicio(codEjercicio) {
         const response = await obtenerEjerciciosXcodigoEjAPI(codEjercicio);
-        setEjercicio(response.data);
+        asignarEjercicio(response.data);
     }
 
     async function cargarSeguimiento(idSeguimiento) {
         const response = await obtenerSeguimientosXdniAPI(idSeguimiento);
 
-        setSeguimiento(response.data);
+        asignarSeguimiento(response.data);
 
         await cargarClienteXdni(response.data.dniCliente);
         await cargarEjercicio(response.data.codEjercicio);
@@ -121,11 +121,11 @@ const ProveedorSeguimiento = ({children}) => {
                 clientes,
                 cargarSeguimientosXdni_codEjercicio,
                 seguimientos,
-                setSeguimientos,
+                asignarSeguimientos,
                 cargarEjercicios,
                 ejercicios,
-                setEjercicio,
-                setCliente,
+                asignarEjercicio,
+                asignarCliente,
                 cliente,
                 cargarClienteXdni,
                 ejercicio,
