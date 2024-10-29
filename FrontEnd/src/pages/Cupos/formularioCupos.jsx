@@ -5,7 +5,7 @@ import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 const FormularioCupos = () => {
   const [values, setValues] = useState({
     horario: "",
-    estado: "",
+    estado: "active", // Estado por defecto para un nuevo cupo
     cupo: "",
     dniInstructor: "",
   });
@@ -18,8 +18,9 @@ const FormularioCupos = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const {  crearCupo, cargarCupoXid } = useCupos();
-
+  const { crearCupo, actualizarCupo, cargarCupoXid } = useCupos();
+  
+  // Determinar si estamos en la ruta de creación o edición
   const isNewRoute = location.pathname.includes("/new");
   const diaPreseleccionado = params.diaSemana;
 
@@ -28,10 +29,10 @@ const FormularioCupos = () => {
       domingo: 0,
       lunes: 1,
       martes: 2,
-      miércoles: 3,
+      miercoles: 3,
       jueves: 4,
       viernes: 5,
-      sábado: 6,
+      sabado: 6,
     };
     return dayMapping[dayName.toLowerCase()] || null; // Convierte a minúsculas para evitar errores
   };
@@ -39,12 +40,13 @@ const FormularioCupos = () => {
   useEffect(() => {
     const cargarData = async () => {
       if (!isNewRoute) {
+        // Si no es una nueva ruta, cargamos los datos del cupo existente
         const cupoData = await cargarCupoXid(params.idEsquema);
         if (cupoData) {
           setValues({
             horario: cupoData.horario || "",
             dniInstructor: cupoData.dniInstructor || "",
-            estado: cupoData.estado || "",
+            estado: cupoData.estado || "active",
             cupo: cupoData.cupo || 0,
           });
         }
@@ -73,14 +75,17 @@ const FormularioCupos = () => {
 
     const cupoData = {
       ...values,
-      estado: isNewRoute ? "active" : values.estado,
+      estado: isNewRoute ? "active" : values.estado, // Estado por defecto para nuevos cupos
       diaSemana: getDayNumber(diaPreseleccionado), // Convertir el día a número antes de enviarlo
     };
 
-    const ok = await crearCupo(cupoData);
-    console.log(cupoData);
+    const ok = isNewRoute
+      ? await crearCupo(cupoData) // Si es nuevo creamos un cupo
+      : await actualizarCupo(params.idEsquema, cupoData); // Si nolo es lo actualizo
+
     setModalMessage(
-      ok ? "Cupo creado correctamente" : "Error al crear el cupo"
+      ok ? (isNewRoute ? "Cupo creado correctamente" : "Cupo actualizado correctamente")
+        : "Error al procesar el cupo"
     );
     setIsSuccess(ok);
     setShowModal(true);
@@ -99,7 +104,6 @@ const FormularioCupos = () => {
 
   return (
     <div className="min-h-screen bg-white text-black p-4 relative">
-      {/* Botón de PaginaPrincipal */}
       <button
         onClick={handleGoBack}
         className="absolute top-4 left-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
@@ -115,17 +119,7 @@ const FormularioCupos = () => {
         </svg>
       </button>
 
-      {/* Botón de Volver encima del formulario */}
-      <div className="mb-4 text-center">
-        <button
-          onClick={handleGoBack}
-          className="px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
-        >
-          ← Volver
-        </button>
-      </div>
-
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto mt-12">
         <h1 className="text-2xl font-bold mb-6 text-center">
           {isNewRoute ? "Nuevo Cupo" : "Editar Cupo"}
         </h1>
