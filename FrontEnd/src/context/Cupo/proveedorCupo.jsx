@@ -66,14 +66,14 @@ const ProveedorCupo = ({ children }) => {
     }
   };
 
-  const cargarCupoXid = async (id) => {
+  const cargarCupoXid = async (idEsquema) => {
     setLoading(true);
     try {
-      const data = await obtenerCuposOcupadosXidEsquemaAPI(id);
+      const data = await obtenerCuposOcupadosXidEsquemaAPI(idEsquema);
       return data;
     } catch (error) {
       setError("Error al cargar cupo específico por ID");
-      console.error(`Error al obtener el cupo con ID ${id}:`, error);
+      console.error(`Error al obtener el cupo con ID ${idEsquema}:`, error);
     } finally {
       setLoading(false);
     }
@@ -107,10 +107,12 @@ const ProveedorCupo = ({ children }) => {
             existingCupo.idEsquema === idEsquema ? updated : existingCupo
           )
         );
+        return true
       }
     } catch (error) {
       setError("Error al actualizar cupo");
       console.error(`Error al actualizar el cupo con ID ${idEsquema}:`, error);
+      return false
     } finally {
       setLoading(false);
     }

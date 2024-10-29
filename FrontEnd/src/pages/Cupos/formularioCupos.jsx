@@ -8,6 +8,7 @@ const FormularioCupos = () => {
     estado: "active", // Estado por defecto para un nuevo cupo
     cupo: "",
     dniInstructor: "",
+    diaSemana: "",
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -15,25 +16,39 @@ const FormularioCupos = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const location = useLocation();
-  const params = useParams();
+  const { idEsquema, diaSemana } = useParams();
+  console.log("ID Esquema:", idEsquema);
+  console.log("Día Semana:", diaSemana);
   const navigate = useNavigate();
 
   const { crearCupo, actualizarCupo, cargarCupoXid } = useCupos();
-  
+
   // Determinar si estamos en la ruta de creación o edición
   const isNewRoute = location.pathname.includes("/new");
-  const diaPreseleccionado = params.diaSemana;
+  const diaPreseleccionado = diaSemana;
 
+  const dayMapping = {
+    domingo: 0,
+    lunes: 1,
+    martes: 2,
+    miercoles: 3,
+    jueves: 4,
+    viernes: 5,
+    sabado: 6,
+    0: "Domingo",
+    1: "Lunes",
+    2: "Martes",
+    3: "Miercoles",
+    4: "Jueves",
+    5: "Viernes",
+    6: "Sabado",
+  };
   const getDayNumber = (dayName) => {
-    const dayMapping = {
-      domingo: 0,
-      lunes: 1,
-      martes: 2,
-      miercoles: 3,
-      jueves: 4,
-      viernes: 5,
-      sabado: 6,
-    };
+    if (!dayName) {
+      console.error("El nombre del día es undefined o null");
+      return null;
+    }
+
     return dayMapping[dayName.toLowerCase()] || null; // Convierte a minúsculas para evitar errores
   };
 
@@ -41,20 +56,20 @@ const FormularioCupos = () => {
     const cargarData = async () => {
       if (!isNewRoute) {
         // Si no es una nueva ruta, cargamos los datos del cupo existente
-        const cupoData = await cargarCupoXid(params.idEsquema);
+        const cupoData = await cargarCupoXid(idEsquema);
         if (cupoData) {
           setValues({
             horario: cupoData.horario || "",
             dniInstructor: cupoData.dniInstructor || "",
             estado: cupoData.estado || "active",
             cupo: cupoData.cupo || 0,
+            diaSemana: cupoData.diaSemana,
           });
         }
       }
     };
-
     cargarData();
-  }, [isNewRoute, params.idEsquema, cargarCupoXid]);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -76,15 +91,22 @@ const FormularioCupos = () => {
     const cupoData = {
       ...values,
       estado: isNewRoute ? "active" : values.estado, // Estado por defecto para nuevos cupos
-      diaSemana: getDayNumber(diaPreseleccionado), // Convertir el día a número antes de enviarlo
+      diaSemana: isNewRoute ? getDayNumber(diaPreseleccionado) : diaSemana, // Convertir el día a número antes de enviarlo
     };
 
-    const ok = isNewRoute
-      ? await crearCupo(cupoData) // Si es nuevo creamos un cupo
-      : await actualizarCupo(params.idEsquema, cupoData); // Si nolo es lo actualizo
+    let ok = true;
+
+    if (isNewRoute) {
+      ok = await crearCupo(cupoData);
+    } else {
+      ok = await actualizarCupo(idEsquema, cupoData);
+    }
 
     setModalMessage(
-      ok ? (isNewRoute ? "Cupo creado correctamente" : "Cupo actualizado correctamente")
+      ok
+        ? isNewRoute
+          ? "Cupo creado correctamente"
+          : "Cupo actualizado correctamente"
         : "Error al procesar el cupo"
     );
     setIsSuccess(ok);
