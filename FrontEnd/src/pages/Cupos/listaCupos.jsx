@@ -13,10 +13,10 @@ function ListaCupos() {
     const dayNames = {
       1: "Lunes",
       2: "Martes",
-      3: "Miércoles",
+      3: "Miercoles",
       4: "Jueves",
       5: "Viernes",
-      6: "Sábado",
+      6: "Sabado",
     };
     return dayNames[dayNumber] || "día no válido";
   };
