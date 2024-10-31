@@ -58,15 +58,29 @@ export const crearCupoOtorgado = async (req, res) => {
         .json({ message: "Ya tiene una reserva activa para el dia de hoy" });
     }
 
-    //Realiza la reserva
-    const fechaClase = new Date().toISOString().split("T")[0];
+    
+    const offset = -3; // Cambia por la diferencia horaria de tu zona (por ejemplo, -3 para Buenos Aires)
+
+    // Obtén la fecha actual en UTC
+    const fechaActualUTC = new Date();
+    
+    
+    const diferenciaHoraria = offset * 60 * 60 * 1000;
+    
+    
+    const fechaClase = new Date(fechaActualUTC.getTime() + diferenciaHoraria);
+    
+  
+    const fechaFormateada = fechaClase.toISOString().split("T")[0];
+
+    
     const estado = "reservado";
-    const horaReserva = new Date().toTimeString().split(" ")[0];
+    
     const [result] = await pool.query(
       `
             INSERT INTO cupo_otorgado (fecha, horaInicio, dniCliente, dniInstructor, estado) 
             VALUES (?, ?, ?,?,?)`,
-      [fechaClase, horaInicio, dniCliente, dniInstructor, estado]
+      [fechaFormateada, horaInicio, dniCliente, dniInstructor, estado]
     );
     if (result.affectedRows === 0) {
       return res.status(400).json({ message: "No se pudo otorgar el cupo" });
