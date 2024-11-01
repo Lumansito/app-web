@@ -6,11 +6,12 @@ import {
   crearUsuario,
   actualizarUsuario,
   eliminarUsuario,
+  obtenerProfesionales
 } from "../controllers/usuarios.controller.js";
 
 const router = Router();
 
-
+router.get("/api/usuarios/profesionales", obtenerProfesionales);
 
 router.get("/api/users", obtenerUsuarios);
 

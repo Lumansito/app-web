@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
+import { useUsuario } from "../../context/Usuario/proveedorUsuario.jsx";
 
 const FormularioCupos = () => {
   const [values, setValues] = useState({
@@ -11,17 +12,18 @@ const FormularioCupos = () => {
     diaSemana: "",
   });
 
+  const [profesionales, setProfesionales] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const location = useLocation();
   const { idEsquema, diaSemana } = useParams();
-  console.log("ID Esquema:", idEsquema);
-  console.log("Día Semana:", diaSemana);
   const navigate = useNavigate();
 
   const { crearCupo, actualizarCupo, cargarCupoXid } = useCupos();
+  const { obtenerProfesionales } = useUsuario();
 
   // Determinar si estamos en la ruta de creación o edición
   const isNewRoute = location.pathname.includes("/new");
@@ -67,6 +69,9 @@ const FormularioCupos = () => {
           });
         }
       }
+      const listaProfesionales = await obtenerProfesionales();
+      setProfesionales(listaProfesionales);
+      console.log("Profesionales:", listaProfesionales);
     };
     cargarData();
   }, []);
@@ -188,15 +193,20 @@ const FormularioCupos = () => {
                 >
                   DNI del Instructor
                 </label>
-                <input
-                  type="text"
+                <select
                   id="dniInstructor"
                   name="dniInstructor"
                   value={values.dniInstructor}
                   onChange={handleInputChange}
-                  placeholder="Ingrese el DNI del instructor"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                />
+                >
+                  <option value="">Seleccione un DNI</option>
+                  {profesionales.map((profesional) => (
+                    <option key={profesional.dni} value={profesional.dni}>
+                      {profesional.dni}
+                    </option>
+                  ))}
+                </select>
               </div>
               <button
                 type="submit"

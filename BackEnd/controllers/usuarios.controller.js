@@ -107,3 +107,23 @@ export const obtenerClientesXcodMembresiaActiva = async (req, res) => {
     console.log(error);
   }
 };
+
+export const obtenerProfesionales = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT dni, nombre, apellido
+      FROM usuarios
+      INNER JOIN usuarios_roles ON usuarios.dni = usuarios_roles.dni
+      WHERE usuarios_roles.idRol = 2
+      `
+    );
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No hay profesionales disponibles" });
+    }
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
