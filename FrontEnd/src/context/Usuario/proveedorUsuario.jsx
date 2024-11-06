@@ -60,15 +60,8 @@ const ProveedorUsuario = ({ children }) => {
     setLoading(true);
     try {
       const data = await obtenerProfesionalesAPI();
-      console.log("data", data);
       if (data) {
-        if (Array.isArray(data)) {
-          const profesionalesFiltrados = data.filter(prof => prof.rol === 2);
-          setProfesionales(profesionalesFiltrados);
-        } else {
-          setError("Error: data is not an array");
-          console.error("Error: data is not an array", data);
-        }
+        setProfesionales(data);
       }
     } catch (error) {
       setError("Error al cargar profesionales");
