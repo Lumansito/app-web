@@ -33,7 +33,6 @@ export const crearUsuario = async (req, res) => {
   const { nombre, apellido, dni, roles, fechaNac, sexo, telefono, mail } =
     req.body;
   try {
-    //Insertamos la fecha de nacimiento en la contraseña, para que luego la cambie el usuario
     await pool.query(
       "INSERT INTO usuarios (nombre, apellido, dni, contrasenia, fechaNac, sexo, telefono, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [nombre, apellido, dni, fechaNac, fechaNac, sexo, telefono, mail]
@@ -81,7 +80,6 @@ export const eliminarUsuario = async (req, res) => {
   }
 };
 
-//obtener los clientes con la membresia suficiente para tener seguimientos
 export const obtenerClientesXcodMembresiaActiva = async (req, res) => {
   try {
     const { codMembresia } = req.params;
@@ -118,6 +116,7 @@ export const obtenerProfesionales = async (req, res) => {
       WHERE usuarios_roles.idRol = 2
       `
     );
+    console.log(result);
     if (result.length === 0) {
       return res.status(404).json({ message: "No hay profesionales disponibles" });
     }

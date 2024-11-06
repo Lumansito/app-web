@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import Switch from "react-switch";
 
-function ListaDias({ day, cupos, navigate, onClick }) {
+function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedCupoId, setSelectedCupoId] = useState(null);
 
@@ -47,6 +48,13 @@ function ListaDias({ day, cupos, navigate, onClick }) {
                 >
                   Eliminar
                 </button>
+                <Switch
+                  onChange={() => onToggleDisabled(cupo)}
+                  checked={cupo.estado === "habilitado"}
+                  offColor="#888"
+                  onColor="#4CAF50"
+                  className="react-switch"
+                />
               </div>
             </li>
           ))}

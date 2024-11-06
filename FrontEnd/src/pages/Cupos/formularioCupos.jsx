@@ -12,7 +12,7 @@ const FormularioCupos = () => {
     diaSemana: "",
   });
 
-  const [profesionales, setProfesionales] = useState([]);
+  const { obtenerProfesionales, profesionales } = useUsuario(); 
 
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -23,9 +23,7 @@ const FormularioCupos = () => {
   const navigate = useNavigate();
 
   const { crearCupo, actualizarCupo, cargarCupoXid } = useCupos();
-  const { obtenerProfesionales } = useUsuario();
 
-  // Determinar si estamos en la ruta de creación o edición
   const isNewRoute = location.pathname.includes("/new");
   const diaPreseleccionado = diaSemana;
 
@@ -45,6 +43,7 @@ const FormularioCupos = () => {
     5: "Viernes",
     6: "Sabado",
   };
+
   const getDayNumber = (dayName) => {
     if (!dayName) {
       console.error("El nombre del día es undefined o null");
@@ -57,7 +56,6 @@ const FormularioCupos = () => {
   useEffect(() => {
     const cargarData = async () => {
       if (!isNewRoute) {
-        // Si no es una nueva ruta, cargamos los datos del cupo existente
         const cupoData = await cargarCupoXid(idEsquema);
         if (cupoData) {
           setValues({
@@ -69,9 +67,7 @@ const FormularioCupos = () => {
           });
         }
       }
-      const listaProfesionales = await obtenerProfesionales();
-      setProfesionales(listaProfesionales);
-      console.log("Profesionales:", listaProfesionales);
+      await obtenerProfesionales();
     };
     cargarData();
   }, []);
@@ -95,8 +91,8 @@ const FormularioCupos = () => {
 
     const cupoData = {
       ...values,
-      estado: isNewRoute ? "active" : values.estado, // Estado por defecto para nuevos cupos
-      diaSemana: isNewRoute ? getDayNumber(diaPreseleccionado) : diaSemana, // Convertir el día a número antes de enviarlo
+      estado: isNewRoute ? "active" : values.estado,
+      diaSemana: isNewRoute ? getDayNumber(diaPreseleccionado) : diaSemana,
     };
 
     let ok = true;
@@ -187,23 +183,17 @@ const FormularioCupos = () => {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="dniInstructor"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  DNI del Instructor
-                </label>
+                <label htmlFor="dniInstructor">DNI del Instructor</label>
                 <select
                   id="dniInstructor"
                   name="dniInstructor"
                   value={values.dniInstructor}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 >
-                  <option value="">Seleccione un DNI</option>
-                  {profesionales.map((profesional) => (
-                    <option key={profesional.dni} value={profesional.dni}>
-                      {profesional.dni}
+                  <option value="">Seleccionar profesional</option>
+                  {Array.isArray(profesionales) && profesionales?.map((prof) => (
+                    <option key={prof.dni} value={prof.dni}>
+                      {prof.dni} - {prof.nombre} {prof.apellido}
                     </option>
                   ))}
                 </select>
@@ -232,11 +222,13 @@ const FormularioCupos = () => {
               <div className="items-center px-4 py-3">
                 <button
                   onClick={handleCloseModal}
-                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-${
-                    isSuccess ? "green" : "red"
-                  }-600 text-base font-medium text-white`}
+                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${
+                    isSuccess ? "bg-green-600" : "bg-red-600"
+                  } text-base font-medium text-white hover:bg-${
+                    isSuccess ? "green-700" : "red-700"
+                  } sm:text-sm`}
                 >
-                  {isSuccess ? "Aceptar" : "Cerrar"}
+                  Cerrar
                 </button>
               </div>
             </div>

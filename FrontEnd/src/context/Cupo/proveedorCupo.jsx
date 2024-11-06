@@ -107,14 +107,38 @@ const ProveedorCupo = ({ children }) => {
             existingCupo.idEsquema === idEsquema ? updated : existingCupo
           )
         );
-        return true
+        return true;
       }
     } catch (error) {
       setError("Error al actualizar cupo");
       console.error(`Error al actualizar el cupo con ID ${idEsquema}:`, error);
-      return false
+      return false;
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleToggleDisabled = async (cupo) => {
+    const nuevoEstado =
+      cupo.estado === "habilitado" ? "deshabilitado" : "habilitado";
+    const cupoActualizado = { ...cupo, estado: nuevoEstado };
+    try {
+      const success = await actualizarCupo(cupo.idEsquema, cupoActualizado);
+      if (success) {
+        setCupos((prev) =>
+          prev.map((existingCupo) =>
+            existingCupo.idEsquema === cupo.idEsquema
+              ? cupoActualizado
+              : existingCupo
+          )
+        );
+        console.log(`Cupo ${cupo.idEsquema} actualizado con éxito`);
+      }
+    } catch (error) {
+      console.error(
+        `Error al actualizar el cupo con ID ${cupo.idEsquema}:`,
+        error
+      );
     }
   };
 
@@ -151,6 +175,7 @@ const ProveedorCupo = ({ children }) => {
         cargarCuposXfecha,
         cargarCupoXid,
         actualizarCupo,
+        handleToggleDisabled,
         error,
       }}
     >

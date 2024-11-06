@@ -1,8 +1,7 @@
 import { ContextoUsuario } from "./ContextoUsuario.jsx";
-import { iniciarSesionAPI } from "../../api/usuarios.api.js";
+import { iniciarSesionAPI, obtenerProfesionalesAPI } from "../../api/usuarios.api.js";
 import { useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { obtenerProfesionalesAPI } from "../../api/usuarios.api.js";
 
 export const useUsuario = () => {
   const context = useContext(ContextoUsuario);
@@ -19,7 +18,9 @@ const ProveedorUsuario = ({ children }) => {
 
   const [rol, setRol] = useState([]);
   const [dni, setDni] = useState();
-  const [profesionales] = useState([]);
+  const [profesionales, setProfesionales] = useState([]);
+  const [loading, setLoading] = useState(false); // Estado para la carga
+  const [error, setError] = useState(null); // Estado para errores
 
   useEffect(() => {
     comprobarToken();
@@ -56,12 +57,24 @@ const ProveedorUsuario = ({ children }) => {
   }
 
   const obtenerProfesionales = async () => {
+    setLoading(true);
     try {
-      const response = await obtenerProfesionalesAPI();
-      return response.data; // Asegúrate de que la respuesta tenga el formato esperado
+      const data = await obtenerProfesionalesAPI();
+      console.log("data", data);
+      if (data) {
+        if (Array.isArray(data)) {
+          const profesionalesFiltrados = data.filter(prof => prof.rol === 2);
+          setProfesionales(profesionalesFiltrados);
+        } else {
+          setError("Error: data is not an array");
+          console.error("Error: data is not an array", data);
+        }
+      }
     } catch (error) {
-      console.error("Error al obtener los profesionales:", error);
-      return []; // Manejo de error
+      setError("Error al cargar profesionales");
+      console.error("Error al cargar profesionales:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,6 +95,8 @@ const ProveedorUsuario = ({ children }) => {
         obtenerProfesionales,
         profesionales,
         cerrarSesion,
+        loading,
+        error,
       }}
     >
       {children}

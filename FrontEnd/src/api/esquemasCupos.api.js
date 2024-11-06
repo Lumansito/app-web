@@ -61,6 +61,16 @@ export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
   }
 };
 
+export const actualizarEstadoCupoAPI = async (idEsquema, cupo) => {
+  try {
+    const response = await axiosInstance.put(`/esquemaCupos/estado/${idEsquema}`, cupo);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating cupo with ID ${idEsquema}:`, error);
+    throw error;
+  }
+};
+
 // Eliminar un cupo por idEsquema
 export const eliminarEsquemaCuposAPI = async (idEsquema) => {
   try {

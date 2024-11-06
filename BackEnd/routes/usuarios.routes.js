@@ -11,7 +11,7 @@ import {
 
 const router = Router();
 
-router.get("/api/usuarios/profesionales", obtenerProfesionales);
+router.get("/api/users/profesionales", obtenerProfesionales);
 
 router.get("/api/users", obtenerUsuarios);
 

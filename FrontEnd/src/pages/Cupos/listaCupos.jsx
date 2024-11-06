@@ -1,10 +1,11 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContextoCupo } from "../../context/Cupo/contextoCupo.jsx";
+import { ContextoCupo } from "../../context/Cupo/ContextoCupo.jsx"; 
 import ListaDias from "../../components/ListaDias.jsx";
 
 function ListaCupos() {
-  const { cargarCupos, cupos, error,  eliminarCupo } = useContext(ContextoCupo);
+  const { cargarCupos, cupos, error, eliminarCupo, actualizarCupo } =
+    useContext(ContextoCupo);
   const [selectedDay, setSelectedDay] = useState(null);
   const daysWeek = [1, 2, 3, 4, 5, 6];
   const navigate = useNavigate();
@@ -33,14 +34,22 @@ function ListaCupos() {
     eliminarCupo(idEsquema);
   };
 
+  const handleToggleDisabled = (cupo) => {
+    const updatedCupo = {
+      ...cupo,
+      estado: cupo.estado === "habilitado" ? "deshabilitado" : "habilitado",
+    };
+    actualizarCupo(updatedCupo);
+  };
+
   const isMatchingDay = (cupo, day) => {
     const dayNamesToNumbers = {
       Lunes: 1,
       Martes: 2,
-      Miércoles: 3,
+      Miercoles: 3,
       Jueves: 4,
       Viernes: 5,
-      Sábado: 6,
+      Sabado: 6,
     };
 
     const cupoDayNumber =
@@ -113,6 +122,7 @@ function ListaCupos() {
             navigate={navigate}
             onClick={handleDelete}
             getDayName={getDayName}
+            onToggleDisabled={handleToggleDisabled}
           />
         </div>
       )}

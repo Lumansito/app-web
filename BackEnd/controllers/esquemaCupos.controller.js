@@ -130,10 +130,10 @@ export const crearEsquemaCupos = async (req, res) => {
 export const actualizarEsquemaCupos = async (req, res) => {
   try {
     const { idEsquema } = req.params;
-    const { dniInstructor, estado, cupo, horario } = req.body; 
+    const { dniInstructor, estado, cupo, horario } = req.body;
     const [result] = await pool.query(
       "UPDATE esquemaCupos SET dniInstructor = ?, estado = ?, cupo = ?, horario = ? WHERE idEsquema = ?",
-      [dniInstructor, estado, cupo, horario, idEsquema]  
+      [dniInstructor, estado, cupo, horario, idEsquema]
     );
 
     if (result.affectedRows === 0) {
@@ -142,6 +142,23 @@ export const actualizarEsquemaCupos = async (req, res) => {
     res.json({ message: "Cupo actualizado.", success: true });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const actualizarEstadoCupo = async (req, res) => {
+  try {
+    const { idEsquema } = req.params;
+    const { estado } = req.body;
+    const [result] = await pool.query(
+      "UPDATE esquemaCupos SET estado = ? WHERE idEsquema = ?",
+      [estado, idEsquema]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Cupo no encontrado." });
+    }
+    res.json({ message: "Estado del cupo actualizado." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
