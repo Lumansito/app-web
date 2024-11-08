@@ -123,35 +123,6 @@ const ProveedorCupo = ({ children }) => {
     }
   };
 
-  const handleToggleDisabled = async (cupo) => {
-    console.log("Cupo recibido en handleToggleDisabled:", cupo);
-    const nuevoEstado =
-      cupo.estado === "habilitado" ? "deshabilitado" : "habilitado";
-    const cupoActualizado = { idEsquema: cupo.idEsquema, estado: nuevoEstado };
-
-    console.log("cupo a actualizar", cupoActualizado);
-    console.log("id", cupo.idEsquema);
-
-    try {
-      const success = await actualizarCupo(cupo.idEsquema, cupoActualizado);
-      if (success) {
-        console.log("antes de actualizar", cupos);
-        setCupos((prev) =>
-          prev.map((existingCupo) =>
-            existingCupo.idEsquema === cupo.idEsquema
-              ? { ...existingCupo, estado: nuevoEstado }
-              : existingCupo
-          )
-        );
-        console.log(`Cupo ${cupo.idEsquema} actualizado con éxito`);
-      }
-    } catch (error) {
-      console.error(
-        `Error al actualizar el cupo con ID ${cupo.idEsquema}:`,
-        error
-      );
-    }
-  };
 
   const eliminarCupo = async (idEsquema) => {
     setLoading(true);
@@ -179,6 +150,7 @@ const ProveedorCupo = ({ children }) => {
       value={{
         cupos,
         loading,
+        setCupos,
         cargarCupos,
         cargarCuposHoy,
         eliminarCupo,
@@ -186,7 +158,6 @@ const ProveedorCupo = ({ children }) => {
         cargarCuposXfecha,
         cargarCupoXid,
         actualizarCupo,
-        handleToggleDisabled,
         error,
       }}
     >

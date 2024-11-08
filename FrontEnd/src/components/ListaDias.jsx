@@ -17,6 +17,15 @@ function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
     }
   };
 
+  
+
+    const handleSwitchChange = (cupo) => {
+      
+      onToggleDisabled(cupo); // si esta función hace algo adicional
+    };
+
+
+
   const handleEditCupo = (idEsquema) => {
     navigate(`/cupos/edit/${idEsquema}`); // Redirige a la página de edición
   };
@@ -50,10 +59,9 @@ function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
                 </button>
                 <Switch
                   type="checkbox"
-                  checked={cupo.estado === "habilitado"}
+                  checked={cupo.estado === "habilitado" ? true : false}
                   onChange={() => {
-                    console.log("Switch clickeado", cupo);
-                    onToggleDisabled(cupo);
+                    handleSwitchChange(cupo);
                   }}
                   offColor="#888"
                   onColor="#4CAF50"

@@ -4,7 +4,7 @@ import { ContextoCupo } from "../../context/Cupo/ContextoCupo.jsx";
 import ListaDias from "../../components/ListaDias.jsx";
 
 function ListaCupos() {
-  const { cargarCupos, cupos, error, eliminarCupo, actualizarCupo } =
+  const { cargarCupos, cupos, setCupos, error, eliminarCupo, actualizarCupo } =
     useContext(ContextoCupo);
   const [selectedDay, setSelectedDay] = useState(null);
   const daysWeek = [1, 2, 3, 4, 5, 6];
@@ -39,7 +39,13 @@ function ListaCupos() {
       ...cupo,
       estado: cupo.estado === "habilitado" ? "deshabilitado" : "habilitado",
     };
-    actualizarCupo(updatedCupo);
+    actualizarCupo(updatedCupo.idEsquema, updatedCupo);
+    const nuevosCupos = cupos.map(c => 
+      c.idEsquema === cupo.idEsquema
+        ? { ...c, estado: c.estado === "habilitado" ? "deshabilitado" : "habilitado" }
+        : c
+    );
+    setCupos(nuevosCupos);
   };
 
   const isMatchingDay = (cupo, day) => {
