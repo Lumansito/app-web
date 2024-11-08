@@ -50,7 +50,6 @@ export const crearEsquemaCuposAPI = async (cupo) => {
   }
 };
 
-// Actualizar un cupo por idEsquema
 export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
   try {
     const response = await axiosInstance.put(`/esquemaCupos/${idEsquema}`, cupo);
@@ -63,7 +62,7 @@ export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
 
 export const actualizarEstadoCupoAPI = async (idEsquema, cupo) => {
   try {
-    const response = await axiosInstance.put(`/esquemaCupos/estado/${idEsquema}`, cupo);
+    const response = await axiosInstance.put(`/esquemaCupos/${idEsquema}`, cupo);
     return response.data;
   } catch (error) {
     console.error(`Error updating cupo with ID ${idEsquema}:`, error);

@@ -49,8 +49,12 @@ function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
                   Eliminar
                 </button>
                 <Switch
-                  onChange={() => onToggleDisabled(cupo)}
+                  type="checkbox"
                   checked={cupo.estado === "habilitado"}
+                  onChange={() => {
+                    console.log("Switch clickeado", cupo);
+                    onToggleDisabled(cupo);
+                  }}
                   offColor="#888"
                   onColor="#4CAF50"
                   className="react-switch"

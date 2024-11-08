@@ -100,11 +100,16 @@ const ProveedorCupo = ({ children }) => {
   const actualizarCupo = async (idEsquema, cupo) => {
     setLoading(true);
     try {
+      console.log("id", idEsquema);
+      console.log("lo que se envia", cupo);
       const updated = await actualizarEsquemaCuposAPI(idEsquema, cupo);
+      console.log("rta api", updated);
       if (updated) {
         setCupos((prev) =>
           prev.map((existingCupo) =>
-            existingCupo.idEsquema === idEsquema ? updated : existingCupo
+            existingCupo.idEsquema === idEsquema
+              ? { ...existingCupo, estado: updated.estado }
+              : existingCupo
           )
         );
         return true;
@@ -119,16 +124,22 @@ const ProveedorCupo = ({ children }) => {
   };
 
   const handleToggleDisabled = async (cupo) => {
+    console.log("Cupo recibido en handleToggleDisabled:", cupo);
     const nuevoEstado =
       cupo.estado === "habilitado" ? "deshabilitado" : "habilitado";
-    const cupoActualizado = { ...cupo, estado: nuevoEstado };
+    const cupoActualizado = { idEsquema: cupo.idEsquema, estado: nuevoEstado };
+
+    console.log("cupo a actualizar", cupoActualizado);
+    console.log("id", cupo.idEsquema);
+
     try {
       const success = await actualizarCupo(cupo.idEsquema, cupoActualizado);
       if (success) {
+        console.log("antes de actualizar", cupos);
         setCupos((prev) =>
           prev.map((existingCupo) =>
             existingCupo.idEsquema === cupo.idEsquema
-              ? cupoActualizado
+              ? { ...existingCupo, estado: nuevoEstado }
               : existingCupo
           )
         );
