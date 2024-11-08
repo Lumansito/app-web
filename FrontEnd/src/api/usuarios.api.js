@@ -54,9 +54,28 @@ export const obtenerProfesionalesAPI = async () => {
 export const obtenerUsuariosAPI = async () => {
   try {
     const response = await axiosInstance.get('/users');
-    return Array.isArray(response.data) ? response.data : [];
+    return response.data;
   } catch (error) {
     console.error('Error al obtener los usuarios:', error);
     return [];
   }
 };
+
+export const eliminarUsuarioAPI = async (dni) => {
+  try {
+    const response = await axiosInstance.delete(`/users/${dni}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const actualizarUsuarioAPI = async (dni, usuario) => {
+  try {
+    const response = await axiosInstance.put(`/users/${dni}`, usuario);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
