@@ -21,6 +21,8 @@ export const authorizeRole = (requiredRoles) => {
     next();
   };
 };
-
-
-export const professorAdmin = authorizeRole([2, 3]);
+export const ProfesionalAdmin = authorizeRole([2, 3]);
+export const Administrador = authorizeRole([3]);
+export const Profesional = authorizeRole([2]);
+export const Cliente = authorizeRole([1]);
+export const TodosLosRoles = authorizeRole([1,2,3]);

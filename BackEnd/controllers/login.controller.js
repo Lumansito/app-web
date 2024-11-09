@@ -24,7 +24,7 @@ export const iniciarSesion = async (req, res) => {
       const token = jwt.sign(
         { dni: req.body.dni, rol: rol },
         "CLAVE_SUPER_SEGURA",
-        { expiresIn: "1h" }
+        { expiresIn: "1d" }
       );
 
       res.send({ token: token });

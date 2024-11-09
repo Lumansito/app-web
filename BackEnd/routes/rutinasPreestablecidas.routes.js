@@ -6,6 +6,7 @@ import {
 } from "../controllers/rutinasPreestablecidas.controller.js";
 
 
+
 const router = Router();
 
 router.get("/api/rutinasPreestablecidas", obtenerRutinasPreestablecidas);

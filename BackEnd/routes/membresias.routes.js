@@ -6,17 +6,19 @@ import {
   actualizarMembresia,
   eliminarMembresia,
 } from "../controllers/membresias.controller.js";
+import { Administrador, TodosLosRoles } from "../middleware/authorizeRole.js";
+
 
 const router = Router();
 
-router.get("/api/membresias", obtenerMembresias);
+router.get("/api/membresias",TodosLosRoles, obtenerMembresias);
 
-router.get("/api/membresias/:codMembresia", obtenerMembresiasXcodMembresia);
+router.get("/api/membresias/:codMembresia",TodosLosRoles, obtenerMembresiasXcodMembresia);
 
-router.post("/api/membresias", crearMembresia);
+router.post("/api/membresias", Administrador,crearMembresia);
 
-router.put("/api/membresias/:codMembresia", actualizarMembresia);
+router.put("/api/membresias/:codMembresia", Administrador,actualizarMembresia);
 
-router.delete("/api/membresias/:codMembresia", eliminarMembresia);
+router.delete("/api/membresias/:codMembresia",Administrador, eliminarMembresia);
 
-export default router;
+export default router; 

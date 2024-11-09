@@ -10,15 +10,37 @@ import {
   eliminarEsquemaCupos,
 } from "../controllers/esquemaCupos.controller.js";
 
+import { Administrador, TodosLosRoles } from "../middleware/authorizeRole.js";
+
 const router = Router();
 
-router.get("/api/esquemaCupos", obtenerEsquemaCupos);
-router.get("/api/esquemaCupos/today", obtenerEsquemaCuposHoy);
-router.get("/api/esquemaCupos/:idEsquema", obtenerEsquemaCuposXid); // Nueva ruta para obtener por idEsquema
-router.get("/api/esquemaCupos/dia/:diaSemana", obtenerEsquemaCuposXfecha);
-router.post("/api/esquemaCupos", crearEsquemaCupos);
-router.put("/api/esquemaCupos/:idEsquema", actualizarEsquemaCupos); // Nueva ruta para actualizar por idEsquema
-router.put("/api/esquemaCupos/estado/:idEsquema", actualizarEstadoCupo); // Nueva ruta para actualizar estado por idEsquema
-router.delete("/api/esquemaCupos/:idEsquema", eliminarEsquemaCupos); // Nueva ruta para eliminar por idEsquema
+router.get("/api/esquemaCupos", TodosLosRoles, obtenerEsquemaCupos);
+router.get("/api/esquemaCupos/today", TodosLosRoles, obtenerEsquemaCuposHoy);
+router.get(
+  "/api/esquemaCupos/:idEsquema",
+  TodosLosRoles,
+  obtenerEsquemaCuposXid
+); 
+router.get(
+  "/api/esquemaCupos/dia/:diaSemana",
+  TodosLosRoles,
+  obtenerEsquemaCuposXfecha
+);
+router.post("/api/esquemaCupos", Administrador, crearEsquemaCupos);
+router.put(
+  "/api/esquemaCupos/:idEsquema",
+  Administrador,
+  actualizarEsquemaCupos
+); 
+router.put(
+  "/api/esquemaCupos/estado/:idEsquema",
+  Administrador,
+  actualizarEstadoCupo
+); 
+router.delete(
+  "/api/esquemaCupos/:idEsquema",
+  Administrador,
+  eliminarEsquemaCupos
+);
 
 export default router;

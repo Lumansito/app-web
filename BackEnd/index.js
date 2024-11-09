@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { authorizeRole, professorAdmin } from "./middleware/authorizeRole.js";
+import {ProfesionalAdmin } from "./middleware/authorizeRole.js";
 
 import usersRouter from "./routes/usuarios.routes.js";
 import ejerciciosRouter from "./routes/ejercicios.routes.js";
@@ -22,8 +22,6 @@ app.use(cookieParser());
 app.use(express.json()); //para usar json en el body
 
 app.use((req, res, next) => {
-  
-
   let data = null;
   let token = null;
   const authHeader = req.headers.authorization;
@@ -39,16 +37,21 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+//Validamos los roles necesarios para cada conjutno de rutas,
+// en el caso de tener distintos roles para un mismo conjunto de rutas,
+// se ha validado en cada ruta internamente.
 app.use(cuposRouter);
 app.use(esquema_cuposRouter);
-app.use(loginRouter); //VALIDAR BIEN QUUIEN REQUIERE QUE ROL, Y SI INTERNAMENETE HAY RUTAS Q SI, PPOR EJEMLPO ESQUEMA_CUPOS
-app.use(professorAdmin, usersRouter);
-app.use(authorizeRole([2, 3]), membresiasRouter);
-app.use(authorizeRole([2, 3]), ejerciciosRouter);
-app.use(authorizeRole([2, 3]), rutinas_pre_establecidasRouter);
-app.use(authorizeRole([2]) ,rutiasRouter);
-app.use(authorizeRole([3]), pagosRouter);
-app.use(authorizeRole([2]), seguimientosRouter);
+app.use(loginRouter);
+app.use(usersRouter);
+app.use(membresiasRouter);
+app.use(ejerciciosRouter);
+app.use(ProfesionalAdmin, rutinas_pre_establecidasRouter);
+app.use(ProfesionalAdmin, rutiasRouter);
+app.use(pagosRouter);
+app.use(ProfesionalAdmin, seguimientosRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);

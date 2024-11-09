@@ -1,18 +1,18 @@
 import { Router } from "express";
 import {
-    
-    obtenerSeguimientosXdni_codEjercicio,
-    crearSeguimiento,
-    actualizarSeguimiento,
-    eliminarSeguimiento,
-    obtenerSeguimiento
+  obtenerSeguimientosXdni_codEjercicio,
+  crearSeguimiento,
+  actualizarSeguimiento,
+  eliminarSeguimiento,
+  obtenerSeguimiento,
 } from "../controllers/seguimientos.controller.js";
 
 const router = Router();
 
-
-
-router.get("/api/seguimientos/clientes/:dniCliente/:codEjercicio", obtenerSeguimientosXdni_codEjercicio);
+router.get(
+  "/api/seguimientos/clientes/:dniCliente/:codEjercicio",
+  obtenerSeguimientosXdni_codEjercicio
+);
 
 router.post("/api/seguimientos", crearSeguimiento);
 
