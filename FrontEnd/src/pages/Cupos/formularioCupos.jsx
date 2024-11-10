@@ -141,11 +141,23 @@ const FormularioCupos = () => {
           <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
         </svg>
       </button>
-
       <div className="max-w-md mx-auto mt-12">
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={handleGoBack}
+            className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"
+          >
+            ← Volver
+          </button>
+          <h1 className="text-2xl font-bold">Listado de Clases</h1>
+      </div>
+      <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
+        <div className="max-w-md mx-auto mt-12">
         <h1 className="text-2xl font-bold mb-6 text-center">
           {isNewRoute ? "Nuevo Cupo" : "Editar Cupo"}
         </h1>
+        </div>
+        
         <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -182,7 +194,7 @@ const FormularioCupos = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
-              <div>
+              <div >
                 <label htmlFor="dniInstructor">DNI del Instructor</label>
                 <select
                   id="dniInstructor"
@@ -204,6 +216,13 @@ const FormularioCupos = () => {
               >
                 Guardar
               </button>
+            <button
+              type="button"
+              onClick={handleGoBack}
+              className="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700"
+            >
+              Cancelar
+            </button>
             </form>
           </div>
         </div>
@@ -235,7 +254,7 @@ const FormularioCupos = () => {
           </div>
         </div>
       )}
-    </div>
+    </div></div>
   );
 };
 

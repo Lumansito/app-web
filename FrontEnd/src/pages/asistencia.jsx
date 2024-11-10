@@ -17,7 +17,7 @@ export const Asistencia = () => {
       timer = setTimeout(() => {
         setIsModalOpen(false)
         setIsSuccess(false)
-      }, 2000) // Aumentado a 2 segundos (2000ms)
+      }, 2500) // Aumentado a 2,5 segundos 
     }
     return () => clearTimeout(timer)
   }, [isSuccess])
@@ -59,7 +59,7 @@ export const Asistencia = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-white text-black p-4 relative">
       <button
         onClick={handleGoHome}
         className="absolute top-4 left-4 px-4 py-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
@@ -70,16 +70,17 @@ export const Asistencia = () => {
         </svg>
       </button>
       <div className="max-w-md mx-auto mt-12">
-        <button
-          onClick={handleGoBack}
-          className="mb-4 px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
-        >
-          ← Volver
-        </button>
+      <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={handleGoBack}
+            className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"
+          >
+            ← Volver
+          </button>
+          <h1 className="text-2xl font-bold">Confirmar asistencia</h1>
+        </div>
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="bg-black px-4 py-5 sm:px-6">
-            <h1 className="text-2xl font-bold text-white text-center">Asistencia</h1>
-          </div>
+          
           <div className="px-4 py-5 sm:p-6">
             <div className="mt-1 relative rounded-md shadow-sm">
               <input
@@ -100,7 +101,7 @@ export const Asistencia = () => {
               <button
                 onClick={handleSearch}
                 disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 disabled:bg-gray-400"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 disabled:bg-gray-400"
               >
                 {isLoading ? "Buscando..." : "Buscar"}
               </button>

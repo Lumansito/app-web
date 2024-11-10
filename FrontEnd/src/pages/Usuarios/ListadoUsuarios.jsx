@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUsuarios } from "../../context/Usuarios/proveedorUsuarios.jsx";
+import { useNavigate } from "react-router-dom";
 import { Usuario } from "../../components/Usuario.jsx";
 
 export function ListadoUsuarios() {
@@ -28,6 +29,7 @@ export function ListadoUsuarios() {
   });
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     cargarUsuarios();
@@ -102,10 +104,42 @@ export function ListadoUsuarios() {
     eliminarUsuario(dni);
   };
 
+  const handleGoHome = () => {
+    navigate("/");
+  };
+
+  const handleGoBack = () => {
+    navigate("/");
+  };
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Gestión de Usuarios</h1>
-      <div className="flex flex-col sm:flex-row justify-between mb-4">
+    <div className="in-h-screen bg-white text-black p-4 relative">
+      <button
+        onClick={handleGoHome}
+        className="absolute top-4 left-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
+        aria-label="Ir al inicio"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+        </svg>
+      </button>
+      <div className="max-w-md mx-auto mt-12">
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={handleGoBack}
+            className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"
+          >
+            ← Volver
+          </button>
+          <h1 className="text-2xl font-bold mb-4">Gestión de Usuarios</h1>
+        </div>
+      
+      <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
         <input
           type="text"
           placeholder="Filtrar por DNI, Nombre o Apellido"
@@ -113,7 +147,7 @@ export function ListadoUsuarios() {
           onChange={(e) => setFilter(e.target.value)}
           className="p-2 border rounded mb-2 sm:mb-0"
         />
-        <button
+        <button 
           onClick={() => {
             setEditingUser(null);
             setFormData({
@@ -130,19 +164,20 @@ export function ListadoUsuarios() {
             });
             setIsModalOpen(true);
           }}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           Añadir Usuario
         </button>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {usuariosFiltrados && usuariosFiltrados.length > 0 ? (
-          usuariosFiltrados.map((user) => (
-            <Usuario key={user.dni} usuario={user} editar={editUser} eliminar={deleteUser} />
-          ))
-        ) : (
-          <p>No hay usuarios disponibles</p>
-        )}
+        
+        <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
+          {usuariosFiltrados && usuariosFiltrados.length > 0 ? (
+            usuariosFiltrados.map((user) => (
+              <Usuario key={user.dni} usuario={user} editar={editUser} eliminar={deleteUser} />
+            ))
+          ) : (
+            <p>No hay usuarios disponibles</p>
+          )}
+        </div>
       </div>
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center p-4">
@@ -321,6 +356,7 @@ export function ListadoUsuarios() {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

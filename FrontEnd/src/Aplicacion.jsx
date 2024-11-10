@@ -15,7 +15,7 @@ function Aplicacion() {
     <ProveedorUsuario>
       <Routes>
         <Route path="/" element={<PaginaPrincipal />} />
-        <Route path="/asistencia" element={<RutasAsistencia />} />
+        <Route path="/asistencia/*" element={<RutasAsistencia />} />
         <Route path="/seguimiento/*" element={<RutasSeguimientos />} />
         <Route path="/ejercicios/*" element={<RutasEjercicios />} />
         <Route path="/rutinas/*" element={<RutasRutinas />}/>

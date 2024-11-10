@@ -92,36 +92,37 @@ function ListaCupos() {
           <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
         </svg>
       </button>
-      <button
-        onClick={handleGoBack}
-        className="absolute top-4 right-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
-        aria-label="Volver"
-      >
-        ←
-      </button>
+      <div className="max-w-md mx-auto mt-12">
+      <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={handleGoBack}
+            className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"
+          >
+            ← Volver
+          </button>
+          <h1 className="text-2xl font-bold">Cupos por Día</h1>
+        </div>
 
-      <h1 className="text-2xl font-bold text-center mb-6">Cupos por Día</h1>
-
-      <div className="max-w-sm mx-auto bg-gray-100 rounded-lg shadow-md overflow-hidden">
-        <ul className="p-4 space-y-4">
-          {daysWeek.map((day) => (
-            <li
-              key={day}
-              onClick={() => handleSelect(day)}
-              className={`cursor-pointer text-center p-2 rounded-lg ${
-                selectedDay === day
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-black"
-              } hover:bg-blue-300 transition-colors`}
-            >
-              {getDayName(day)}
-            </li>
-          ))}
-        </ul>
+        <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
+          <ul className="p-4 space-y-4">
+            {daysWeek.map((day) => (
+              <li
+                key={day}
+                onClick={() => handleSelect(day)}
+                className={`cursor-pointer text-center p-2 rounded-lg ${
+                  selectedDay === day
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-black"
+                } hover:bg-blue-300 transition-colors`}
+              >
+                {getDayName(day)}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-
       {selectedDay !== null && (
-        <div className="mt-6">
+        <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
           <ListaDias
             day={getDayName(selectedDay)}
             cupos={cupos.filter((cupo) => isMatchingDay(cupo, selectedDay))}
