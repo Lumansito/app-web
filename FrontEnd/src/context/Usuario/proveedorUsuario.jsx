@@ -1,5 +1,5 @@
 import { ContextoUsuario } from "./ContextoUsuario.jsx";
-import { iniciarSesionAPI, obtenerProfesionalesAPI } from "../../api/usuarios.api.js";
+import { iniciarSesionAPI, obtenerProfesionalesAPI , obtenerClienteXdniAPI} from "../../api/usuarios.api.js";
 import { useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
@@ -18,6 +18,7 @@ const ProveedorUsuario = ({ children }) => {
 
   const [rol, setRol] = useState([]);
   const [dni, setDni] = useState();
+  const [datosUsuario, setDatosUsuario] = useState([]);
   const [profesionales, setProfesionales] = useState([]);
   const [loading, setLoading] = useState(false); // Estado para la carga
   const [error, setError] = useState(null); // Estado para errores
@@ -33,6 +34,7 @@ const ProveedorUsuario = ({ children }) => {
     const decoded = jwtDecode(token);
     setRol(decoded.rol);
     setDni(decoded.dni);
+    obtenerDatosPersonales();
   }
 
   function comprobarToken() {
@@ -77,6 +79,28 @@ const ProveedorUsuario = ({ children }) => {
     setDni();
   }
 
+  const obtenerDatosPersonales = async () => {
+  
+    if (!dni) {
+      return;
+    }
+    let response = await obtenerClienteXdniAPI(dni);
+    
+    const fechaPago = new Date(response.fechaPago); // formato ISO 8601
+    const fechaVencimiento = new Date(fechaPago);
+    fechaVencimiento.setDate(fechaPago.getDate() + 30);
+    response.fechaPago = fechaVencimiento.toLocaleDateString();
+    response.membresia = 
+      response.codMembresia === "1" ? "Standard" : 
+      response.codMembresia === "2" ? "Premium" : 
+      "VIP";
+
+    setDatosUsuario(response);
+    
+  };
+
+  
+
   return (
     <ContextoUsuario.Provider
       value={{
@@ -90,6 +114,8 @@ const ProveedorUsuario = ({ children }) => {
         cerrarSesion,
         loading,
         error,
+        datosUsuario,
+        obtenerDatosPersonales
       }}
     >
       {children}

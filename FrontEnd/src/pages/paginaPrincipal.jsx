@@ -147,13 +147,7 @@ export function PaginaPrincipal() {
                         >
                             Perfil
                         </button>
-                        <button
-                            className="w-full py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                            onClick={handleLogout}
-                            disabled={loading}
-                        >
-                            {loading ? "Cerrando sesión..." : "Cerrar sesión"}
-                        </button>
+                        
                     </div>
                 </div>
             </div>

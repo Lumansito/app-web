@@ -33,7 +33,9 @@ export const usuariosConMembresiaAPI = async (codMembresia) => {
 export const obtenerClienteXdniAPI = async (dni) => {
   try {
     const response = await axiosInstance.get(`/users/${dni}`);
-    return response;
+    
+    
+    return response.data;
   }
   catch (error) {
     return error;

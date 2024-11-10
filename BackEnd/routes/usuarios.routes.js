@@ -12,6 +12,7 @@ import {
 import {
   ProfesionalAdmin,
   Administrador,
+  TodosLosRoles
 } from "../middleware/authorizeRole.js";
 
 const router = Router();
@@ -20,7 +21,7 @@ router.get("/api/users/profesionales", ProfesionalAdmin, obtenerProfesionales);
 
 router.get("/api/users", ProfesionalAdmin, obtenerUsuarios);
 
-router.get("/api/users/:dni", ProfesionalAdmin, obtenerUsuarioXdni);
+router.get("/api/users/:dni", TodosLosRoles, obtenerUsuarioXdni);
 
 router.get(
   "/api/users/membresia/:codMembresia",

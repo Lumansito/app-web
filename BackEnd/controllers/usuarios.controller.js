@@ -37,7 +37,7 @@ export const obtenerUsuarios = async (req, res) => {
 
 export const obtenerUsuarioXdni = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM usuarios WHERE dni = ?", [
+    const [result] = await pool.query("SELECT u.*, p.fecha as fechaPago FROM usuarios u INNER JOIN pagos p on p.dniCliente = u.dni WHERE u.dni = ?", [
       req.params.dni,
     ]);
     if (result.length === 0) {
