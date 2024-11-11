@@ -77,7 +77,7 @@ export const obtenerEsquemaCuposHoy = async (req, res) => {
       [diaSemana]
     );
     if (result.length === 0) {
-      console.log(diaSemana);
+      
       return res.status(404).json({
         message: "no hay cupos cargados en el dia de hoy.",
       });
@@ -86,7 +86,7 @@ export const obtenerEsquemaCuposHoy = async (req, res) => {
       const [cupos] = await pool.query(
         "SELECT horaInicio, count(*) as reservas from cupo_otorgado where fecha = CURDATE() and estado != 'cancelado' group by horaInicio"
       );
-      console.log(result);
+      
       let clases = result.map((clase) => {
         const cupoEncontrado = cupos.find(
           (cupo) => cupo.horaInicio === clase.horario

@@ -135,6 +135,7 @@ export const confirmarAsistencia = async (req, res) => {
     const { dniCliente } = req.params;
     const horaAsistencia = new Date().toTimeString().split(" ")[0];
 
+    
     const [response] = await pool.query(
       `
             SELECT * from cupo_otorgado
@@ -142,6 +143,11 @@ export const confirmarAsistencia = async (req, res) => {
       [dniCliente]
     );
 
+    if (response.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "No se puede confirmar la Asistencia, no se encontro el cliente" });
+    }
     const [hours, minutes, seconds] = response[0].horaInicio.split(":"); // Suponiendo que horaInicio es 'HH:mm:ss'
     const horaInicio = new Date(horaAsistencia); // Copiamos la fecha actual
     horaInicio.setHours(hours, minutes, seconds);
