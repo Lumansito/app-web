@@ -17,14 +17,9 @@ function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
     }
   };
 
-  
-
-    const handleSwitchChange = (cupo) => {
-      
-      onToggleDisabled(cupo); // si esta función hace algo adicional
-    };
-
-
+  const handleSwitchChange = (cupo) => {
+    onToggleDisabled(cupo); // si esta función hace algo adicional
+  };
 
   const handleEditCupo = (idEsquema) => {
     navigate(`/cupos/edit/${idEsquema}`); // Redirige a la página de edición

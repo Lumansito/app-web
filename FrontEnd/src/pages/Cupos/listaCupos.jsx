@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContextoCupo } from "../../context/Cupo/ContextoCupo.jsx"; 
+import { ContextoCupo } from "../../context/Cupo/ContextoCupo.jsx";
 import ListaDias from "../../components/ListaDias.jsx";
 
 function ListaCupos() {
@@ -39,13 +39,14 @@ function ListaCupos() {
       ...cupo,
       estado: cupo.estado === "habilitado" ? "deshabilitado" : "habilitado",
     };
-    actualizarCupo(updatedCupo.idEsquema, updatedCupo);
-    const nuevosCupos = cupos.map(c => 
-      c.idEsquema === cupo.idEsquema
-        ? { ...c, estado: c.estado === "habilitado" ? "deshabilitado" : "habilitado" }
-        : c
-    );
-    setCupos(nuevosCupos);
+    actualizarCupo(cupo.idEsquema, updatedCupo).then(() => {
+      const nuevosCupos = cupos.map((c) =>
+        c.idEsquema === cupo.idEsquema
+          ? { ...c, estado: updatedCupo.estado }
+          : c
+      );
+      setCupos(nuevosCupos);
+    });
   };
 
   const isMatchingDay = (cupo, day) => {
@@ -93,7 +94,7 @@ function ListaCupos() {
         </svg>
       </button>
       <div className="max-w-md mx-auto mt-12">
-      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6">
           <button
             onClick={handleGoBack}
             className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"

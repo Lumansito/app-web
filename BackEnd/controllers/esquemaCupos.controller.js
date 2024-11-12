@@ -77,16 +77,14 @@ export const obtenerEsquemaCuposHoy = async (req, res) => {
       [diaSemana]
     );
     if (result.length === 0) {
-      
       return res.status(404).json({
         message: "no hay cupos cargados en el dia de hoy.",
       });
     } else {
-
       const [cupos] = await pool.query(
         "SELECT horaInicio, count(*) as reservas from cupo_otorgado where fecha = CURDATE() and estado != 'cancelado' group by horaInicio"
       );
-      
+
       let clases = result.map((clase) => {
         const cupoEncontrado = cupos.find(
           (cupo) => cupo.horaInicio === clase.horario
@@ -107,19 +105,22 @@ export const obtenerEsquemaCuposHoy = async (req, res) => {
 
 export const crearEsquemaCupos = async (req, res) => {
   try {
-    const { diaSemana, horario, estado, dniInstructor, cupo } = req.body; // Eliminar idEsquema
+    const { diaSemana, horario, dniInstructor, cupo } = req.body;
+    const estadoPredeterminado = "habilitado";
     await pool.query(
       "INSERT INTO esquemaCupos (diaSemana, horario, estado, dniInstructor, cupo) VALUES (?, ?, ?, ?, ?)",
-      [diaSemana, horario, estado, dniInstructor, cupo]
+      [diaSemana, horario, estadoPredeterminado, dniInstructor, cupo]
     );
-    if (typeof diaSemana !== 'number') {
-      return res.status(400).json({ error: "El día de la semana debe ser un número" });
+    if (typeof diaSemana !== "number") {
+      return res
+        .status(400)
+        .json({ error: "El día de la semana debe ser un número" });
     }
     // Devuelve el nuevo esquema creado sin idEsquema, ya que es auto-incremental
     res.status(201).json({
       diaSemana,
       horario,
-      estado,
+      estado: estadoPredeterminado,
       dniInstructor,
     });
   } catch (error) {

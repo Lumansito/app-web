@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosInstance from "./axiosInstance";
 
 // Obtener todos los cupos
@@ -52,7 +53,10 @@ export const crearEsquemaCuposAPI = async (cupo) => {
 
 export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
   try {
-    const response = await axiosInstance.put(`/esquemaCupos/${idEsquema}`, cupo);
+    const response = await axiosInstance.put(
+      `/esquemaCupos/${idEsquema}`,
+      cupo
+    );
     return response.data;
   } catch (error) {
     console.error(`Error updating cupo with ID ${idEsquema}:`, error);
@@ -62,7 +66,10 @@ export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
 
 export const actualizarEstadoCupoAPI = async (idEsquema, cupo) => {
   try {
-    const response = await axiosInstance.put(`/esquemaCupos/${idEsquema}`, cupo);
+    const response = await axiosInstance.put(
+      `/esquemaCupos/${idEsquema}`,
+      cupo
+    );
     return response.data;
   } catch (error) {
     console.error(`Error updating cupo with ID ${idEsquema}:`, error);

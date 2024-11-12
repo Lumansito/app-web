@@ -123,7 +123,6 @@ const ProveedorCupo = ({ children }) => {
     }
   };
 
-
   const eliminarCupo = async (idEsquema) => {
     setLoading(true);
     try {
