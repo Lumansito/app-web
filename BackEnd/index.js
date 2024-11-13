@@ -15,6 +15,12 @@ import cuposRouter from "./routes/cupoOtorgado.routes.js";
 import loginRouter from "./routes/login.routes.js";
 import rutiasRouter from "./routes/rutinas.routes.js";
 
+import config from "dotenv"
+
+config.config();
+
+const CLAVE_SUPER_SEGURA = process.env.CLAVE;
+
 const app = express();
 const PORT = 3000;
 app.use(cors());
@@ -30,7 +36,7 @@ app.use((req, res, next) => {
   }
   req.session = { rol: null };
   try {
-    data = jwt.verify(token, "CLAVE_SUPER_SEGURA");
+    data = jwt.verify(token, CLAVE_SUPER_SEGURA);
     req.session.rol = data.rol;
   } catch (e) {
     req.session.rol = null;

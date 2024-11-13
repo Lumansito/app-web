@@ -1,6 +1,12 @@
 import { pool } from "../bd.js";
 import jwt from "jsonwebtoken";
 
+import config from "dotenv"
+
+config.config();
+
+const CLAVE_SUPER_SEGURA = process.env.CLAVE;
+
 export const iniciarSesion = async (req, res) => {
   try {
     const [result] = await pool.query(
@@ -23,7 +29,7 @@ export const iniciarSesion = async (req, res) => {
       }
       const token = jwt.sign(
         { dni: req.body.dni, rol: rol },
-        "CLAVE_SUPER_SEGURA",
+        CLAVE_SUPER_SEGURA,
         { expiresIn: "1d" }
       );
 
