@@ -13,6 +13,9 @@ __Integrantes:__
 
 <a href="https://github.com/Lumansito/app-web">Repositorio</a>
 
+## Pull Request
+<a href="https://github.com/Lumansito/app-web/pull/1">Link</a>
+
 Tema
 -
 Gestión de un Gym:
