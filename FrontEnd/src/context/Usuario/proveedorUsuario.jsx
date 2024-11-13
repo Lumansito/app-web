@@ -34,7 +34,7 @@ const ProveedorUsuario = ({ children }) => {
     const decoded = jwtDecode(token);
     setRol(decoded.rol);
     setDni(decoded.dni);
-    obtenerDatosPersonales();
+    
   }
 
   function comprobarToken() {
@@ -74,28 +74,36 @@ const ProveedorUsuario = ({ children }) => {
   };
 
   async function cerrarSesion() {
+    setDni();
     localStorage.removeItem("token");
     setRol([]);
-    setDni();
   }
 
   const obtenerDatosPersonales = async () => {
   
-    if (!dni) {
+    if (!dni || dni === "") {
       return;
     }
     let response = await obtenerClienteXdniAPI(dni);
-    
-    const fechaPago = new Date(response.fechaPago); // formato ISO 8601
+
+    if (!response.data) {
+      return;
+    }
+    if(!response.data.fechaPago || response.data.fechaPago === null){
+      response.data.fechaPago = "No se ha realizado el pago";
+      setDatosUsuario(response.data);
+      return;
+    }
+    const fechaPago = new Date(response.data.fechaPago); // formato ISO 8601
     const fechaVencimiento = new Date(fechaPago);
     fechaVencimiento.setDate(fechaPago.getDate() + 30);
-    response.fechaPago = fechaVencimiento.toLocaleDateString();
-    response.membresia = 
-      response.codMembresia === "1" ? "Standard" : 
-      response.codMembresia === "2" ? "Premium" : 
+    response.data.fechaPago = fechaVencimiento.toLocaleDateString();
+    response.data.membresia = 
+      response.data.codMembresia === "1" ? "Standard" : 
+      response.data.codMembresia === "2" ? "Premium" : 
       "VIP";
 
-    setDatosUsuario(response);
+    setDatosUsuario(response.data);
     
   };
 

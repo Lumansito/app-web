@@ -32,8 +32,15 @@ export function RutasRutinas() {
             </ProveedorEjercicio>
           }
         />
-        <Route path="/" element={<h1>1</h1> /*<ListadoRutinas /> */} />
-        <Route path="/new" element={<h1>1</h1>} />
+        <Route
+          path="/"
+          element={
+            <h1 className="text-center text-4xl font-bold flex items-center justify-center h-screen">
+              EN DESARROLLO
+            </h1>
+          }
+        />
+        <Route path="/new" element={<h1>EN DESARROLLO</h1>} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </ProveedorRutinas>

@@ -22,7 +22,7 @@ export const FormularioSeguimiento = () => {
         seguimiento,
         actualizarSeguimientoXid,
         nuevoSeguimiento,
-        cargarCliente,
+        cargarClienteXdni,
         cliente,
         cargarEjercicio,
         ejercicio,
@@ -37,7 +37,7 @@ export const FormularioSeguimiento = () => {
             setClienteInfo("Cargando...");
             setEjercicioInfo("Cargando...");
         } else if (isNewRoute) {
-            cargarCliente(params.dni);
+            cargarClienteXdni(params.dni);
             cargarEjercicio(params.codEjercicio);
         }
     }, []);

@@ -5,6 +5,7 @@ import { Perfil } from "../pages/Perfil/perfil.jsx";
 //<Route path="/perfil/cambiar-contrasena" element={<CambiarContrasena />} />
 
 export function RutasPerfil() {
+  
   const { rol } = useUsuario(); 
 
   return (

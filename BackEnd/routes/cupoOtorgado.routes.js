@@ -12,7 +12,7 @@ import { Administrador,  TodosLosRoles } from "../middleware/authorizeRole.js";
 
 const router = Router();
 
-router.post("/api/cupoOtorgado", Administrador, crearCupoOtorgado);
+router.post("/api/cupoOtorgado", TodosLosRoles, crearCupoOtorgado);
 
 router.get(
   "/api/cupoOtorgado/:idEsquema",

@@ -4,26 +4,22 @@ import {InicioSesion} from "./InicioSesion.jsx";
 import {useUsuario} from "../context/Usuario/proveedorUsuario.jsx";
 
 export function PaginaPrincipal() {
-    const {rol, comprobarToken, dni, logout} = useUsuario();
+    const {rol, comprobarToken, dni, logout, datosUsuario, obtenerDatosPersonales} = useUsuario();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         comprobarToken();
     }, []);
 
-    const handleLogout = async () => {
-        setLoading(true);
-        try {
-            await logout();
-            alert("Has cerrado sesión exitosamente.");
-            navigate("/");
-        } catch (error) {
-            alert("No se pudo cerrar la sesión. Intenta de nuevo.");
-        } finally {
-            setLoading(false);
+    useEffect(() => {
+        if (dni) {
+
+        obtenerDatosPersonales();   
         }
-    };
+        else {
+            return;
+        }
+    }, [dni]);
 
     const handleNavigation = (path) => {
         navigate(path);
@@ -39,16 +35,16 @@ export function PaginaPrincipal() {
             <div className="max-w-sm mx-auto bg-gray-100 rounded-lg shadow-md overflow-hidden">
                 <div className="p-4 border-b border-gray-200">
                     <h2 className="text-lg font-semibold">
-                        Bienvenido, usuario con DNI: {dni}
+                        Bienvenido,  {datosUsuario.nombre} {datosUsuario.apellido}
                     </h2>
                 </div>
                 <div className="p-4 space-y-4">
-                    <p className="text-sm font-medium">Tus roles:</p>
+                    
                     <div className="space-y-2">
                         {rol.includes(1) && (
                             <div className="space-y-2">
                 <span className="block text-sm bg-gray-200 p-2 rounded">
-                  Cliente
+                  
                 </span>
                                 <div className="flex space-x-2">
                                     <button
@@ -79,7 +75,7 @@ export function PaginaPrincipal() {
                         {rol.includes(2) && (
                             <div className="space-y-2">
                 <span className="block text-sm bg-gray-200 p-2 rounded">
-                  Profesional
+                  
                 </span>
                                 <div className="flex space-x-2">
                                     {" "}
@@ -109,7 +105,7 @@ export function PaginaPrincipal() {
                         {rol.includes(3) && (
                             <div className="space-y-2">
                 <span className="block text-sm bg-gray-200 p-2 rounded">
-                  Admin
+                 
                 </span>
                                 <button
                                     className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
@@ -140,7 +136,7 @@ export function PaginaPrincipal() {
                         )}
                     </div>
                     <div className="pt-4 border-t border-gray-200">
-                        <p className="text-sm font-medium mb-2">Opciones</p>
+                        <p className="text-sm font-medium mb-2"></p>
                         <button
                             className="w-full py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors mb-2"
                             onClick={() => handleNavigation("/perfil")}

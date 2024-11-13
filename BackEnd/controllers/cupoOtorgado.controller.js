@@ -32,14 +32,23 @@ export const crearCupoOtorgado = async (req, res) => {
             where fecha = CURDATE() and dniCliente = ? and estado = "asistido"`,
       [dniCliente]
     );
+    
+
     const [cuposMaxCliente] = await pool.query(
       `
-            SELECT cuposDia from membresias mem
-            inner join usuarios cli
-            on cli.codMembresia = mem.codMembresia
-            where dni = ?`,
+      SELECT cuposDia 
+      FROM membresias mem
+      INNER JOIN usuarios cli ON cli.codMembresia = mem.codMembresia
+      INNER JOIN pagos p ON p.dniCliente = cli.dni
+      WHERE cli.dni = ? 
+        AND p.fecha >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    `,
       [dniCliente]
     );
+    if(cuposMaxCliente.length === 0){
+      return res.status(400).json({ message: "El cliente no posee membresia Paga" });
+    }
+
     if (cupoReservado[0].cantidad >= cuposMaxCliente[0].cuposDia) {
       return res
         .status(400)

@@ -8,7 +8,7 @@ export const obtenerUsuarios = async (req, res) => {
         u.*,
         GROUP_CONCAT(ur.idrol SEPARATOR ',') AS roles    
       FROM usuarios u
-      INNER JOIN usuarios_roles ur ON u.dni = ur.dni
+      left JOIN usuarios_roles ur ON u.dni = ur.dni
       WHERE u.estado = 1
       GROUP BY u.dni
     `);
@@ -37,7 +37,7 @@ export const obtenerUsuarios = async (req, res) => {
 
 export const obtenerUsuarioXdni = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT u.*, p.fecha as fechaPago FROM usuarios u INNER JOIN pagos p on p.dniCliente = u.dni WHERE u.dni = ?", [
+    const [result] = await pool.query("SELECT u.* , IF(p.fecha < DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), NULL, p.fecha) AS fechaPago FROM usuarios u left JOIN pagos p on p.dniCliente = u.dni WHERE u.dni = ?", [
       req.params.dni,
     ]);
     if (result.length === 0) {

@@ -47,6 +47,7 @@ const ProveedorSeguimiento = ({children}) => {
     async function cargarSeguimientosXdni_codEjercicio(dni, codEjercicio) {
         const response = await obtenerSeguimientosXdni_codEjercicioAPI(dni, codEjercicio);
         if (response) {
+            console.log(response.data); 
             asignarSeguimientos(response.data);
         } else {
             asignarSeguimientos([]);
@@ -55,6 +56,7 @@ const ProveedorSeguimiento = ({children}) => {
 
     async function cargarClienteXdni(dni) {
         const response = await obtenerClienteXdniAPI(dni);
+        console.log(response.data);
         asignarCliente(response.data);
     }
 
