@@ -1,8 +1,10 @@
 import express from "express";
-import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 import {ProfesionalAdmin } from "./middleware/authorizeRole.js";
+import decodificarToken from "./middleware/decodificarToken.js";
+import manejoErroresGlobal from "./middleware/manejoErroresGlobal.js";
 
 import usersRouter from "./routes/usuarios.routes.js";
 import ejerciciosRouter from "./routes/ejercicios.routes.js";
@@ -27,22 +29,10 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json()); //para usar json en el body
 
-app.use((req, res, next) => {
-  let data = null;
-  let token = null;
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    token = authHeader.split(" ")[1];
-  }
-  req.session = { rol: null };
-  try {
-    data = jwt.verify(token, CLAVE_SUPER_SEGURA);
-    req.session.rol = data.rol;
-  } catch (e) {
-    req.session.rol = null;
-  }
-  next();
-});
+
+
+app.use(decodificarToken);
+
 
 //Validamos los roles necesarios para cada conjutno de rutas,
 // en el caso de tener distintos roles para un mismo conjunto de rutas,
@@ -58,6 +48,7 @@ app.use(ProfesionalAdmin, rutiasRouter);
 app.use(pagosRouter);
 app.use(ProfesionalAdmin, seguimientosRouter);
 
+app.use(manejoErroresGlobal);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);

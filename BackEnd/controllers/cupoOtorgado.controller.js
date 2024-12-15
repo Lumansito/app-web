@@ -5,17 +5,25 @@
 
 import { pool } from "../bd.js";
 
-export const crearCupoOtorgado = async (req, res) => {
+import { TZDate } from "@date-fns/tz";
+import { format, getDay } from 'date-fns';
+
+const zonaHoraria = 'America/Argentina/Buenos_Aires';
+
+export const crearCupoOtorgado = async (req, res, next) => {
   try {
     const { dniCliente, dniInstructor, horaInicio } = req.body;
     //verifica si hay cupos disponibles PARA TURNO QEU SE QUEIRE RESERVAR
     const [cantidad] = await pool.query(
       `
-            SELECT count(*) as cantidad from cupo_otorgado
-            where fecha = CURDATE() and horaInicio = ?`,
+      SELECT count(*) as cantidad from cupo_otorgado
+      where fecha = CURDATE() and horaInicio = ?
+      `,
       [horaInicio]
     );
-    const diaSemana = new Date().getDay();
+    const hoy = new Date();
+    const diaSemana = getDay(hoy);
+
     const [cantidadMax] = await pool.query(
       `
             SELECT cupo from esquemacupos
@@ -37,11 +45,12 @@ export const crearCupoOtorgado = async (req, res) => {
     const [cuposMaxCliente] = await pool.query(
       `
       SELECT cuposDia 
-      FROM membresias mem
-      INNER JOIN usuarios cli ON cli.codMembresia = mem.codMembresia
-      INNER JOIN pagos p ON p.dniCliente = cli.dni
-      WHERE cli.dni = ? 
-        AND p.fecha >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+      FROM membresias AS membresias
+      INNER JOIN usuarios AS clientes ON clientes.codMembresia = membresias.codMembresia
+      INNER JOIN pagos AS pagos ON pagos.dniCliente = clientes.dni
+      WHERE clientes.dni = ? 
+        AND pagos.fecha >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH);
+
     `,
       [dniCliente]
     );
@@ -68,21 +77,10 @@ export const crearCupoOtorgado = async (req, res) => {
     }
 
     
-    const offset = -3; // Cambia por la diferencia horaria de tu zona (por ejemplo, -3 para Buenos Aires)
-
-    // Obtén la fecha actual en UTC
-    const fechaActualUTC = new Date();
-    
-    
-    const diferenciaHoraria = offset * 60 * 60 * 1000;
-    
-    
-    const fechaClase = new Date(fechaActualUTC.getTime() + diferenciaHoraria);
-    
-  
-    const fechaFormateada = fechaClase.toISOString().split("T")[0];
-
-    
+    const fechaActual = new Date();
+    const fechaZonaHoraria = new TZDate(fechaActual, zonaHoraria);
+    const fechaFormateada = format(fechaZonaHoraria, 'yyyy-MM-dd');
+      
     const estado = "reservado";
     
     const [result] = await pool.query(
@@ -97,11 +95,11 @@ export const crearCupoOtorgado = async (req, res) => {
       res.json({ message: "Cupo otorgado" });
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerCantCuposHoy = async (req, res) => {
+export const obtenerCantCuposHoy = async (req, res, next) => {
   try {
     const [result] = await pool.query(`
             SELECT horaInicio, count(*) as reservas from cupo_otorgado 
@@ -113,18 +111,19 @@ export const obtenerCantCuposHoy = async (req, res) => {
       res.status(200).json(result);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerCuposOcupadosXidEsquema = async (req, res) => {
+export const obtenerCuposOcupadosXidEsquema = async (req, res, next) => {
   try {
     const [result] = await pool.query(`
             SELECT COUNT(*) AS reservas 
             FROM cupo_otorgado c
             WHERE c.fecha = CURDATE() 
               AND (c.estado = 'reservado' OR c.estado = 'asistido')
-              AND c.horaInicio IN (SELECT e.horario FROM esquemacupos e WHERE e.idEsquema = ${req.params.idEsquema});
+              AND c.horaInicio IN (SELECT e.horario FROM esquemacupos e 
+                WHERE e.idEsquema = ${req.params.idEsquema});
 
             
             `);
@@ -135,14 +134,17 @@ export const obtenerCuposOcupadosXidEsquema = async (req, res) => {
       res.json(result[0].reservas);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const confirmarAsistencia = async (req, res) => {
+export const confirmarAsistencia = async (req, res, next) => {
   try {
     const { dniCliente } = req.params;
-    const horaAsistencia = new Date().toTimeString().split(" ")[0];
+
+    const fechaActual = new Date();
+    const fechaZonaHoraria = new TZDate(fechaActual, zonaHoraria);
+    const horaAsistencia = format(fechaZonaHoraria, 'HH:mm:ss');
 
     
     const [response] = await pool.query(
@@ -157,18 +159,15 @@ export const confirmarAsistencia = async (req, res) => {
         .status(400)
         .json({ message: "No se puede confirmar la Asistencia, no se encontro el cliente" });
     }
-    const [hours, minutes, seconds] = response[0].horaInicio.split(":"); // Suponiendo que horaInicio es 'HH:mm:ss'
+    const [hours, minutes, seconds] = response[0].horaInicio; // formato 'HH:mm:ss'
     const horaInicio = new Date(horaAsistencia); // Copiamos la fecha actual
     horaInicio.setHours(hours, minutes, seconds);
 
-
     const treintaMinutosAntes = new Date(horaInicio.getTime() - 60 * 60000);
     const treintaMinutosDespues = new Date(horaInicio.getTime() + 60 * 60000);
-
-
+    
     if (
-      horaAsistencia < treintaMinutosAntes ||
-      horaAsistencia > treintaMinutosDespues
+      horaAsistencia < treintaMinutosAntes || horaAsistencia > treintaMinutosDespues
     ) {
       return res
         .status(400)
@@ -192,19 +191,24 @@ export const confirmarAsistencia = async (req, res) => {
       res.status(200).json({ message: "Asistencia confirmada" });
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const cancelarReserva = async (req, res) => {
+export const cancelarReserva = async (req, res, next) => {
   try {
     const { dniCliente } = req.params;
+    
+    const fechaActual = new Date();
+    const fechaZonaHoraria = new TZDate(fechaActual, zonaHoraria);
+    const horaCancelacion = format(fechaZonaHoraria, 'HH:mm:ss');
+
     const [result] = await pool.query(
       `
             UPDATE  cupo_otorgado
             SET estado = "cancelado" , horaCancelacion = ?
             WHERE fecha = CURDATE() and dniCliente = ? and estado = "reservado"`,
-      [new Date().toTimeString().split(" ")[0], dniCliente]
+      [horaCancelacion, dniCliente]
     );
     if (result.affectedRows === 0) {
       return res
@@ -214,11 +218,11 @@ export const cancelarReserva = async (req, res) => {
       res.status(200).json({ message: "Reserva cancelada" });
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerReservasCliente = async (req, res) => {
+export const obtenerReservasCliente = async (req, res, next) => {
   try {
     const { dniCliente } = req.params;
     const [result] = await pool.query(
@@ -233,6 +237,6 @@ export const obtenerReservasCliente = async (req, res) => {
       res.json(result);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };

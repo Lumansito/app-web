@@ -1,6 +1,7 @@
 import { pool } from "../bd.js";
+import {getDay} from 'date-fns';
 
-export const obtenerEsquemaCupos = async (req, res) => {
+export const obtenerEsquemaCupos = async (req, res, next) => {
   try {
     const [results] = await pool.query("SELECT * FROM esquemaCupos");
     if (results.length === 0) {
@@ -9,29 +10,28 @@ export const obtenerEsquemaCupos = async (req, res) => {
       res.json(results);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerEsquemaCuposXid = async (req, res) => {
+export const obtenerEsquemaCuposXid = async (req, res, next) => {
   try {
-    const { idEsquema } = req.params; // Obtenemos el ID del parámetro de la solicitud
+    const { idEsquema } = req.params;
     const [result] = await pool.query(
-      "SELECT * FROM esquemaCupos WHERE idEsquema = ?", // Suponiendo que 'idEsquema' es el nombre de la columna en tu base de datos
+      "SELECT * FROM esquemaCupos WHERE idEsquema = ?", 
       [idEsquema]
     );
     if (result.length === 0) {
       return res.status(404).json({ message: "Cupo no encontrado." });
     } else {
-      res.json(result[0]); // Devolvemos el primer resultado
+      res.json(result[0]); 
     }
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Error al obtener el cupo." });
+    next(error);
   }
 };
 
-export const obtenerEsquemaCuposXfecha = async (req, res) => {
+export const obtenerEsquemaCuposXfecha = async (req, res, next) => {
   try {
     const { diaSemana } = req.params;
     const [result] = await pool.query(
@@ -40,17 +40,17 @@ export const obtenerEsquemaCuposXfecha = async (req, res) => {
     );
     if (result.length === 0) {
       return res.status(404).json({
-        message: "no hay cupos cargados en el dia y horario especificado.",
+        message: "No hay cupos cargados en el dia y horario especificado.",
       });
     } else {
       res.json(result[0]);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerEsquemaCuposXdiaSemana = async (req, res) => {
+export const obtenerEsquemaCuposXdiaSemana = async (req, res, next) => {
   try {
     const { diaSemana } = req.params;
     const [result] = await pool.query(
@@ -65,13 +65,15 @@ export const obtenerEsquemaCuposXdiaSemana = async (req, res) => {
       res.json(result[0]);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerEsquemaCuposHoy = async (req, res) => {
+export const obtenerEsquemaCuposHoy = async (req, res, next) => {
   try {
-    const diaSemana = new Date().getDay();
+    const hoy = new Date();
+    const diaSemana = getDay(hoy);
+    
     const [result] = await pool.query(
       "SELECT * FROM esquemacupos WHERE diaSemana = ? and estado = 'habilitado' and horario >= CURTIME()",
       [diaSemana]
@@ -94,16 +96,14 @@ export const obtenerEsquemaCuposHoy = async (req, res) => {
           cuposOcupados: cupoEncontrado ? cupoEncontrado.reservas : 0,
         };
       });
-      console.log(clases);
       res.status(200).json(clases);
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    console.log(error);
+    next(error);
   }
 };
 
-export const crearEsquemaCupos = async (req, res) => {
+export const crearEsquemaCupos = async (req, res, next) => {
   try {
     const { diaSemana, horario, dniInstructor, cupo } = req.body;
     const estadoPredeterminado = "habilitado";
@@ -124,11 +124,11 @@ export const crearEsquemaCupos = async (req, res) => {
       dniInstructor,
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const actualizarEsquemaCupos = async (req, res) => {
+export const actualizarEsquemaCupos = async (req, res, next) => {
   try {
     const { idEsquema } = req.params;
     const { dniInstructor, estado, cupo, horario } = req.body;
@@ -142,11 +142,11 @@ export const actualizarEsquemaCupos = async (req, res) => {
     }
     res.json({ message: "Cupo actualizado.", success: true });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const actualizarEstadoCupo = async (req, res) => {
+export const actualizarEstadoCupo = async (req, res, next) => {
   try {
     const { idEsquema } = req.params;
     const { estado } = req.body;
@@ -157,13 +157,13 @@ export const actualizarEstadoCupo = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Cupo no encontrado." });
     }
-    res.json({ message: "Estado del cupo actualizado." });
+    res.status(200).json({ message: "Estado del cupo actualizado." });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);  
   }
 };
 
-export const eliminarEsquemaCupos = async (req, res) => {
+export const eliminarEsquemaCupos = async (req, res, next) => {
   try {
     const { idEsquema } = req.params;
     const [result] = await pool.query(
@@ -175,8 +175,8 @@ export const eliminarEsquemaCupos = async (req, res) => {
       return res.status(404).json({ message: "Cupo no encontrado." });
     }
 
-    res.json({ message: "Cupo eliminado." });
+    res.status(200).json({ message: "Cupo eliminado." });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };

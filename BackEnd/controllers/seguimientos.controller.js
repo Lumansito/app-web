@@ -4,9 +4,10 @@
 //tmb a la hora de visualizarlo, (simplemente ponerlo como comentario a esa validadcion luego con los tokens vceremos.)
 
 import { pool } from "../bd.js";
+import { TZDate } from "@date-fns/tz";
+import { format} from 'date-fns';
 
-
-export const obtenerSeguimientosXdni_codEjercicio = async (req, res) => {
+export const obtenerSeguimientosXdni_codEjercicio = async (req, res, next) => {
     try{
         const {dniCliente, codEjercicio} = req.params;
         const [result]= await pool.query("SELECT * from seguimientos_gym where dniCliente = ? and codEjercicio = ?", [dniCliente, codEjercicio]);
@@ -18,24 +19,28 @@ export const obtenerSeguimientosXdni_codEjercicio = async (req, res) => {
         }
         
     }catch(error){
-        console.log(error);
+       next(error);
     }
 }
 
-export const crearSeguimiento = async (req, res) => {
+export const crearSeguimiento = async (req, res, next) => {
     try {
         const {dniCliente, codEjercicio,  repeticiones, peso } = req.body;
-        const fecha = new Date();
+        
+        const fechaActual = new Date();
+        const fechaZonaHoraria = new TZDate(fechaActual, zonaHoraria);
+        const fecha = format(fechaZonaHoraria, 'yyyy-MM-dd');
+        
         const [result] = await pool.query(`
             INSERT INTO seguimientos_gym (dniCliente, codEjercicio, fechaSeguimiento, repeticiones, peso) 
             VALUES (?, ?, ?, ?,?)`, [dniCliente, codEjercicio, fecha, repeticiones, peso]);
         res.json({ message: "Seguimiento creado" });
     } catch (error) {
-        console.log(error);
+        next    (error);
     }
 }
 
-export const actualizarSeguimiento = async (req, res) => {
+export const actualizarSeguimiento = async (req, res, next) => {
     try {
         const {idSeguimiento} = req.params;
         const { repeticiones, peso } = req.body;   //presentar esta actualizacion nen forma de modal
@@ -43,11 +48,11 @@ export const actualizarSeguimiento = async (req, res) => {
             UPDATE seguimientos_gym SET repeticiones = ?, peso = ? WHERE idSeguimiento = ?`, [repeticiones, peso, idSeguimiento]);
         res.json({ message: "Seguimiento actualizado" });
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
-export const eliminarSeguimiento = async (req, res) => {
+export const eliminarSeguimiento = async (req, res, next) => {
     try {
         const {idSeguimiento} = req.params;
         const [result] = await pool.query("DELETE FROM seguimientos_gym WHERE idSeguimiento = ?", [idSeguimiento]);
@@ -58,11 +63,11 @@ export const eliminarSeguimiento = async (req, res) => {
         }
         
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
-export const obtenerSeguimiento = async (req, res) => {
+export const obtenerSeguimiento = async (req, res, next) => {
     try {
         const {idSeguimiento} = req.params;
         const [result] = await pool.query("SELECT * FROM seguimientos_gym WHERE idSeguimiento = ?", [idSeguimiento]);
@@ -72,6 +77,6 @@ export const obtenerSeguimiento = async (req, res) => {
             res.json(result[0]);
         }
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }

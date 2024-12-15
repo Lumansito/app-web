@@ -1,6 +1,6 @@
 import { pool } from "../bd.js";
 
-export const obtenerMembresias = async (req, res) => {
+export const obtenerMembresias = async (req, res, next) => {
   try {
     const [result] = await pool.query("SELECT * FROM membresias");
     if (result.length === 0) {
@@ -9,11 +9,11 @@ export const obtenerMembresias = async (req, res) => {
       res.json(result);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerMembresiasXcodMembresia = async (req, res) => {
+export const obtenerMembresiasXcodMembresia = async (req, res, next) => {
   try {
     const [result] = await pool.query(
       "SELECT * FROM membresias WHERE codMembresia = ?",
@@ -25,11 +25,11 @@ export const obtenerMembresiasXcodMembresia = async (req, res) => {
       res.json(result[0]);
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const crearMembresia = async (req, res) => {
+export const crearMembresia = async (req, res, next) => {
   try {
     const { nombre, costo, descripcion, costoDia } = req.body;
     await pool.query(
@@ -43,11 +43,11 @@ export const crearMembresia = async (req, res) => {
       costoDia,
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const actualizarMembresia = async (req, res) => {
+export const actualizarMembresia = async (req, res, next) => {
   try {
     const [result] = await pool.query(
       "UPDATE membresias SET ? WHERE codMembresia = ?",
@@ -58,11 +58,11 @@ export const actualizarMembresia = async (req, res) => {
     }
     res.json({ message: "Membresia actualizada" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const eliminarMembresia = async (req, res) => {
+export const eliminarMembresia = async (req, res, next) => {
   try {
     const [result] = await pool.query(
       "DELETE FROM membresias WHERE codMembresia = ?",
@@ -73,6 +73,6 @@ export const eliminarMembresia = async (req, res) => {
     }
     res.json({ message: "Membresia eliminada" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };

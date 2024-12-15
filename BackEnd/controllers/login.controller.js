@@ -7,7 +7,7 @@ config.config();
 
 const CLAVE_SUPER_SEGURA = process.env.CLAVE;
 
-export const iniciarSesion = async (req, res) => {
+export const iniciarSesion = async (req, res, next) => {
   try {
     const [result] = await pool.query(
       "SELECT * FROM usuarios WHERE dni = ? AND contrasenia = ?",
@@ -36,6 +36,6 @@ export const iniciarSesion = async (req, res) => {
       res.send({ token: token });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };

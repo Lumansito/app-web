@@ -1,11 +1,16 @@
 import { pool } from "../bd.js";
-
+import { TZDate } from "@date-fns/tz";
+import { format} from 'date-fns';
 // usuario agrega un comentario a una rutina personalizada
-export const crearSolicitudRutinas = async (req, res) => {
+export const crearSolicitudRutinas = async (req, res, next) => {
   try {
     const { dni } = req.params;
     const { peticion } = req.body;
-    const fecha = new Date().toISOString().split("T")[0];
+
+    const fechaActual = new Date();
+    const fechaZonaHoraria = new TZDate(fechaActual, zonaHoraria);
+    const fecha = format(fechaZonaHoraria, 'yyyy-MM-dd');
+
 
     const[valido] = await pool.query(
       `
@@ -25,8 +30,7 @@ export const crearSolicitudRutinas = async (req, res) => {
 
     res.json({ message: "Comentario agregado correctamente." });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 //se supone que en la implementacion del front nos viene asi el json
@@ -37,7 +41,7 @@ export const crearSolicitudRutinas = async (req, res) => {
  */
 
 // administrador cree o modifique una rutina personalizada
-export const actualizarRutina = async (req, res) => {
+export const actualizarRutina = async (req, res, next) => {
   const {idRutina } = req.params;
 
 
@@ -91,7 +95,7 @@ export const actualizarRutina = async (req, res) => {
     res.status(200).json({ message: "Correcto" });
   } catch (error) {
     if (connection) await connection.rollback();
-    res.status(500).json({ message: error.message });
+    next(error);
   } finally {
     if (connection) connection.release();
   }
@@ -99,16 +103,20 @@ export const actualizarRutina = async (req, res) => {
 };
 
 // obtener las rutinas personalizadas de un usuario
-export const obtenerRutinaXdni = async (req, res) => {
+export const obtenerRutinaXdni = async (req, res, next) => {
   try {
     const { dniCliente } = req.params;
 
     const [result] = await pool.query(
-      "SELECT rp.*, lrp.*, ej.nombre, c.peticion FROM rutinas rp " +
-        "INNER JOIN lineas_rutina lrp ON rp.id = lrp.rutinaId " +
-        "INNER JOIN ejercicios ej ON lrp.codEjercicio = ej.codEjercicio " +
-        "LEFT JOIN comentarios_rutinas c ON rp.id = c.rutinaId " +
-        "WHERE rp.dniCliente = ? ORDER BY lrp.dia, lrp.orden",
+    `
+      SELECT rutinas.*, lineas_rutina.*, ejercicios.nombre, comentarios_rutinas.peticion 
+      FROM rutinas 
+      INNER JOIN lineas_rutina ON rutinas.id = lineas_rutina.rutinaId 
+      INNER JOIN ejercicios ON lineas_rutina.codEjercicio = ejercicios.codEjercicio 
+      LEFT JOIN comentarios_rutinas ON rutinas.id = comentarios_rutinas.rutinaId 
+      WHERE rutinas.dniCliente = ? 
+      ORDER BY lineas_rutina.dia, lineas_rutina.orden
+    `,
       [dniCliente]
     );
 
@@ -123,30 +131,37 @@ export const obtenerRutinaXdni = async (req, res) => {
       res.json(result);
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const obtenerSolicitudRutinas = async (req, res) => {
+export const obtenerSolicitudRutinas = async (req, res, next) => {
   try {
     const [result] = await pool.query(
-      "SELECT r.*, u.nombre, u.apellido FROM rutinas r INNER JOIN usuarios u ON r.dniCliente = u.dni where r.fechaCarga is null"
+      `
+      SELECT rutinas.*, usuarios.nombre, usuarios.apellido 
+      FROM rutinas 
+      INNER JOIN usuarios ON rutinas.dniCliente = usuarios.dni 
+      WHERE rutinas.fechaCarga IS NULL
+      `
     );
     res.json(result);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const obtenerRutinaXid = async (req, res) => {
+export const obtenerRutinaXid = async (req, res, next) => {
   try {
     const { idRutina } = req.params;
 
     const [result] = await pool.query(
-      "SELECT r.*, u.nombre, u.apellido FROM rutinas r INNER JOIN usuarios u ON r.dniCliente = u.dni where r.idRutina = ?",
-      [idRutina]
+      `
+      SELECT rutinas.*, usuarios.nombre, usuarios.apellido 
+      FROM rutinas 
+      INNER JOIN usuarios ON rutinas.dniCliente = usuarios.dni 
+      WHERE rutinas.idRutina = ?`
+      ,[idRutina]
     );
 
     if (result.length === 0) {
@@ -157,7 +172,6 @@ export const obtenerRutinaXid = async (req, res) => {
       res.json(result[0]);
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };

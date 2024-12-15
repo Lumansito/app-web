@@ -1,22 +1,34 @@
-import e from "cors";
 import {pool} from "../bd.js";
 
-export const obtenerRutinaPreestablecidaXsexo_nroDias = async (req, res) => {
+export const obtenerRutinaPreestablecidaXsexo_nroDias = async (req, res, next) => {
 
   try{
     const { sexo, nrodias } = req.params;
-    const [result] = await pool.query("SELECT lrp.* , ej.nombre FROM rutinas_pre_establecidas rp  inner join lineas_rutina_pre_establecida lrp on rp.sexo = lrp.sexo and rp.nroDias = lrp.nroDias inner join ejercicios ej on lrp.codEjercicio = ej.codEjercicio WHERE rp.sexo = ? and rp.nroDias = ? order by orden", [sexo, nrodias]);
+    const [result] = await pool.query(
+      `
+      SELECT lineas_rutina_pre_establecida.*, ejercicios.nombre 
+      FROM rutinas_pre_establecidas 
+      INNER JOIN lineas_rutina_pre_establecida 
+      ON rutinas_pre_establecidas.sexo = lineas_rutina_pre_establecida.sexo 
+      AND rutinas_pre_establecidas.nroDias = lineas_rutina_pre_establecida.nroDias 
+      INNER JOIN ejercicios 
+      ON lineas_rutina_pre_establecida.codEjercicio = ejercicios.codEjercicio 
+      WHERE rutinas_pre_establecidas.sexo = ? 
+      AND rutinas_pre_establecidas.nroDias = ? 
+      ORDER BY lineas_rutina_pre_establecida.orden
+      `
+      , [sexo, nrodias]);
     if (result.length === 0) {
       return res.status(404).json({message: "no hay rutinas pre establecidas cargadas."});
     }else{
       res.json(result);
     }
   } catch (error){
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerRutinasPreestablecidas = async (req, res) => {
+export const obtenerRutinasPreestablecidas = async (req, res, next) => {
   try {
     const [result] = await pool.query("SELECT * FROM rutinas_pre_establecidas");
     if (result.length === 0) {
@@ -26,11 +38,11 @@ export const obtenerRutinasPreestablecidas = async (req, res) => {
     }
   }
   catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const actualizarRutinasPreestablecidas = async (req, res) => {
+export const actualizarRutinasPreestablecidas = async (req, res, next) => {
   
     const lineas = req.body;
     let variables = "";
@@ -73,7 +85,8 @@ export const actualizarRutinasPreestablecidas = async (req, res) => {
     res.json({ message: "Lineas de rutina pre establecida actualizadas correctamente." });
   } catch (error) {
     if (connection) await connection.rollback();
-    res.status(500).json({ message: error.message });
+    
+    next(error);
   } finally {
     if (connection) connection.release();
   }

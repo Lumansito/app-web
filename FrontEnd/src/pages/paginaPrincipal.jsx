@@ -13,7 +13,6 @@ export function PaginaPrincipal() {
 
     useEffect(() => {
         if (dni) {
-
         obtenerDatosPersonales();   
         }
         else {

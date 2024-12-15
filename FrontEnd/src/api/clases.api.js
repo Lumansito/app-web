@@ -39,6 +39,7 @@ export const crearResevaClaseAPI = async (clase) => {
     const response = await axiosInstance.post(`cupoOtorgado`, clase);
     return response;
   } catch (error) {
+    
     return (error.response.data.message);
   }
 };

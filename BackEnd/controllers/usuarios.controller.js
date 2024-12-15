@@ -1,23 +1,24 @@
 import { pool } from "../bd.js";
 
-export const obtenerUsuarios = async (req, res) => {
+export const obtenerUsuarios = async (req, res, next) => {
   try {
     const [result] = await pool.query( //esto me devuelve un array de objetos, y coloca un campo roles con los valores de los mismos separados por coma
       ` 
       SELECT 
-        u.*,
-        GROUP_CONCAT(ur.idrol SEPARATOR ',') AS roles    
-      FROM usuarios u
-      left JOIN usuarios_roles ur ON u.dni = ur.dni
-      WHERE u.estado = 1
-      GROUP BY u.dni
+    usuarios.*,
+    GROUP_CONCAT(usuarios_roles.idrol SEPARATOR ',') AS roles
+    FROM usuarios 
+    LEFT JOIN usuarios_roles 
+    ON usuarios.dni = usuarios_roles.dni
+    WHERE usuarios.estado = 1
+    GROUP BY usuarios.dni
     `);
     
     if (result.length === 0) {
       return res.status(404).json({ message: "No hay usuarios cargados" });
     } else {
       const usuarios = result.map(usuario => {
-        // Convertimos la fecha de nacimiento al formato YYYY-MM-DD
+      
         const fechaNac = usuario.fechaNac ? new Date(usuario.fechaNac).toISOString().split('T')[0] : null;
         
         return {
@@ -29,15 +30,24 @@ export const obtenerUsuarios = async (req, res) => {
       res.json(usuarios);
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error al obtener los usuarios" });
+    next(error);
   }
 };
 
 
-export const obtenerUsuarioXdni = async (req, res) => {
+export const obtenerUsuarioXdni = async (req, res, next) => {
   try {
-    const [result] = await pool.query("SELECT u.* , IF(p.fecha < DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), NULL, p.fecha) AS fechaPago FROM usuarios u left JOIN pagos p on p.dniCliente = u.dni WHERE u.dni = ?", [
+    const [result] = await pool.query(
+      `
+      SELECT 
+      usuarios.*, 
+      IF(pagos.fecha < DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), NULL, pagos.fecha) AS fechaPago 
+      FROM usuarios 
+      LEFT JOIN pagos 
+      ON pagos.dniCliente = usuarios.dni 
+      WHERE usuarios.dni = ?
+      `
+      , [
       req.params.dni,
     ]);
     if (result.length === 0) {
@@ -46,12 +56,12 @@ export const obtenerUsuarioXdni = async (req, res) => {
       res.json(result[0]);
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 // los roles vienen en un arreglo si es cliente roles = [1] si es cleinte y profesor roles = [1,2] si es admin roles = [3]
-export const crearUsuario = async (req, res) => {
+export const crearUsuario = async (req, res, next) => {
   const connection = await pool.getConnection();
   const { nombre, apellido, dni, roles, fechaNac, contrasenia, sexo, telefono, mail } = req.body;
   const estado = 1;
@@ -75,13 +85,13 @@ export const crearUsuario = async (req, res) => {
     res.status(201).json({ message: "Usuario creado correctamente" });
   } catch (error) {
     await connection.rollback();
-    return res.status(500).json({ message: error.message });
+    next(error);
   } finally {
     connection.release();
   }
 };
 
-export const actualizarUsuario = async (req, res) => {
+export const actualizarUsuario = async (req, res, next) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
@@ -109,14 +119,14 @@ export const actualizarUsuario = async (req, res) => {
     res.json({ message: "Usuario y roles actualizados" });
   } catch (error) {
     await connection.rollback();
-    return res.status(500).json({ message: error.message });
+    next(error);
   } finally {
     connection.release();
   }
 };
 
 
-export const eliminarUsuario = async (req, res) => {
+export const eliminarUsuario = async (req, res, next) => {
   try {
     
     const [result] = await pool.query("UPDATE usuarios  set estado=0 WHERE dni = ?  ", [
@@ -128,20 +138,24 @@ export const eliminarUsuario = async (req, res) => {
     }
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const obtenerClientesXcodMembresiaActiva = async (req, res) => {
+export const obtenerClientesXcodMembresiaActiva = async (req, res, next) => {
   try {
     const { codMembresia } = req.params;
     const [result] = await pool.query(
       `
-      SELECT * 
-      FROM usuarios u
-      INNER JOIN pagos p
-      ON p.dniCliente = u.dni
-      WHERE p.fecha BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND CURRENT_DATE() and u.codMembresia=?;
+      SELECT 
+      usuarios.*, 
+      pagos.* 
+      FROM usuarios 
+      INNER JOIN pagos 
+      ON pagos.dniCliente = usuarios.dni 
+      WHERE pagos.fecha BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND CURRENT_DATE() 
+      AND usuarios.codMembresia = ? 
+
       `,
       [codMembresia]
     );
@@ -154,21 +168,24 @@ export const obtenerClientesXcodMembresiaActiva = async (req, res) => {
       res.json(result);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerProfesionales = async (req, res) => {
+export const obtenerProfesionales = async (req, res, next) => {
   try {
     const [result] = await pool.query(
       `
-      SELECT u.dni, u.nombre, u.apellido
-        FROM usuarios u 
-        INNER JOIN usuarios_roles ur ON u.dni = ur.dni
-        WHERE ur.idRol = 2
+      SELECT 
+      usuarios.dni, 
+      usuarios.nombre, 
+      usuarios.apellido 
+      FROM usuarios 
+      INNER JOIN usuarios_roles 
+      ON usuarios.dni = usuarios_roles.dni 
+      WHERE usuarios_roles.idRol = 2
       `
     );
-    console.log(result);
     if (result.length === 0) {
       return res
         .status(404)
@@ -176,7 +193,6 @@ export const obtenerProfesionales = async (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };

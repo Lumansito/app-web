@@ -1,8 +1,10 @@
 //se encuentra el controlador de pagos para el crud de pagos(ver si es necesario un crud)
 //se selecciona la membresia a pagar, para poder actualizar la q tiene el cliente activa.
 import { pool } from "../bd.js";
+import { TZDate } from "@date-fns/tz";
+import { format} from 'date-fns';
 
-export const obtenerPagos = async (req, res) => {
+export const obtenerPagos = async (req, res, next) => {
   try {
     const [result] = await pool.query("SELECT * FROM pagos");
     if (result.length === 0) {
@@ -11,11 +13,11 @@ export const obtenerPagos = async (req, res) => {
       res.json(result);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const obtenerPagosXdni = async (req, res) => {
+export const obtenerPagosXdni = async (req, res, next) => {
   try {
     const { dniCliente } = req.params;
     const [result] = await pool.query(
@@ -28,28 +30,21 @@ export const obtenerPagosXdni = async (req, res) => {
       res.json(result[0]);
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const crearPago = async (req, res) => {
+export const crearPago = async (req, res, next) => {
   try {
 
-    /*
-  {
-    "descripcion": "Pago de membresía",
-    "monto": 1000,
-    "metodo": "tarjeta",
-    "dniCliente": "12345678",
-    "codMembresia": "1"  
-  }
-    
-    
-    */
-
-
+   
     const { descripcion, monto, metodo, dniCliente, codMembresia } = req.body;
-    const fecha = new Date().toISOString().split("T")[0];
+
+    const fechaActual = new Date();
+    const fechaZonaHoraria = new TZDate(fechaActual, zonaHoraria);
+    const fechaFormateada = format(fechaZonaHoraria, 'yyyy-MM-dd');
+
+
     // Inicia una transacción
     await pool.query("START TRANSACTION");
 
@@ -64,15 +59,11 @@ export const crearPago = async (req, res) => {
       return res.status(404).json({ message: "Cliente no encontrado." });
     }
 
-    // Insertar el nuevo pago
     const [result] = await pool.query(
       "INSERT INTO Pagos (dniCliente, fecha, descripcion, monto, metodo) VALUES (?, ?, ?, ?, ?)",
-      [dniCliente, fecha, descripcion, monto, metodo]
+      [dniCliente, fechaFormateada, descripcion, monto, metodo]
     );
 
-    // Calcular la nueva fecha de vencimiento (fecha del pago + 30 días)
-    const nuevaFecha = new Date(fecha);
-    nuevaFecha.setDate(nuevaFecha.getDate() + 30);
 
     const nuevoEstado =  "activo" ;
 
@@ -81,7 +72,6 @@ export const crearPago = async (req, res) => {
       [nuevoEstado, codMembresia, dniCliente]
     );
 
-    // Confirmar la transacción
     await pool.query("COMMIT");
 
     res.json({
@@ -94,21 +84,22 @@ export const crearPago = async (req, res) => {
       message: "Pago registrado y membresía actualizada correctamente.",
     });
   } catch (error) {
-    // Si ocurre un error, revertir la transacción
     await pool.query("ROLLBACK");
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 // Actualizar un pago existente y recalcular el estado del cliente
-export const actualizarPago = async (req, res) => {
+export const actualizarPago = async (req, res, next) => {
   try {
     const {descripcion, monto, metodo, dniCliente, codMembresia } =   req.body;
-    const fecha = new Date().toISOString().split("T")[0];
-    // Inicia una transacción
+
+    const fechaActual = new Date();
+    const fechaZonaHoraria = new TZDate(fechaActual, zonaHoraria);
+    const fechaFormateada = format(fechaZonaHoraria, 'yyyy-MM-dd');
+
     await pool.query("START TRANSACTION");
 
-    // Verificar si el pago existe
     const [pagoExistente] = await pool.query(
       "SELECT * FROM Pagos WHERE dniCliente = ?",
       [dniCliente]
@@ -118,18 +109,16 @@ export const actualizarPago = async (req, res) => {
       await pool.query("ROLLBACK");
       return res.status(404).json({ message: "Pago no encontrado." });
     }
-
-    // Actualizar el pago existente
     await pool.query(
       "UPDATE Pagos SET fecha = ?, descripcion = ?, monto = ?, metodo = ?, codMembresia = ? WHERE dniCliente = ?",
-      [fecha, descripcion, monto, metodo, codMembresia, dniCliente]
+      [fechaFormateada, descripcion, monto, metodo, codMembresia, dniCliente]
     );
 
-    // Recalcular la nueva fecha de vencimiento (fecha del pago + 30 días)
-    const nuevaFechaVencimiento = new Date(fecha);
+    
+    const nuevaFechaVencimiento = new Date(fechaFormateada);
     nuevaFechaVencimiento.setDate(nuevaFechaVencimiento.getDate() + 30);
 
-    // Actualizar el estado del cliente basado en la nueva fecha de vencimiento
+    
     const nuevoEstado =
       nuevaFechaVencimiento > new Date() ? "activo" : "inactivo";
 
@@ -138,17 +127,14 @@ export const actualizarPago = async (req, res) => {
       [nuevoEstado, codMembresia, dniCliente]
     );
 
-    // Confirmar la transacción
     await pool.query("COMMIT");
-
     res.json({
       message: "Pago y estado del cliente actualizados correctamente.",
       nuevaFechaVencimiento,
       nuevoEstado,
     });
   } catch (error) {
-    // Si ocurre un error, revertir la transacción
     await pool.query("ROLLBACK");
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
