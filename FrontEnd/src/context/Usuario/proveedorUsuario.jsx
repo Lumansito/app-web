@@ -14,28 +14,38 @@ export const useUsuario = () => {
 };
 
 const ProveedorUsuario = ({ children }) => {
-  //proveedor para acceder a los datos de los empleados desde cualquier componente
+  
 
   const [rol, setRol] = useState([]);
   const [dni, setDni] = useState();
   const [datosUsuario, setDatosUsuario] = useState([]);
   const [profesionales, setProfesionales] = useState([]);
-  const [loading, setLoading] = useState(false); // Estado para la carga
-  const [error, setError] = useState(null); // Estado para errores
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
     comprobarToken();
   }, []);
 
   async function iniciarSesion(usuario) {
-    const response = await iniciarSesionAPI(usuario);
-    const token = response.data.token;
-    localStorage.setItem("token", token);
-    const decoded = jwtDecode(token);
-    setRol(decoded.rol);
-    setDni(decoded.dni);
-    
+    try {
+      const response = await iniciarSesionAPI(usuario);
+  
+      if (!response.data) {
+        throw new Error(response.response.data.message);
+      }
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      const decoded = jwtDecode(token);
+      setRol(decoded.rol);
+      setDni(decoded.dni);
+  
+      return response; 
+    } catch (error) {
+      throw error?.message || "Error al iniciar sesión";
+    }
   }
+  
 
   function comprobarToken() {
     if (localStorage.getItem("token")) {

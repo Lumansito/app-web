@@ -50,8 +50,7 @@ export const ListadoSolicitudes = () => {
           >
             ← Volver
           </button>
-          <h1 className="text-2xl font-bold">Solicitudes de Rutina
-          </h1>
+          <h1 className="text-2xl font-bold">Solicitudes de Rutina</h1>
         </div>
         <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">

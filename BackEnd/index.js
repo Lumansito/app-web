@@ -15,13 +15,8 @@ import pagosRouter from "./routes/pagos.routes.js";
 import seguimientosRouter from "./routes/seguimientos.routes.js";
 import cuposRouter from "./routes/cupoOtorgado.routes.js";
 import loginRouter from "./routes/login.routes.js";
-import rutiasRouter from "./routes/rutinas.routes.js";
+import rutinasRouter from "./routes/rutinas.routes.js";
 
-import config from "dotenv"
-
-config.config();
-
-const CLAVE_SUPER_SEGURA = process.env.CLAVE;
 
 const app = express();
 const PORT = 3000;
@@ -44,7 +39,7 @@ app.use(usersRouter);
 app.use(membresiasRouter);
 app.use(ejerciciosRouter);
 app.use(ProfesionalAdmin, rutinas_pre_establecidasRouter);
-app.use(ProfesionalAdmin, rutiasRouter);
+app.use(ProfesionalAdmin, rutinasRouter);
 app.use(pagosRouter);
 app.use(ProfesionalAdmin, seguimientosRouter);
 

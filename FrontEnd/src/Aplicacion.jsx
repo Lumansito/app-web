@@ -9,10 +9,12 @@ import { RutasPerfil } from "./routes/RutasPerfil.jsx";
 import ProveedorUsuario from "./context/Usuario/ProveedorUsuario.jsx";
 import {RutasAsistencia} from "./routes/RutasAsistencia.jsx";
 import {RutasUsuarios} from "./routes/RutasUsuarios.jsx";
+import { Toaster } from "react-hot-toast";
 
 function Aplicacion() {
   return (
     <ProveedorUsuario>
+      <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<PaginaPrincipal />} />
         <Route path="/asistencia/*" element={<RutasAsistencia />} />

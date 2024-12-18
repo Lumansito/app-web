@@ -5,7 +5,7 @@ export const obtenerSeguimientosXdni_codEjercicioAPI = async (dni, codEjercicio)
       const response = await axiosInstance.get(`/seguimientos/clientes/${dni}/${codEjercicio}`);
       return response;
     } catch (error) {
-      return null;
+      return error;
     }
   };
 
@@ -14,7 +14,7 @@ export const obtenerSeguimientosXdniAPI = async (idSeguimiento) => {
       const response = await axiosInstance.get(`/seguimientos/${idSeguimiento}`);
       return response;
     } catch (error) {
-      return null;
+      return error;
     }
   };
 
@@ -23,7 +23,7 @@ export const actualizarSeguimientoXidAPI = async (id, seguimiento) => {
       const response = await axiosInstance.put(`/seguimientos/${id}`, seguimiento);
       return response;
     } catch (error) {
-      return null;
+      return error;
     }
   };
 
@@ -32,7 +32,7 @@ export const crearSeguimientoAPI = async (seguimiento) => {
       const response = await axiosInstance.post(`/seguimientos`, seguimiento);
       return response;
     } catch (error) {
-      return null;
+      return error;
     }
   }
 
@@ -41,6 +41,6 @@ export const eliminarSeguimientoAPI = async (idSeguimiento) => {
       const response = await axiosInstance.delete(`/seguimientos/${idSeguimiento}`);
       return response;
     } catch (error) {
-      return null;
+      return error;
     }
   };

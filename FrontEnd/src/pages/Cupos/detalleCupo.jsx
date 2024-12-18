@@ -24,7 +24,7 @@ function DetalleCupo() {
     };
 
     fetchCupo();
-  }, []); 
+  }, []);
 
   if (error) {
     return (

@@ -5,6 +5,7 @@ import config from "dotenv"
 config.config();
 
 const CLAVE_SUPER_SEGURA = process.env.CLAVE;
+
 const decodificarToken = (req, res, next) => {
   let data = null;
   let token = null;

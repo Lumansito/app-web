@@ -12,6 +12,7 @@ import {
   closestCorners,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import toast from "react-hot-toast";
 
 export const FormularioSolicitudRutina = () => {
   const {
@@ -44,24 +45,22 @@ export const FormularioSolicitudRutina = () => {
   const handleClickButton = async () => {
     const dia = comprobarLineasRutina();
     if (dia) {
-      alert(
-        "Por favor, complete todas las líneas de la rutina. Compruebe dia: " +
-          dia
+      toast.error(
+        `Por favor, complete todas las líneas de la rutina. Compruebe día: ${dia}`
       );
       return;
     }
     try {
       const response = await actualizarRutina();
       if (response) {
-        alert("Rutina subida correctamente");
+        toast.success("Rutina subida correctamente");
         asignarDiasRutina({ dia: 1, lineas: [] });
         navigate("/rutinas/solicitudes");
       } else {
-        alert("Error al subir la rutina");
+        toast.error("Error al subir la rutina");
       }
     } catch (error) {
-      console.error("Error durante la subida de la rutina:", error);
-      alert("Ocurrió un error al subir la rutina");
+      toast.error("Ocurrió un error al subir la rutina");
     }
   };
 
@@ -99,14 +98,15 @@ export const FormularioSolicitudRutina = () => {
 
   const handleEliminarDia = () => {
     if (diasRutina.length === 1) {
+      toast.error("Debe haber al menos un día en la rutina.");
       return;
     }
-    if (currentPage === diasRutina.length - 1) {
-      setCurrentPage(currentPage - 1);
-      asignarDiasRutina(diasRutina.slice(0, -1));
-    }
+    const updatedDiasRutina = diasRutina.slice(0, -1);
+    asignarDiasRutina(updatedDiasRutina);
+    setCurrentPage(updatedDiasRutina.length - 1);
+    toast.success("Día eliminado correctamente.");
   };
-
+  bu;
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -227,7 +227,6 @@ export const FormularioSolicitudRutina = () => {
           <button
             onClick={handleEliminarDia}
             className="bg-red-500 hover:bg-red-700 text-white rounded-md px-4 py-2 transition-colors"
-            disabled={diasRutina.length === 1}
           >
             Eliminar Día
           </button>

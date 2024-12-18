@@ -1,27 +1,22 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
-import { useUsuario } from "../../context/Usuario/proveedorUsuario.jsx";
+import { useCupos } from "../../context/Cupo/ProveedorCupo.jsx";
+import { useUsuario } from "../../context/Usuario/ProveedorUsuario.jsx";
+import toast from "react-hot-toast";
 
 const FormularioCupos = () => {
   const [values, setValues] = useState({
     horario: "",
-    estado: "active", // Estado por defecto para un nuevo cupo
+    estado: "active",
     cupo: "",
     dniInstructor: "",
     diaSemana: "",
   });
 
-  const { obtenerProfesionales, profesionales } = useUsuario(); 
-
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
-
+  const { obtenerProfesionales, profesionales } = useUsuario();
   const location = useLocation();
   const { idEsquema, diaSemana } = useParams();
   const navigate = useNavigate();
-
   const { crearCupo, actualizarCupo, cargarCupoXid } = useCupos();
 
   const isNewRoute = location.pathname.includes("/new");
@@ -50,7 +45,7 @@ const FormularioCupos = () => {
       return null;
     }
 
-    return dayMapping[dayName.toLowerCase()] || null; // Convierte a minúsculas para evitar errores
+    return dayMapping[dayName.toLowerCase()] || null;
   };
 
   useEffect(() => {
@@ -83,9 +78,7 @@ const FormularioCupos = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!values.horario || !values.dniInstructor || !values.cupo) {
-      setModalMessage("Por favor, completa todos los campos.");
-      setIsSuccess(false);
-      setShowModal(true);
+      toast.error("Por favor, completa todos los campos.");
       return;
     }
 
@@ -103,21 +96,15 @@ const FormularioCupos = () => {
       ok = await actualizarCupo(idEsquema, cupoData);
     }
 
-    setModalMessage(
-      ok
-        ? isNewRoute
+    if (ok) {
+      toast.success(
+        isNewRoute
           ? "Cupo creado correctamente"
           : "Cupo actualizado correctamente"
-        : "Error al procesar el cupo"
-    );
-    setIsSuccess(ok);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    if (isSuccess) {
+      );
       navigate("/cupos/lista");
+    } else {
+      toast.error("Error al procesar el cupo");
     }
   };
 
@@ -142,22 +129,9 @@ const FormularioCupos = () => {
         </svg>
       </button>
       <div className="max-w-md mx-auto mt-12">
-        <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={handleGoBack}
-            className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"
-          >
-            ← Volver
-          </button>
-          <h1 className="text-2xl font-bold">Listado de Clases</h1>
-      </div>
-      <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
-        <div className="max-w-md mx-auto mt-12">
         <h1 className="text-2xl font-bold mb-6 text-center">
           {isNewRoute ? "Nuevo Cupo" : "Editar Cupo"}
         </h1>
-        </div>
-        
         <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -194,20 +168,22 @@ const FormularioCupos = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
-              <div >
+              <div>
                 <label htmlFor="dniInstructor">DNI del Instructor</label>
                 <select
                   id="dniInstructor"
                   name="dniInstructor"
                   value={values.dniInstructor}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
                   <option value="">Seleccionar profesional</option>
-                  {Array.isArray(profesionales) && profesionales?.map((prof) => (
-                    <option key={prof.dni} value={prof.dni}>
-                      {prof.dni} - {prof.nombre} {prof.apellido}
-                    </option>
-                  ))}
+                  {Array.isArray(profesionales) &&
+                    profesionales?.map((prof) => (
+                      <option key={prof.dni} value={prof.dni}>
+                        {prof.dni} - {prof.nombre} {prof.apellido}
+                      </option>
+                    ))}
                 </select>
               </div>
               <button
@@ -216,45 +192,18 @@ const FormularioCupos = () => {
               >
                 Guardar
               </button>
-            <button
-              type="button"
-              onClick={handleGoBack}
-              className="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700"
-            >
-              Cancelar
-            </button>
+              <button
+                type="button"
+                onClick={handleGoBack}
+                className="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700"
+              >
+                Cancelar
+              </button>
             </form>
           </div>
         </div>
       </div>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                {isSuccess ? "Éxito" : "Error"}
-              </h3>
-              <div className="mt-2 px-7 py-3">
-                <p className="text-sm text-gray-500">{modalMessage}</p>
-              </div>
-              <div className="items-center px-4 py-3">
-                <button
-                  onClick={handleCloseModal}
-                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${
-                    isSuccess ? "bg-green-600" : "bg-red-600"
-                  } text-base font-medium text-white hover:bg-${
-                    isSuccess ? "green-700" : "red-700"
-                  } sm:text-sm`}
-                >
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div></div>
+    </div>
   );
 };
 

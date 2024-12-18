@@ -1,11 +1,17 @@
-import  { useEffect , useState} from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useClases } from "../../context/Clases/ProveedorClases.jsx";
 import { Clase } from "../../components/Clase.jsx";
 import { Reserva } from "../../components/Reserva.jsx";
 
 export const ListaClases = () => {
-  const { clases,  cargarClases,  asignarClaseReservada, claseReservada,  cancelarReservasActivas } = useClases();
+  const {
+    clases,
+    cargarClases,
+    asignarClaseReservada,
+    claseReservada,
+    cancelarReservasActivas,
+  } = useClases();
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -14,7 +20,6 @@ export const ListaClases = () => {
     cargarClases();
     asignarClaseReservada();
   }, []);
-
 
   const handleGoBack = () => {
     navigate("/");
@@ -40,8 +45,6 @@ export const ListaClases = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
-
 
   return (
     <div className="min-h-screen bg-white text-black p-4 relative">
@@ -79,12 +82,18 @@ export const ListaClases = () => {
               <ul className="space-y-4">
                 {claseReservada && (
                   <li>
-                    <Reserva clase={claseReservada} onClick={() => handleOnClickCancelReserva()} />
+                    <Reserva
+                      clase={claseReservada}
+                      onClick={() => handleOnClickCancelReserva()}
+                    />
                   </li>
                 )}
                 {clases.map((clase) => (
                   <li key={clase.idEsquema}>
-                    <Clase clase={clase} onClick={() => handleOnClickClase(clase.idEsquema)} />
+                    <Clase
+                      clase={clase}
+                      onClick={() => handleOnClickClase(clase.idEsquema)}
+                    />
                   </li>
                 ))}
               </ul>

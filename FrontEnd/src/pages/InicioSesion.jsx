@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useUsuario } from '../context/Usuario/proveedorUsuario.jsx';
+import { useUsuario } from '../context/Usuario/ProveedorUsuario.jsx';
+import toast from 'react-hot-toast';
 
 export function InicioSesion() {
     const { iniciarSesion } = useUsuario();
@@ -11,7 +12,13 @@ export function InicioSesion() {
             dni: username,
             contrasenia: password
         }
-        await iniciarSesion(usuario);
+        try {
+            await iniciarSesion(usuario);
+            toast.success("Inicio de sesión exitoso");
+          } catch (error) {
+            toast.error(error); 
+        }
+        
     };
 
     return (

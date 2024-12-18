@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContextoCupo } from "../../context/Cupo/ContextoCupo.jsx";
 import ListaDias from "../../components/ListaDias.jsx";
+import toast from "react-hot-toast"
 
 function ListaCupos() {
   const { cargarCupos, cupos, setCupos, error, eliminarCupo, actualizarCupo } =
@@ -31,7 +32,14 @@ function ListaCupos() {
   };
 
   const handleDelete = (idEsquema) => {
-    eliminarCupo(idEsquema);
+    eliminarCupo(idEsquema)
+      .then(() => {
+        setCupos((prevCupos) => prevCupos.filter((c) => c.idEsquema !== idEsquema));
+        toast.success("Cupo eliminado correctamente");
+      })
+      .catch(() => {
+        toast.error("Error al eliminar el cupo");
+      });
   };
 
   const handleToggleDisabled = (cupo) => {
@@ -39,14 +47,22 @@ function ListaCupos() {
       ...cupo,
       estado: cupo.estado === "habilitado" ? "deshabilitado" : "habilitado",
     };
-    actualizarCupo(cupo.idEsquema, updatedCupo).then(() => {
-      const nuevosCupos = cupos.map((c) =>
-        c.idEsquema === cupo.idEsquema
-          ? { ...c, estado: updatedCupo.estado }
-          : c
-      );
-      setCupos(nuevosCupos);
-    });
+
+    actualizarCupo(cupo.idEsquema, updatedCupo)
+      .then(() => {
+        const nuevosCupos = cupos.map((c) =>
+          c.idEsquema === cupo.idEsquema
+            ? { ...c, estado: updatedCupo.estado }
+            : c
+        );
+        setCupos(nuevosCupos);
+        toast.success(
+          `Cupo ${updatedCupo.estado === "habilitado" ? "habilitado" : "deshabilitado"} correctamente`
+        );
+      })
+      .catch(() => {
+        toast.error("Error al actualizar el estado del cupo");
+      });
   };
 
   const isMatchingDay = (cupo, day) => {

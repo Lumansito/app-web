@@ -42,12 +42,11 @@ export const obtenerClienteXdniAPI = async (dni) => {
 
 export const obtenerProfesionalesAPI = async () => {
   try {
-    const response = await axiosInstance.get('/users/profesionales'); //const response = await axios.get('/users/profesionales');
+    const response = await axiosInstance.get('/users/profesionales'); 
     
-    return response.data;
+    return response;
   } catch (error) {
-    console.error('Error al obtener los profesionales:', error);
-    throw error;
+    return error
   }
 };
 
@@ -56,8 +55,7 @@ export const obtenerUsuariosAPI = async () => {
     const response = await axiosInstance.get('/users');
     return response.data;
   } catch (error) {
-    console.error('Error al obtener los usuarios:', error);
-    return [];
+    return error;
   }
 };
 

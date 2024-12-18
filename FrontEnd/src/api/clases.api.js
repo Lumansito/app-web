@@ -3,7 +3,6 @@ import axiosInstance from "./axiosInstance";
 export const obtenerClasesHoyAPI = async () => {
   try {
     const response = await axiosInstance.get("/esquemaCupos/today");
-    
     return response;
   } catch (error) {
     return error;
@@ -24,13 +23,7 @@ export const obtenerCupoClaseAPI = async (idClase) => {
     const response = await axiosInstance.get(`/cupoOtorgado/${idClase}`);
     return response;
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      console.log("Clase no encontrada, retornando 0 cupos.");
-      return { data: 0 };
-    } else {
-      console.error("Error al obtener los cupos:", error);
-      return { data: 0 };
-    }
+    return error;
   }
 };
 
@@ -39,8 +32,7 @@ export const crearResevaClaseAPI = async (clase) => {
     const response = await axiosInstance.post(`cupoOtorgado`, clase);
     return response;
   } catch (error) {
-    
-    return (error.response.data.message);
+    return (error);
   }
 };
 
