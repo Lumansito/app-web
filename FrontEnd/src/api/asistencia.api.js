@@ -5,8 +5,8 @@ export const obtenerConfirmacionAsistenciaAPI = async (dniCliente) => {
     const response = await axiosInstance.post(
       `/cupoOtorgado/confirmar/${dniCliente}`
     );
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };

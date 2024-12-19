@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useUsuarios } from "../../context/Usuarios/proveedorUsuarios.jsx";
 import { useNavigate } from "react-router-dom";
 import { Usuario } from "../../components/Usuario.jsx";
+import toast from "react-hot-toast";
+
 
 export function ListadoUsuarios() {
   const { 
@@ -74,6 +76,7 @@ export function ListadoUsuarios() {
       actualizarUsuario(formData.dni,formData);
     } else {
       crearUsuario(formData);
+
     }
     setIsModalOpen(false);
     setEditingUser(null);

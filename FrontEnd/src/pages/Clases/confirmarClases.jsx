@@ -23,7 +23,7 @@ export const ConfirmarClases = () => {
         toast.success("Clase reservada con exito");
         navigate("/clases");
       } else {
-        toast.error(`Error al reservar la clase: ${response.error}`);
+        toast.error(`Error al reservar la clase: ${response.error.response.data.message}`);
       }
     } catch (error) {
       toast.error("Error al reservar la clase");

@@ -106,7 +106,7 @@ export const FormularioSolicitudRutina = () => {
     setCurrentPage(updatedDiasRutina.length - 1);
     toast.success("Día eliminado correctamente.");
   };
-  bu;
+  
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {

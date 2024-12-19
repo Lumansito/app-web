@@ -29,7 +29,8 @@ export const Asistencia = () => {
     try {
       const response = await confirmAsistencia(dni);
       if (response.error) {
-        toast.error("No se encontró la reserva");
+        
+        toast.error(response.error.response.data.message);
       } else {
         toast.success("Asistencia confirmada");
         setDni("");

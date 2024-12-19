@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ContextoCupo } from "../../context/Cupo/ContextoCupo.jsx";
 import ListaDias from "../../components/ListaDias.jsx";
 import toast from "react-hot-toast";
+import { format, parse, getDay } from "date-fns";
+import { es } from "date-fns/locale";
 
 function ListaCupos() {
   const { cargarCupos, cupos, setCupos, error, eliminarCupo, actualizarCupo } =
@@ -12,15 +14,8 @@ function ListaCupos() {
   const navigate = useNavigate();
 
   const getDayName = (dayNumber) => {
-    const dayNames = {
-      1: "Lunes",
-      2: "Martes",
-      3: "Miercoles",
-      4: "Jueves",
-      5: "Viernes",
-      6: "Sabado",
-    };
-    return dayNames[dayNumber] || "día no válido";
+    const date = new Date(2024, 0, dayNumber + 1);
+    return format(date, "EEEE", { locale: es });
   };
 
   useEffect(() => {
@@ -70,19 +65,12 @@ function ListaCupos() {
   };
 
   const isMatchingDay = (cupo, day) => {
-    const dayNamesToNumbers = {
-      Lunes: 1,
-      Martes: 2,
-      Miercoles: 3,
-      Jueves: 4,
-      Viernes: 5,
-      Sabado: 6,
-    };
-
-    const cupoDayNumber =
-      dayNamesToNumbers[cupo.diaSemana] || parseInt(cupo.diaSemana);
-
-    return cupoDayNumber === day;
+    try {
+      const dayFromName = getDay(parseISO(`2024-01-0${day}`));
+      return dayFromName === day;
+    } catch {
+      return parseInt(cupo.diaSemana) === day;
+    }
   };
 
   if (error) {

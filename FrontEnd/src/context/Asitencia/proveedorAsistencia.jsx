@@ -23,10 +23,9 @@ const ProveedorAsistencia = ({ children }) => {
         return { error: response };
       }
     } catch (error) {
-      return false;
+      return error;
     }
   };
-
 
   return (
     <ContextoAsistencia.Provider value={{ confirmAsistencia: confirmarAsistencia }}>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useCupos } from "../../context/Cupo/ProveedorCupo.jsx";
+import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 
 function DetalleCupo() {
-  const { id, nombreDia } = useParams(); // Captura ambos parámetros
+  const { id, nombreDia } = useParams(); 
   const { cargarCupoXid, cargarCuposXfecha } = useCupos();
   const [cupo, setCupo] = useState(null);
   const [error, setError] = useState(null);
@@ -12,10 +12,10 @@ function DetalleCupo() {
     const fetchCupo = async () => {
       try {
         if (nombreDia) {
-          const data = await cargarCuposXfecha(nombreDia); // Cargar por nombre de día si está presente
+          const data = await cargarCuposXfecha(nombreDia); 
           setCupo(data);
         } else if (id) {
-          const data = await cargarCupoXid(id); // Cargar por ID si está presente
+          const data = await cargarCupoXid(id); 
           setCupo(data);
         }
       } catch (error) {

@@ -3,36 +3,36 @@ import axiosInstance from "./axiosInstance";
 export const obtenerEjerciciosAPI = async () => {
   try {
     const response = await axiosInstance.get("/ejercicios");
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
 export const obtenerEjerciciosXcodigoEjAPI = async (codEjercicio) => {
   try {
     const response = await axiosInstance.get(`/ejercicios/${codEjercicio}`);
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
 export const crearEjercicioAPI = async (values) => {
   try {
     const response = await axiosInstance.post("/ejercicios", values);
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
 export const eliminarEjercicioAPI = async (codEjercicio) => {
   try {
     const response = await axiosInstance.delete(`/ejercicios/${codEjercicio}`);
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
@@ -42,8 +42,8 @@ export const actualizarEjercicioAPI = async (codEjercicio, values) => {
       `/ejercicios/${codEjercicio}`,
       values
     );
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };

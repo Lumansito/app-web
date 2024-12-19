@@ -55,17 +55,6 @@ const ProveedorEjercicio = ({ children }) => {
     }
   };
 
-  /*
-  const obtenerEjercicioXid = async (id) => {
-    try {
-       const response = await getPersonaByIdRequest(dni, rol);
-        return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-    */
-
   const actualizarEjercicio = async (codEjercicio, values) => {
     try {
       await actualizarEjercicioAPI(codEjercicio, values);

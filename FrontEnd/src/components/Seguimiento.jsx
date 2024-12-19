@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom"
 import { useSeguimiento } from "../context/Seguimiento/proveedorSeguimiento.jsx"
+import toast from "react-hot-toast"
 
 export function Seguimiento({ seguimiento }) {
-  
+
   const fechaOriginal = new Date(seguimiento.fechaSeguimiento)
   const fecha = fechaOriginal.toISOString().split("T")[0]
   const { borrarSeguimiento } = useSeguimiento()

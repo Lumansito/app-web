@@ -71,9 +71,9 @@ const ProveedorUsuario = ({ children }) => {
   const obtenerProfesionales = async () => {
     setLoading(true);
     try {
-      const data = await obtenerProfesionalesAPI();
-      if (data) {
-        setProfesionales(data);
+      const response = await obtenerProfesionalesAPI();
+      if (response.data) {
+        setProfesionales(response.data);
       }
     } catch (error) {
       setError("Error al cargar profesionales");

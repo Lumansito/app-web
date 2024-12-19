@@ -3,45 +3,45 @@ import axiosInstance from "./axiosInstance";
 export const obtenerEsquemaCuposAPI = async () => {
   try {
     const response = await axiosInstance.get("/esquemaCupos");
-    return response.data;
+    return response;
   } catch (error) {
-    return [];
+    return error;
   }
 };
 
 export const obtenerEsquemaCuposXfechaAPI = async (diaSemana) => {
   try {
     const response = await axiosInstance.get(`/esquemaCupos/dia/${diaSemana}`);
-    return response.data;
+    return response;
   } catch (error) {
-    return [];
+    return error;
   }
 };
 
 export const obtenerCuposOcupadosXidEsquemaAPI = async (idEsquema) => {
   try {
     const response = await axiosInstance.get(`/esquemaCupos/${idEsquema}`);
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
 export const obtenerEsquemaCuposHoyAPI = async () => {
   try {
     const response = await axiosInstance.get("/esquemaCupos/today");
-    return response.data;
+    return response;
   } catch (error) {
-    return [];
+    return error;
   }
 };
 
 export const crearEsquemaCuposAPI = async (cupo) => {
   try {
     const response = await axiosInstance.post("/esquemaCupos", cupo);
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
@@ -51,9 +51,9 @@ export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
       `/esquemaCupos/${idEsquema}`,
       cupo
     );
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
@@ -63,17 +63,17 @@ export const actualizarEstadoCupoAPI = async (idEsquema, cupo) => {
       `/esquemaCupos/${idEsquema}`,
       cupo
     );
-    return response.data;
+    return response;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
 export const eliminarEsquemaCuposAPI = async (idEsquema) => {
   try {
     const response = await axiosInstance.delete(`/esquemaCupos/${idEsquema}`);
-    return response.data;
+    return response;
   } catch (error) {
-    return false;
+    return error;
   }
 };

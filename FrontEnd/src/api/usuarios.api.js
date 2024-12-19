@@ -53,7 +53,7 @@ export const obtenerProfesionalesAPI = async () => {
 export const obtenerUsuariosAPI = async () => {
   try {
     const response = await axiosInstance.get('/users');
-    return response.data;
+    return response;
   } catch (error) {
     return error;
   }

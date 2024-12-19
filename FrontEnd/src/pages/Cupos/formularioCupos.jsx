@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { useCupos } from "../../context/Cupo/ProveedorCupo.jsx";
+import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 import { useUsuario } from "../../context/Usuario/ProveedorUsuario.jsx";
 import toast from "react-hot-toast";
+import { format, parse, getDay } from "date-fns";
+import { es } from "date-fns/locale";
 
 const FormularioCupos = () => {
   const [values, setValues] = useState({
@@ -22,30 +24,14 @@ const FormularioCupos = () => {
   const isNewRoute = location.pathname.includes("/new");
   const diaPreseleccionado = diaSemana;
 
-  const dayMapping = {
-    domingo: 0,
-    lunes: 1,
-    martes: 2,
-    miercoles: 3,
-    jueves: 4,
-    viernes: 5,
-    sabado: 6,
-    0: "Domingo",
-    1: "Lunes",
-    2: "Martes",
-    3: "Miercoles",
-    4: "Jueves",
-    5: "Viernes",
-    6: "Sabado",
-  };
-
   const getDayNumber = (dayName) => {
-    if (!dayName) {
-      console.error("El nombre del día es undefined o null");
+    try {
+      const parsedDate = parse(dayName, "EEEE", new Date(), { locale: es }); 
+      return getDay(parsedDate);
+    } catch (error) {
+      console.error("Error al procesar el día:", error);
       return null;
     }
-
-    return dayMapping[dayName.toLowerCase()] || null;
   };
 
   useEffect(() => {

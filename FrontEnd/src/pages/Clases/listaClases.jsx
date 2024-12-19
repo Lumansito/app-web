@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useClases } from "../../context/Clases/ProveedorClases.jsx";
 import { Clase } from "../../components/Clase.jsx";
 import { Reserva } from "../../components/Reserva.jsx";
+import toast from "react-hot-toast";
 
 export const ListaClases = () => {
   const {
@@ -34,16 +35,29 @@ export const ListaClases = () => {
   };
 
   const handleOnClickCancelReserva = () => {
-    setShowModal(true);
-  };
-
-  const handleConfirmCancel = () => {
-    setShowModal(false);
-    cancelarReservasActivas();
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
+    toast((t) => (
+      <div className="flex flex-col items-start">
+        <p>¿Estás seguro de que quieres cancelar la reserva?</p>
+        <div className="flex space-x-2 mt-2">
+          <button
+            onClick={() => {
+              cancelarReservasActivas();
+              toast.dismiss(t.id);
+              toast.success('Reserva cancelada con éxito');
+            }}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 transition-colors"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    ));
   };
 
   return (
@@ -101,36 +115,7 @@ export const ListaClases = () => {
           </div>
         </div>
       </div>
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                ¿Realmente quieres cancelar la reserva?
-              </h3>
-              <div className="mt-2 px-7 py-3">
-                <p className="text-sm text-gray-500">
-                  Esta acción no se puede deshacer.
-                </p>
-              </div>
-              <div className="items-center px-4 py-3 space-x-4">
-                <button
-                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  onClick={handleConfirmCancel}
-                >
-                  Confirmar
-                </button>
-                <button
-                  className="px-4 py-2 bg-gray-300 text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none"
-                  onClick={handleCloseModal}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };

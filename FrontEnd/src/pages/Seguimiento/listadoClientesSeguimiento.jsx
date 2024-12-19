@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSeguimiento } from "../../context/Seguimiento/proveedorSeguimiento.jsx";
 import { useUsuario } from "../../context/Usuario/ProveedorUsuario.jsx";
@@ -156,7 +156,7 @@ export const ListadoClientesSeguimiento = () => {
   return (
     <div className="min-h-screen bg-white text-black p-4 relative">
       {toastMessage && (
-        <Toast
+        <toast
           message={toastMessage}
           success={isSuccess}
           onClose={() => setToastMessage("")}

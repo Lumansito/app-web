@@ -7,6 +7,8 @@ import { pool } from "../bd.js";
 import { TZDate } from "@date-fns/tz";
 import { format} from 'date-fns';
 
+const zonaHoraria = 'America/Argentina/Buenos_Aires';
+
 export const obtenerSeguimientosXdni_codEjercicio = async (req, res, next) => {
     try{
         const {dniCliente, codEjercicio} = req.params;
