@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContextoCupo } from "../../context/Cupo/ContextoCupo.jsx";
 import ListaDias from "../../components/ListaDias.jsx";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 
 function ListaCupos() {
   const { cargarCupos, cupos, setCupos, error, eliminarCupo, actualizarCupo } =
@@ -34,7 +34,9 @@ function ListaCupos() {
   const handleDelete = (idEsquema) => {
     eliminarCupo(idEsquema)
       .then(() => {
-        setCupos((prevCupos) => prevCupos.filter((c) => c.idEsquema !== idEsquema));
+        setCupos((prevCupos) =>
+          prevCupos.filter((c) => c.idEsquema !== idEsquema)
+        );
         toast.success("Cupo eliminado correctamente");
       })
       .catch(() => {
@@ -57,7 +59,9 @@ function ListaCupos() {
         );
         setCupos(nuevosCupos);
         toast.success(
-          `Cupo ${updatedCupo.estado === "habilitado" ? "habilitado" : "deshabilitado"} correctamente`
+          `Cupo ${
+            updatedCupo.estado === "habilitado" ? "habilitado" : "deshabilitado"
+          } correctamente`
         );
       })
       .catch(() => {

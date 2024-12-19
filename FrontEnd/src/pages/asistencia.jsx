@@ -21,12 +21,15 @@ export const Asistencia = () => {
   }, [isSuccess]);
 
   const handleSearch = async () => {
+    if (!dni.trim()) {
+      toast.error("Ingrese un DNI");
+      return;
+    }
     setIsLoading(true);
     try {
       const response = await confirmAsistencia(dni);
-
       if (response.error) {
-        toast.error(`Error: ${response.error}`);
+        toast.error("No se encontró la reserva");
       } else {
         toast.success("Asistencia confirmada");
         setDni("");
