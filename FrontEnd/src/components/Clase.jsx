@@ -4,9 +4,7 @@ export function Clase({ clase , onClick}) {
 
   const PorcentajeDisponible = (clase.cuposOcupados / clase.cupo) * 100;
 
-  return ( //className={`bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 ease-in-out
-    //${modo !== "descripcion" ? "hover:shadow-lg cursor-pointer transform hover:-translate-y-1" : ""}
-  //`}
+  return ( 
     <div className="bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-lg cursor-pointer transform hover:-translate-y-1 duration-200" onClick={onClick}>
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg font-semibold text-gray-800">Clase</h3>

@@ -1,28 +1,42 @@
 import React, { useState } from "react";
 import Switch from "react-switch";
+import toast from "react-hot-toast";
 
 function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedCupoId, setSelectedCupoId] = useState(null);
-
   const handleDeleteCupo = (idEsquema) => {
-    setSelectedCupoId(idEsquema); // Guarda el ID del cupo seleccionado
-    setShowModal(true); // Muestra el modal
-  };
-
-  const handleConfirmDelete = () => {
-    if (selectedCupoId) {
-      onClick(selectedCupoId); // Llama a la función deleteCupo
-      setShowModal(false); // Cierra el modal
-    }
+    toast((t) => (
+      <div className="flex flex-col items-start">
+        <p className="text-sm text-gray-800">
+          ¿Estás seguro de que quieres eliminar este cupo?
+        </p>
+        <div className="flex space-x-2 mt-3">
+          <button
+            onClick={() => {
+              onClick(idEsquema);
+              toast.dismiss(t.id);
+              toast.success("Cupo eliminado con éxito");
+            }}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+          >
+            Eliminar
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 transition-colors"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    ));
   };
 
   const handleSwitchChange = (cupo) => {
-    onToggleDisabled(cupo); // si esta función hace algo adicional
+    onToggleDisabled(cupo);
   };
 
   const handleEditCupo = (idEsquema) => {
-    navigate(`/cupos/edit/${idEsquema}`); // Redirige a la página de edición
+    navigate(`/cupos/edit/${idEsquema}`);
   };
 
   return (
@@ -47,17 +61,15 @@ function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
                   Editar
                 </button>
                 <button
-                  onClick={() => handleDeleteCupo(cupo.idEsquema)} // Asegúrate de que esto llame a la función de eliminación
+                  onClick={() => handleDeleteCupo(cupo.idEsquema)}
                   className="bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600 transition-colors text-sm"
                 >
                   Eliminar
                 </button>
                 <Switch
                   type="checkbox"
-                  checked={cupo.estado === "habilitado" ? true : false}
-                  onChange={() => {
-                    handleSwitchChange(cupo);
-                  }}
+                  checked={cupo.estado === "habilitado"}
+                  onChange={() => handleSwitchChange(cupo)}
                   offColor="#888"
                   onColor="#4CAF50"
                   className="react-switch"
@@ -75,37 +87,6 @@ function ListaDias({ day, cupos, navigate, onClick, onToggleDisabled }) {
           </button>
         </div>
       </div>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                ¿Realmente quieres eliminar este cupo?
-              </h3>
-              <div className="mt-2 px-7 py-3">
-                <p className="text-sm text-gray-500">
-                  Esta acción no se puede deshacer.
-                </p>
-              </div>
-              <div className="items-center px-4 py-3 space-x-4">
-                <button
-                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  onClick={handleConfirmDelete}
-                >
-                  Confirmar
-                </button>
-                <button
-                  className="px-4 py-2 bg-gray-300 text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

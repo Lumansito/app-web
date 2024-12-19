@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { useEjercicios } from "../context/Ejercicio/proveedorEjercicio.jsx"
-import { useRutinas } from "../context/Rutinas/proveedorRutinas.jsx"
+import { useRutinas } from "../context/Rutinas/ProveedorRutinas.jsx"
 
 export  function FormularioLineaRutina({ dia, id, linea }) {
   const {
@@ -15,7 +15,7 @@ export  function FormularioLineaRutina({ dia, id, linea }) {
   } = useSortable({ id })
   
   const { ejercicios, cargarEjercicios } = useEjercicios()
-  const {  actualizarLineaRutina } = useRutinas()
+  const { actualizarLineaRutina } = useRutinas()
   const [selectedEjercicio, setSelectedEjercicio] = useState(linea.codejercicio || "")
 
   const [lineaActual, setLineaActual] = useState({

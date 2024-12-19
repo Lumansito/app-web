@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export function Usuario({ usuario, eliminar, editar }) {
   const [mostrarContrasenia, setMostrarContrasenia] = useState(false);
@@ -19,8 +20,31 @@ export function Usuario({ usuario, eliminar, editar }) {
   };
 
   const handleEliminar = () => {
-    eliminar(usuario.dni);
-    setIsDeleteModalOpen(false); // Cierra el modal después de eliminar
+
+    toast((t) => (
+      <div className="flex flex-col items-start">
+        <p>¿Estás seguro de que quieres eliminar este Usuario?</p>
+        <div className="flex space-x-2 mt-2">
+          <button
+            onClick={() => {
+              eliminar(usuario.dni);
+              toast.dismiss(t.id);
+              toast.success('Usuario eliminado con éxito');
+            }}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+          >
+            Eliminar
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 transition-colors"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    ));
+    
   };
 
   const toggleMostrarContrasenia = () => {
@@ -71,7 +95,7 @@ export function Usuario({ usuario, eliminar, editar }) {
             Editar
           </button>
           <button 
-            onClick={() => setIsDeleteModalOpen(true)} // Abre el modal de eliminación
+            onClick={() => handleEliminar()} 
             className="px-4 py-2 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white transition duration-300 flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -81,38 +105,7 @@ export function Usuario({ usuario, eliminar, editar }) {
           </button>
         </div>
       </div>
-
-      {/* Modal de Confirmación de Eliminación */}
-      {isDeleteModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg font-medium text-gray-900">
-                ¿Realmente quieres eliminar este usuario?
-              </h3>
-              <div className="mt-2 px-7 py-3">
-                <p className="text-sm text-gray-500">
-                  Esta acción no se puede deshacer.
-                </p>
-              </div>
-              <div className="items-center px-4 py-3 space-x-4">
-                <button
-                  className="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
-                  onClick={handleEliminar}
-                >
-                  Eliminar
-                </button>
-                <button
-                  className="px-4 py-2 bg-gray-300 text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none"
-                  onClick={() => setIsDeleteModalOpen(false)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+  
     </div>
   );
 }

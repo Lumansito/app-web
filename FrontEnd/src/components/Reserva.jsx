@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 export function Reserva({ clase, onClick }) {
 
   const formatHora = (fecha) => {

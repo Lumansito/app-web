@@ -1,13 +1,6 @@
 import React from "react";
 
-/*const handleGoBack = () => {
-  navigate("/");
-};
 
-const handleGoHome = () => {
-  navigate("/");
-};
-*/
 export function Ejercicio({ ejercicio, onClick }) {
   return (
     <div className="max-w-md mx-auto">
