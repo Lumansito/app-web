@@ -80,7 +80,7 @@ export const obtenerEsquemaCuposHoy = async (req, res, next) => {
     );
     if (result.length === 0) {
       return res.status(404).json({
-        message: "no hay cupos cargados en el dia de hoy.",
+        message: "No hay mas clases para el dia de hoy.",
       });
     } else {
       const [cupos] = await pool.query(

@@ -18,9 +18,17 @@ export const ListaClases = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    cargarClases();
-    asignarClaseReservada();
+    const cargar = async () => {
+      const respuesta = await cargarClases();
+      asignarClaseReservada();
+      if (respuesta.error) {
+        const mensajeError = respuesta.error.response?.data?.message || "Error desconocido al cargar las clases";
+      toast.error(mensajeError);
+      } 
+    };
+    cargar();
   }, []);
+  
 
   const handleGoBack = () => {
     navigate("/");

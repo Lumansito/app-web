@@ -6,19 +6,9 @@ import toast from "react-hot-toast";
 export const Asistencia = () => {
   const [dni, setDni] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
   const { confirmAsistencia } = useAsistencia();
 
-  useEffect(() => {
-    let timer;
-    if (isSuccess) {
-      timer = setTimeout(() => {
-        setIsSuccess(false);
-      }, 2500);
-    }
-    return () => clearTimeout(timer);
-  }, [isSuccess]);
 
   const handleSearch = async () => {
     if (!dni.trim()) {
@@ -29,7 +19,6 @@ export const Asistencia = () => {
     try {
       const response = await confirmAsistencia(dni);
       if (response.error) {
-        
         toast.error(response.error.response.data.message);
       } else {
         toast.success("Asistencia confirmada");

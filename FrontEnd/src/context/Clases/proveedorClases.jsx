@@ -27,12 +27,16 @@ const ProveedorClases = ({ children }) => {
 
   const cargarClases = async () => {
     try {
-      const response = await obtenerClasesHoyAPI();
-      const clasesAr = response.data || [];
-      
+      const respuesta = await obtenerClasesHoyAPI();
+      const clasesAr = respuesta.data || [];
       setClases(clasesAr);
+      if (respuesta.status === 200) {
+        return { correcto: respuesta };
+      } else {
+        return { error: respuesta };
+      }
     } catch (error) {
-      console.error("Error al cargar las clases:", error);
+      return {error};
     }
   };
 

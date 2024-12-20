@@ -4,8 +4,8 @@ import React, { useContext, useState } from "react";
 import { obtenerConfirmacionAsistenciaAPI } from "../../api/asistencia.api";
 
 export const useAsistencia = () => {
-  const context = useContext(ContextoAsistencia);
-  if (!context) {
+  const contexto = useContext(ContextoAsistencia);
+  if (!contexto) {
     throw new Error(
       "useAsistencia debe estar dentro del proveedor ProveedorAsistencia"
     );
@@ -16,11 +16,11 @@ export const useAsistencia = () => {
 const ProveedorAsistencia = ({ children }) => {
   const confirmarAsistencia = async (dni) => {
     try {
-      const response = await obtenerConfirmacionAsistenciaAPI(dni);
-      if (response.status === 200) {
-        return { success: response };
+      const respuesta = await obtenerConfirmacionAsistenciaAPI(dni);
+      if (respuesta.status === 200) {
+        return { correcto: respuesta };
       } else {
-        return { error: response };
+        return { error: respuesta };
       }
     } catch (error) {
       return error;
