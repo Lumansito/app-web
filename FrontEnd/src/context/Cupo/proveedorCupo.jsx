@@ -52,6 +52,7 @@ const ProveedorCupo = ({ children }) => {
     
     try {
       const data = await obtenerEsquemaCuposXfechaAPI(diaSemana); // Solo pasar diaSemana
+      console.log("data", data);
       return data;
     } catch (error) {
       setError("Error al cargar cupo específico");

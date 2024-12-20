@@ -14,7 +14,7 @@ function ListaCupos() {
   const navigate = useNavigate();
 
   const getDayName = (dayNumber) => {
-    const date = new Date(2024, 0, dayNumber + 1);
+    const date = new Date(2024, 0, dayNumber);
     return format(date, "EEEE", { locale: es });
   };
 
@@ -66,8 +66,10 @@ function ListaCupos() {
 
   const isMatchingDay = (cupo, day) => {
     try {
+      console.log(day, cupo.diaSemana);
       const dayFromName = getDay(parseISO(`2024-01-0${day}`));
-      return dayFromName === day;
+      
+      return dayFromName === cupo.diaSemana;
     } catch {
       return parseInt(cupo.diaSemana) === day;
     }

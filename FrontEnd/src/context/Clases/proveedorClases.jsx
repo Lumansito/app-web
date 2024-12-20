@@ -31,7 +31,7 @@ const ProveedorClases = ({ children }) => {
       const clasesAr = respuesta.data || [];
       setClases(clasesAr);
       if (respuesta.status === 200) {
-        return { correcto: respuesta };
+        return { correcto: true };
       } else {
         return { error: respuesta };
       }
