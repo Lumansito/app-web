@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const APIURL = import.meta.env.VITE_API_URL;
+
+
+
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api/", //coloar la ip de la maquina donde se esta ejecutando el backend
+  baseURL: APIURL, //coloar la ip de la maquina donde se esta ejecutando el backend
 });
 
 axiosInstance.interceptors.request.use(

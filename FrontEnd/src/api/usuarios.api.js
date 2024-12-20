@@ -1,9 +1,10 @@
 import axiosInstance from "./axiosInstance";
 import axios from "axios";
+const APIURL = import.meta.env.VITE_API_URL;
 
 export const iniciarSesionAPI = async (usuario) => {
   try {
-    const response = await axios.post("http://localhost:3000/api/users/login", usuario); //coloar la ip de la maquina donde se esta ejecutando el backend
+    const response = await axios.post(APIURL + "/users/login", usuario); //coloar la ip de la maquina donde se esta ejecutando el backend
     return response;
   } catch (error) {
     return error;
