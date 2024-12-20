@@ -23,107 +23,81 @@ const ProveedorCupo = ({ children }) => {
   const [error, setError] = useState(null);
 
   const cargarCupos = async () => {
-    
     try {
-      const response = await obtenerEsquemaCuposAPI();
-      if (response.data) {
-        setCupos(response.data);
-      }
+      const { data: cuposData } = await obtenerEsquemaCuposAPI();
+      setCupos(cuposData || []);
+      return { correcto: true };
     } catch (error) {
-      setError("Error al cargar cupos");
-      console.error("Error al cargar cupos:", error);
-    } 
+      return { error };
+    }
   };
 
   const cargarCuposHoy = async () => {
-    
     try {
-      const data = await obtenerEsquemaCuposHoyAPI();
-      if (data) {
-        setCupos(data);
-      }
+      const { data: cuposHoy } = await obtenerEsquemaCuposHoyAPI();
+      setCupos(cuposHoy || []);
+      return { correcto: true };
     } catch (error) {
-      setError("Error al cargar los cupos de hoy");
-      console.error("Error al cargar los cupos de hoy:", error);
-    } 
+      return { error };
+    }
   };
 
   const cargarCuposXfecha = async (diaSemana) => {
-    
     try {
-      const data = await obtenerEsquemaCuposXfechaAPI(diaSemana); // Solo pasar diaSemana
-      console.log("data", data);
-      return data;
+      const { data: cupoFecha } = await obtenerEsquemaCuposXfechaAPI(diaSemana);
+      return cupoFecha || [];
     } catch (error) {
-      setError("Error al cargar cupo específico");
-      console.error(`Error al obtener el cupo para ${diaSemana}:`, error);
-    } 
+      return { error };
+    }
   };
 
   const cargarCupoXid = async (idEsquema) => {
-    
     try {
-      const response = await obtenerCuposOcupadosXidEsquemaAPI(idEsquema);
-      if(response.data) 
-        return response.data;
+      const { data: cupoId } = await obtenerCuposOcupadosXidEsquemaAPI(
+        idEsquema
+      );
+      return cupoId || 0;
     } catch (error) {
-      setError("Error al cargar cupo específico por ID");
-      console.error(`Error al obtener el cupo con ID ${idEsquema}:`, error);
-    } 
+      return { error };
+    }
   };
 
   const crearCupo = async (cupo) => {
-    
     try {
-      const newCupo = await crearEsquemaCuposAPI(cupo);
-      if (newCupo) {
-        setCupos((prev) => [...prev, newCupo]);
-        return true; 
-      }
-      return false;
+      const { data: nuevoCupo } = await crearEsquemaCuposAPI(cupo);
+      setCupos((prev) => [...prev, nuevoCupo]);
+      return { correcto: true };
     } catch (error) {
-      setError("Error al crear cupo");
-      console.error("Error al crear cupo:", error);
-      return false; 
-    } 
+      return { error };
+    }
   };
 
   const actualizarCupo = async (idEsquema, cupo) => {
-    
     try {
-      console.log("id", idEsquema);
-      console.log("lo que se envia", cupo);
-      const updated = await actualizarEsquemaCuposAPI(idEsquema, cupo);
-      console.log("rta api", updated);
-      if (updated) {
-        setCupos((prev) =>
-          prev.map((existingCupo) =>
-            existingCupo.idEsquema === idEsquema
-              ? { ...existingCupo, estado: updated.estado }
-              : existingCupo
-          )
-        );
-        return true;
-      }
+      const { data: cupoActualizado } = await actualizarEsquemaCuposAPI(
+        idEsquema,
+        cupo
+      );
+      setCupos((prev) =>
+        prev.map((existingCupo) =>
+          existingCupo.idEsquema === idEsquema
+            ? { ...existingCupo, ...cupoActualizado }
+            : existingCupo
+        )
+      );
+      return { correcto: true };
     } catch (error) {
-      setError("Error al actualizar cupo");
-      console.error(`Error al actualizar el cupo con ID ${idEsquema}:`, error);
-      return false;
+      return { error };
     }
   };
 
   const eliminarCupo = async (idEsquema) => {
-    
     try {
-      const deleted = await eliminarEsquemaCuposAPI(idEsquema); 
-      if (deleted) {
-        setCupos((prev) => prev.filter((cupo) => cupo.idEsquema !== idEsquema));
-      }
+      await eliminarEsquemaCuposAPI(idEsquema);
+      setCupos((prev) => prev.filter((cupo) => cupo.idEsquema !== idEsquema));
+      return { correcto: true };
     } catch (error) {
-      setError("Error al eliminar cupo");
-      console.error(`Error al eliminar el cupo con ID ${idEsquema}:`, error);
-    } finally {
-      
+      return { error };
     }
   };
 

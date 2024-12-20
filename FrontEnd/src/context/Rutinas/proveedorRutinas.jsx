@@ -1,5 +1,5 @@
 import { ContextoRutinas } from "./ContextoRutinas.jsx";
-import  { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
 import {
   obtenerSolicitudesRutinasAPI,
@@ -30,20 +30,30 @@ const ProveedorRutinas = ({ children }) => {
   ]);
   const [indice, asignarIndice] = useState(1);
 
-  async function cargarSolicitudes() {
-    const response = await obtenerSolicitudesRutinasAPI();
-    setSolicitudes(response.data);
-  }
-  async function cargarSolicitudXid(id) {
-    const response = await obtenerSolicitudRutinaXidRutinaAPI(id);
-    setSolicitud(response.data);
-  }
+  const cargarSolicitudes = async () => {
+    try {
+      const { data } = await obtenerSolicitudesRutinasAPI();
+      setSolicitudes(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
+    }
+  };
+
+  const cargarSolicitudXid = async (id) => {
+    try {
+      const { data } = await obtenerSolicitudRutinaXidRutinaAPI(id);
+      setSolicitud(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
+    }
+  };
 
   const actualizarLineaRutina = (dia, idLinea, nuevaLinea) => {
     asignarDiasRutina((prevDiasRutina) => {
       return prevDiasRutina.map((diaRutina) => {
         if (diaRutina.dia === dia) {
-          // Actualizar la línea dentro del día específico
           const nuevasLineas = diaRutina.lineas.map((linea) =>
             linea.id === idLinea ? nuevaLinea : linea
           );
@@ -54,27 +64,31 @@ const ProveedorRutinas = ({ children }) => {
     });
     console.log(diasRutina);
   };
+
   const actualizarRutina = async () => {
-    console.log(diasRutina);
-    console.log(solicitud);
-    let response = await actualizarRutinaAPI(solicitud.idRutina, diasRutina, dni);
-    if (response.data.message && response.data.message === "Correcto") {
-      return true;
-    } else {
-      return false;
+    try {
+      const response = await actualizarRutinaAPI(
+        solicitud.idRutina,
+        diasRutina,
+        dni
+      );
+      if (response.data.message === "Correcto") {
+        return { correcto: true };
+      } else {
+        return { error: response.data.message };
+      }
+    } catch (error) {
+      return { error };
     }
   };
 
   const comprobarLineasRutina = () => {
-    // Encuentra el primer día con líneas inválidas
     const diaInvalido = diasRutina.find((dia) =>
       dia.lineas.some(
         (linea) =>
           linea.codEjercicio == "" || linea.series == 0 || linea.rep == 0
       )
     );
-    
-    // Retorna el día si se encontró un error, o null si todos son válidos
     return diaInvalido ? diaInvalido.dia : null;
   };
 
@@ -86,7 +100,7 @@ const ProveedorRutinas = ({ children }) => {
         cargarSolicitudXid,
         solicitud,
         indice,
-         asignarIndice,
+        asignarIndice,
         actualizarLineaRutina,
         diasRutina,
         asignarDiasRutina,

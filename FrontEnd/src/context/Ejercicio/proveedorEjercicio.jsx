@@ -3,10 +3,10 @@ import {
   obtenerEjerciciosAPI,
   crearEjercicioAPI,
   eliminarEjercicioAPI,
-  actualizarEjercicioAPI
+  actualizarEjercicioAPI,
 } from "../../api/ejercicios.api.js";
 
-import  { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
 export const useEjercicios = () => {
   const context = useContext(ExerciseContext);
@@ -19,54 +19,62 @@ export const useEjercicios = () => {
 };
 
 const ProveedorEjercicio = ({ children }) => {
-  //proveedor para acceder a los datos de los empleados desde cualquier componente
   const [ejercicios, setEjercicios] = useState([]);
 
-  async function cargarEjercicios() {
-    const response = await obtenerEjerciciosAPI();
-    let data = response.data;
-    data = data
-      .map((ejercicio) => {
-        if (ejercicio.estado === "activo") {
-          return {
-            ...ejercicio,
-          };
-        }
-        return null;
-      })
-      .filter((ejercicio) => ejercicio !== null);
-
-    setEjercicios(data);
-  }
+  const cargarEjercicios = async () => {
+    try {
+      const { data: ejerciciosData } = await obtenerEjerciciosAPI();
+      const data = ejerciciosData
+        .map((ejercicio) =>
+          ejercicio.estado === "activo" ? { ...ejercicio } : null
+        )
+        .filter((ejercicio) => ejercicio !== null);
+      setEjercicios(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
+    }
+  };
 
   const eliminarEjercicio = async (codEjercicio) => {
     try {
       await eliminarEjercicioAPI(codEjercicio);
-      cargarEjercicios();
-    } catch (error) {}
+      await cargarEjercicios();
+      return { correcto: true };
+    } catch (error) {
+      return { error };
+    }
   };
 
   const crearEjercicio = async (values) => {
     try {
       await crearEjercicioAPI(values);
-      cargarEjercicios();
+      await cargarEjercicios();
+      return { correcto: true };
     } catch (error) {
-      console.log(error);
+      return { error };
     }
   };
 
   const actualizarEjercicio = async (codEjercicio, values) => {
     try {
       await actualizarEjercicioAPI(codEjercicio, values);
-      cargarEjercicios();
+      await cargarEjercicios();
+      return { correcto: true };
     } catch (error) {
-      console.log(error);
+      return { error };
     }
   };
 
   return (
     <ExerciseContext.Provider
-      value={{ ejercicios, cargarEjercicios, crearEjercicio, eliminarEjercicio, actualizarEjercicio, }}
+      value={{
+        ejercicios,
+        cargarEjercicios,
+        crearEjercicio,
+        eliminarEjercicio,
+        actualizarEjercicio,
+      }}
     >
       {children}
     </ExerciseContext.Provider>

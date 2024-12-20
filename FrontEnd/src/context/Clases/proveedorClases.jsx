@@ -13,7 +13,9 @@ import {
 export const useClases = () => {
   const context = useContext(ContextoClases);
   if (!context) {
-    throw new Error("useClases debe estar dentro del proveedor ProveedorClases");
+    throw new Error(
+      "useClases debe estar dentro del proveedor ProveedorClases"
+    );
   }
   return context;
 };
@@ -36,35 +38,36 @@ const ProveedorClases = ({ children }) => {
         return { error: respuesta };
       }
     } catch (error) {
-      return {error};
+      return { error };
     }
   };
 
   const cargarClase = async (idClase) => {
     try {
       const { data: claseCarga } = await obtenerClaseAPI(idClase);
-      
       const { data: cupo } = await obtenerCupoClaseAPI(idClase);
-      console.log(idClase)
-      console.log("response al cargarCupo", cupo);
+
       setClase({ ...claseCarga, cuposOcupados: cupo || 0 });
+
+      return { correcto: true };
     } catch (error) {
-      console.error("Error al cargar la clase:", error);
+      return { error };
     }
   };
 
   const asignarClaseReservada = async () => {
     try {
       comprobarToken();
-      const response = await obtenerClaseReservadaXdniAPI(dni);
-      if (response.status === 404) {
-        return null;
+      const respuesta = await obtenerClaseReservadaXdniAPI(dni);
+
+      if (respuesta.status === 404) {
+        return { correcto: false, mensaje: "Clase no encontrada" };
       } else {
-        setClaseReservada(response.data[0]);
+        setClaseReservada(respuesta.data[0]);
+        return { correcto: true };
       }
     } catch (error) {
-      console.error("Error al obtener la clase reservada:", error);
-      return null;
+      return { error };
     }
   };
 
@@ -76,27 +79,32 @@ const ProveedorClases = ({ children }) => {
         dniInstructor,
         horaInicio,
       };
-
-      const response = await crearResevaClaseAPI(clase);
-
-      if (response.status === 200) {
-        return { success: response };
+  
+      const respuesta = await crearResevaClaseAPI(clase);
+  
+      if (respuesta.status === 200) {
+        return { correcto: true, datos: respuesta };
       } else {
-        return { error: response };
+        return { error: respuesta };
       }
     } catch (error) {
-      console.error("Error al reservar la clase:", error);
-      return "Error al reservar la clase";
+      return { error };
     }
   };
 
   const cancelarReservasActivas = async () => {
-    const response = await cancelarReservaClaseAPI(dni);
-    if (response.status === 200) {
-      setClaseReservada(null);
-      cargarClases();
-    } else {
-      console.error("Error al cancelar la reserva:", response);
+    try {
+      const respuesta = await cancelarReservaClaseAPI(dni);
+  
+      if (respuesta.status === 200) {
+        setClaseReservada(null);
+        await cargarClases();
+        return { correcto: true };
+      } else {
+        return { error: respuesta };
+      }
+    } catch (error) {
+      return { error };
     }
   };
 

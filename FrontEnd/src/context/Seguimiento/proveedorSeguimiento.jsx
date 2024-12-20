@@ -1,141 +1,172 @@
-import {ContextoSeguimiento} from "./contextoSeguimiento.jsx";
-import React, {useContext, useState} from 'react';
+import { ContextoSeguimiento } from "./contextoSeguimiento.jsx";
+import React, { useContext, useState } from "react";
 
-import {usuariosConMembresiaAPI} from "../../api/usuarios.api.js";
+import { usuariosConMembresiaAPI } from "../../api/usuarios.api.js";
 import {
-    obtenerSeguimientosXdni_codEjercicioAPI,
-    obtenerSeguimientosXdniAPI,
-    actualizarSeguimientoXidAPI,
-    crearSeguimientoAPI,
-    eliminarSeguimientoAPI
+  obtenerSeguimientosXdni_codEjercicioAPI,
+  obtenerSeguimientosXdniAPI,
+  actualizarSeguimientoXidAPI,
+  crearSeguimientoAPI,
+  eliminarSeguimientoAPI,
 } from "../../api/seguimientos.api.js";
-import {obtenerEjerciciosAPI, obtenerEjerciciosXcodigoEjAPI} from "../../api/ejercicios.api.js";
-import {obtenerClienteXdniAPI} from "../../api/usuarios.api.js";
+import {
+  obtenerEjerciciosAPI,
+  obtenerEjerciciosXcodigoEjAPI,
+} from "../../api/ejercicios.api.js";
+import { obtenerClienteXdniAPI } from "../../api/usuarios.api.js";
 
 export const useSeguimiento = () => {
-    const context = useContext(ContextoSeguimiento);
-    if (!context) {
-        throw new Error(
-            "useSeguimiento debe estar dentro del proveedor ProveedorSeguimiento"
-        );
-    }
-    return context;
+  const context = useContext(ContextoSeguimiento);
+  if (!context) {
+    throw new Error(
+      "useSeguimiento debe estar dentro del proveedor ProveedorSeguimiento"
+    );
+  }
+  return context;
 };
 
-const ProveedorSeguimiento = ({children}) => {
-    // Función de ejemplo para mostrar un mensaje en la consola
-    const [seguimientos, asignarSeguimientos] = useState([]);
-    const [clientes, asignarClientes] = useState([]);
-    const [cliente, asignarCliente] = useState({});
-    const [ejercicio, asignarEjercicio] = useState({});
-    const [ejercicios, asignarEjercicios] = useState([]);
-    const [seguimiento, asignarSeguimiento] = useState({});
+const ProveedorSeguimiento = ({ children }) => {
+  const [seguimientos, asignarSeguimientos] = useState([]);
+  const [clientes, asignarClientes] = useState([]);
+  const [cliente, asignarCliente] = useState({});
+  const [ejercicio, asignarEjercicio] = useState({});
+  const [ejercicios, asignarEjercicios] = useState([]);
+  const [seguimiento, asignarSeguimiento] = useState({});
 
-
-    async function cargarSeguimientoClientes() {
-        const response = await usuariosConMembresiaAPI(3); //suponemos que el cod de membresia 3 es el que habilita tener seguimientos
-        if(response.data)
-            asignarClientes(response.data);
+  const cargarSeguimientoClientes = async () => {
+    try {
+      const { data } = await usuariosConMembresiaAPI(3);
+      asignarClientes(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function cargarEjercicios() {
-        const response = await obtenerEjerciciosAPI();
-
-        asignarEjercicios(response.data);
+  const cargarEjercicios = async () => {
+    try {
+      const { data } = await obtenerEjerciciosAPI();
+      asignarEjercicios(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function cargarSeguimientosXdni_codEjercicio(dni, codEjercicio) {
-        const response = await obtenerSeguimientosXdni_codEjercicioAPI(dni, codEjercicio);
-        if (response.status === 200) {
-            asignarSeguimientos(response.data);
-        } else {
-            asignarSeguimientos([]);
-        }
+  const cargarSeguimientosXdni_codEjercicio = async (dni, codEjercicio) => {
+    try {
+      const { data, status } = await obtenerSeguimientosXdni_codEjercicioAPI(
+        dni,
+        codEjercicio
+      );
+      asignarSeguimientos(status === 200 ? data : []);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function cargarClienteXdni(dni) {
-        const response = await obtenerClienteXdniAPI(dni);
-        
-        asignarCliente(response.data);
+  const cargarClienteXdni = async (dni) => {
+    try {
+      const { data } = await obtenerClienteXdniAPI(dni);
+      asignarCliente(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function cargarEjercicio(codEjercicio) {
-        const response = await obtenerEjerciciosXcodigoEjAPI(codEjercicio);
-        asignarEjercicio(response.data);
+  const cargarEjercicio = async (codEjercicio) => {
+    try {
+      const { data } = await obtenerEjerciciosXcodigoEjAPI(codEjercicio);
+      asignarEjercicio(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function cargarSeguimiento(idSeguimiento) {
-        const response = await obtenerSeguimientosXdniAPI(idSeguimiento);
-
-        asignarSeguimiento(response.data);
-
-        await cargarClienteXdni(response.data.dniCliente);
-        await cargarEjercicio(response.data.codEjercicio);
-
+  const cargarSeguimiento = async (idSeguimiento) => {
+    try {
+      const { data } = await obtenerSeguimientosXdniAPI(idSeguimiento);
+      asignarSeguimiento(data);
+      await cargarClienteXdni(data.dniCliente);
+      await cargarEjercicio(data.codEjercicio);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function actualizarSeguimientoXid(id, param) {
-        const response = await actualizarSeguimientoXidAPI(id, param);
-        if (response.data.message && response.data.message === "Seguimiento actualizado") {
-            return true;
-        } else {
-            return false;
-        }
+  const actualizarSeguimientoXid = async (id, param) => {
+    try {
+      const { data } = await actualizarSeguimientoXidAPI(id, param);
+      return data.message === "Seguimiento actualizado"
+        ? { correcto: true }
+        : { error: data.message };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function nuevoSeguimiento(param, dni, codEjercicio) {
-        const seguimiento = {
-            dniCliente: dni,
-            codEjercicio: codEjercicio,
-            peso: param.peso,
-            repeticiones: param.repeticiones
-        }
-        const response = await crearSeguimientoAPI(seguimiento);
-
-        if (response.data.message && response.data.message === "Seguimiento creado") {
-            return true;
-        } else {
-            return false;
-        }
+  const nuevoSeguimiento = async (param, dni, codEjercicio) => {
+    try {
+      const seguimiento = {
+        dniCliente: dni,
+        codEjercicio: codEjercicio,
+        peso: param.peso,
+        repeticiones: param.repeticiones,
+      };
+      const { data } = await crearSeguimientoAPI(seguimiento);
+      return data.message === "Seguimiento creado"
+        ? { correcto: true }
+        : { error: data.message };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    async function borrarSeguimiento(idSeguimiento) {
-
-        const response = await eliminarSeguimientoAPI(idSeguimiento);
-        await cargarSeguimientosXdni_codEjercicio(cliente.dni, ejercicio.codEjercicio);
-        if (response.data.message && response.data.message === "Seguimiento eliminado") {
-            return true;
-        } else {
-            return false;
-        }
+  const borrarSeguimiento = async (idSeguimiento) => {
+    try {
+      const { data } = await eliminarSeguimientoAPI(idSeguimiento);
+      await cargarSeguimientosXdni_codEjercicio(
+        cliente.dni,
+        ejercicio.codEjercicio
+      );
+      return data.message === "Seguimiento eliminado"
+        ? { correcto: true }
+        : { error: data.message };
+    } catch (error) {
+      return { error };
     }
+  };
 
-    return (
-        <ContextoSeguimiento.Provider
-            value={{
-                borrarSeguimiento,
-                nuevoSeguimiento,
-                actualizarSeguimientoXid,
-                seguimiento,
-                cargarSeguimiento,
-                cargarSeguimientoClientes,
-                clientes,
-                cargarSeguimientosXdni_codEjercicio,
-                seguimientos,
-                asignarSeguimientos,
-                cargarEjercicios,
-                ejercicios,
-                asignarEjercicio,
-                asignarCliente,
-                cliente,
-                cargarClienteXdni,
-                ejercicio,
-                cargarEjercicio
-            }}
-        >
-            {children}
-        </ContextoSeguimiento.Provider>
-    );
+  return (
+    <ContextoSeguimiento.Provider
+      value={{
+        borrarSeguimiento,
+        nuevoSeguimiento,
+        actualizarSeguimientoXid,
+        seguimiento,
+        cargarSeguimiento,
+        cargarSeguimientoClientes,
+        clientes,
+        cargarSeguimientosXdni_codEjercicio,
+        seguimientos,
+        asignarSeguimientos,
+        cargarEjercicios,
+        ejercicios,
+        asignarEjercicio,
+        asignarCliente,
+        cliente,
+        cargarClienteXdni,
+        ejercicio,
+        cargarEjercicio,
+      }}
+    >
+      {children}
+    </ContextoSeguimiento.Provider>
+  );
 };
 
 export default ProveedorSeguimiento;

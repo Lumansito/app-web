@@ -1,5 +1,9 @@
 import { ContextoUsuario } from "./ContextoUsuario.jsx";
-import { iniciarSesionAPI, obtenerProfesionalesAPI , obtenerClienteXdniAPI} from "../../api/usuarios.api.js";
+import {
+  iniciarSesionAPI,
+  obtenerProfesionalesAPI,
+  obtenerClienteXdniAPI,
+} from "../../api/usuarios.api.js";
 import { useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
@@ -14,59 +18,53 @@ export const useUsuario = () => {
 };
 
 const ProveedorUsuario = ({ children }) => {
-  
-
   const [rol, setRol] = useState([]);
   const [dni, setDni] = useState();
   const [datosUsuario, setDatosUsuario] = useState([]);
   const [profesionales, setProfesionales] = useState([]);
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     comprobarToken();
   }, []);
 
-  async function iniciarSesion(usuario) {
+  const iniciarSesion = async (usuario) => {
     try {
-      const response = await iniciarSesionAPI(usuario);
-  
-      if (!response.data) {
-        throw new Error(response.response.data.message);
+      const { data } = await iniciarSesionAPI(usuario);
+      if (!data) {
+        throw new Error("Error al iniciar sesión");
       }
-      const token = response.data.token;
+      const token = data.token;
       localStorage.setItem("token", token);
       const decoded = jwtDecode(token);
       setRol(decoded.rol);
       setDni(decoded.dni);
-  
-      return response; 
+      return { correcto: true };
     } catch (error) {
-      throw error?.message || "Error al iniciar sesión";
+      return { error: error?.message || "Error al iniciar sesión" };
     }
-  }
-  
+  };
 
-  function comprobarToken() {
-    if (localStorage.getItem("token")) {
+  const comprobarToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
       try {
-        const decoded = jwtDecode(localStorage.getItem("token"));
+        const decoded = jwtDecode(token);
         if (decoded.exp < Date.now() / 1000) {
-          console.error("Token expired");
           localStorage.removeItem("token");
         } else {
           setRol(decoded.rol);
           setDni(decoded.dni);
         }
       } catch (error) {
-        console.error("Error decoding token:", error);
         localStorage.removeItem("token");
       }
     } else {
       setRol([]);
       setDni();
     }
-  }
+  };
 
   const obtenerProfesionales = async () => {
     setLoading(true);
@@ -82,43 +80,43 @@ const ProveedorUsuario = ({ children }) => {
       setLoading(false);
     }
   };
-
-  async function cerrarSesion() {
+  const cerrarSesion = async () => {
     setDni();
     localStorage.removeItem("token");
     setRol([]);
-  }
+  };
 
   const obtenerDatosPersonales = async () => {
-  
     if (!dni || dni === "") {
       return;
     }
-    let response = await obtenerClienteXdniAPI(dni);
+    try {
+      const { data } = await obtenerClienteXdniAPI(dni);
+      if (!data) {
+        return;
+      }
+      if (!data.fechaPago) {
+        data.fechaPago = "No se ha realizado el pago";
+      } else {
+        const fechaPago = new Date(data.fechaPago);
+        const fechaVencimiento = new Date(fechaPago);
+        fechaVencimiento.setDate(fechaPago.getDate() + 30);
+        data.fechaPago = fechaVencimiento.toLocaleDateString();
+      }
+      data.membresia =
+        data.codMembresia === "1"
+          ? "Standard"
+          : data.codMembresia === "2"
+          ? "Premium"
+          : "VIP";
 
-    if (!response.data) {
-      return;
+      setDatosUsuario(data);
+      return { correcto: true };
+    } catch (error) {
+      return { error };
     }
-    if(!response.data.fechaPago || response.data.fechaPago === null){
-      response.data.fechaPago = "No se ha realizado el pago";
-      setDatosUsuario(response.data);
-      return;
-    }
-    const fechaPago = new Date(response.data.fechaPago); // formato ISO 8601
-    const fechaVencimiento = new Date(fechaPago);
-    fechaVencimiento.setDate(fechaPago.getDate() + 30);
-    response.data.fechaPago = fechaVencimiento.toLocaleDateString();
-    response.data.membresia = 
-      response.data.codMembresia === "1" ? "Standard" : 
-      response.data.codMembresia === "2" ? "Premium" : 
-      "VIP";
-
-    setDatosUsuario(response.data);
-    
   };
-
   
-
   return (
     <ContextoUsuario.Provider
       value={{
@@ -133,7 +131,7 @@ const ProveedorUsuario = ({ children }) => {
         loading,
         error,
         datosUsuario,
-        obtenerDatosPersonales
+        obtenerDatosPersonales,
       }}
     >
       {children}

@@ -15,8 +15,6 @@ export const ListaClases = () => {
   } = useClases();
   const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false);
-
   useEffect(() => {
     const cargar = async () => {
       const respuesta = await cargarClases();
