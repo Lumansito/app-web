@@ -82,7 +82,7 @@ export const crearUsuario = async (req, res, next) => {
     }
 
     await connection.commit();
-    res.status(201).json({ message: "Usuario creado correctamente" });
+    res.status(200).json({ message: "Usuario creado correctamente" });
   } catch (error) {
     await connection.rollback();
     next(error);
@@ -136,7 +136,7 @@ export const eliminarUsuario = async (req, res, next) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.sendStatus(204);
+    return res.sendStatus(200);
   } catch (error) {
     next(error);
   }

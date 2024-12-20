@@ -117,7 +117,7 @@ export const crearEsquemaCupos = async (req, res, next) => {
         .json({ error: "El día de la semana debe ser un número" });
     }
     // Devuelve el nuevo esquema creado sin idEsquema, ya que es auto-incremental
-    res.status(201).json({
+    res.status(200).json({
       diaSemana,
       horario,
       estado: estadoPredeterminado,

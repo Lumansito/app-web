@@ -3,6 +3,7 @@ import { useEjercicios } from "../../context/Ejercicio/proveedorEjercicio.jsx";
 import { FormularioEjercicio } from "../../components/FormularioEjercicio.jsx";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Casa } from "../../assets/Iconos/Casa.jsx";
 
 export const ListaEjercicios = () => {
   const {
@@ -12,7 +13,6 @@ export const ListaEjercicios = () => {
     eliminarEjercicio,
     actualizarEjercicio,
   } = useEjercicios();
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [newEjercicio, setNewEjercicio] = useState({ nombre: "" });
   const navigate = useNavigate();
 
@@ -45,30 +45,23 @@ export const ListaEjercicios = () => {
 
   return (
     <div className="in-h-scree mx-auto p-4 relative">
-      {/* Botón de Home */}
+      
       <button
         onClick={handleGoHome}
         className="absolute top-4 left-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
         aria-label="Ir al inicio"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-        </svg>
+        <Casa className="h-5 w-5" />
       </button>
 
       <div className="max-w-md mx-auto mt-12 flex flex-col justify-between items-center mb-6">
-        {/* Botón de Volver */}
+       
         <div className="flex items-center ">
           <button
             onClick={handleGoBack}
             className="px-3 py-1 bg-gray-200 text-black text-sm rounded hover:bg-gray-300 transition-colors"
           >
-            ← Volver
+            Volver
           </button>
           <h1 className="text-2xl font-bold text-gray-800 mx-4">
             Listado de ejercicios
