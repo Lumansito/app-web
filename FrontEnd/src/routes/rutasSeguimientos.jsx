@@ -1,13 +1,13 @@
 import {Routes, Route, Link} from "react-router-dom";
 import ProveedorSeguimiento from "../context/Seguimiento/proveedorSeguimiento.jsx";
-import {useUsuario} from "../context/Usuario/proveedorUsuario.jsx";
+import {useUsuario} from "../context/Usuario/ProveedorUsuario.jsx";
 import {ListadoClientesSeguimiento} from "../pages/Seguimiento/listadoClientesSeguimiento.jsx";
 import {FormularioSeguimiento} from "../pages/Seguimiento/formularioSeguimiento.jsx";
-import {Validacion} from "./Validacion.jsx";
+import {Validacion} from "Validacion.jsx";
 
 export function RutasSeguimientos() {
-    const {rol} = useUsuario();
-
+    const {rol, comprobarToken} = useUsuario();
+    comprobarToken();
     return (
         <ProveedorSeguimiento>
             <Validacion rol={rol} esperado={2}>

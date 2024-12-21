@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRutinas } from "../../context/Rutinas/ProveedorRutinas.jsx";
 import { useUsuario } from "../../context/Usuario/ProveedorUsuario.jsx";
 import { Solicitud } from "../../components/Solicitud";
+import { Casa } from "../../assets/Iconos/Casa.jsx";
 
 export const ListadoSolicitudes = () => {
   const { cargarSolicitudes, solicitudes } = useRutinas();
@@ -33,14 +34,7 @@ export const ListadoSolicitudes = () => {
         className="absolute top-4 left-4 p-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
         aria-label="Ir al inicio"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-        </svg>
+        <Casa className="h-5 w-5" />
       </button>
       <div className="max-w-md mx-auto mt-12">
         <div className="flex items-center justify-between mb-6">

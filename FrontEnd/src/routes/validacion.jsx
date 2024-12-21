@@ -1,6 +1,9 @@
 import {Link} from "react-router-dom";
+import {Cruz} from "../assets/Iconos/Cruz";
 
 export function Validacion({rol, children, esperado}) {
+    if (esperado === "alguno") {
+        return <>{children}</>}
     if (rol.includes(esperado)) {
         return <>{children}</>;
     } else {
@@ -8,17 +11,7 @@ export function Validacion({rol, children, esperado}) {
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="bg-red-500 px-4 py-2 flex items-center justify-center">
-                        <svg
-                            className="h-6 w-6 text-white mr-2"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <Cruz className="h-6 w-6 text-white" />
                         <h1 className="text-xl font-bold text-white">Acceso Denegado</h1>
                     </div>
                     <div className="px-4 py-4 sm:px-6">

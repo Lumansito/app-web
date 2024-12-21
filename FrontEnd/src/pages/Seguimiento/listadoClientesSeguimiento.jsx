@@ -6,6 +6,7 @@ import { Cliente } from "../../components/Cliente";
 import { Ejercicio } from "../../components/Ejercicio";
 import { Seguimiento } from "../../components/Seguimiento";
 import toast from "react-hot-toast";
+import { Casa } from "../../assets/Iconos/Casa.jsx";
 
 export const ListadoClientesSeguimiento = () => {
   const { dni, codEjercicio } = useParams();
@@ -166,7 +167,7 @@ export const ListadoClientesSeguimiento = () => {
         onClick={handleGoHome}
         className="absolute top-4 left-4 px-4 py-2 bg-gray-200 rounded-full"
       >
-        Inicio
+        <Casa className="h-5 w-5" />
       </button>
       <div className="max-w-md mx-auto mt-12">
         <button

@@ -8,7 +8,7 @@ export const FormularioSeguimiento = () => {
     peso: "",
     repeticiones: "",
   });
-  const [showModal, setShowModal] = useState(false);
+
   const [clienteInfo, setClienteInfo] = useState("");
   const [ejercicioInfo, setEjercicioInfo] = useState("");
 
@@ -100,12 +100,7 @@ export const FormularioSeguimiento = () => {
     navigate(-1);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    if (isSuccess) {
-      navigate("/seguimiento/lista");
-    }
-  };
+ 
 
   return (
     <div className="min-h-screen bg-white text-black p-4">
@@ -114,7 +109,7 @@ export const FormularioSeguimiento = () => {
           onClick={handleGoBack}
           className="mb-4 px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
         >
-          ← Volver
+          Volver
         </button>
         <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">

@@ -54,7 +54,7 @@ export function PaginaPrincipal() {
                     onClick={() => handleNavigation("/clases")}
                   >
                     <img
-                      src="src/img/calendar.png"
+                      src="src/assets/img/calendar.png"
                       alt="Calendario"
                       className="mx-auto w-16 h-16"
                     />
@@ -65,7 +65,7 @@ export function PaginaPrincipal() {
                     onClick={() => handleNavigation("/rutinas")}
                   >
                     <img
-                      src="src/img/rutina.png"
+                      src="src/assets/img/rutina.png"
                       alt="Rutina"
                       className="mx-auto w-14 "
                     />
@@ -79,13 +79,13 @@ export function PaginaPrincipal() {
                 <span className="block text-sm bg-gray-200 p-2 rounded"></span>
                 <div className="flex space-x-2">
                   {" "}
-                  {/* Cambiado a flexbox */}
+                  
                   <button
                     className="flex-1 py-2 px-4 bg-gray-200 text-black rounded hover:bg-gray-300 transition-colors"
                     onClick={() => handleNavigation("/rutinas/solicitudes")}
                   >
                     <img
-                      src="src/img/solicitudes.png"
+                      src="src/assets/img/solicitudes.png"
                       alt="Solicitudes"
                       className="mx-auto w-14 "
                     />

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useClases } from "../../context/Clases/ProveedorClases.jsx";
 import { Clase } from "../../components/Clase.jsx";
+import { Casa } from "../../assets/Iconos/Casa.jsx";
 import toast from "react-hot-toast";
 
 export const ConfirmarClases = () => {
@@ -18,11 +19,14 @@ export const ConfirmarClases = () => {
   const handleConfirm = async () => {
     try {
       const response = await reservarClase(clase.dniInstructor, clase.horario);
-      if (response.success) {
+      console.log(response);
+      if (response.correcto) {
         toast.success("Clase reservada con exito");
         navigate("/clases");
       } else {
-        toast.error(`Error al reservar la clase: ${response.error.response.data.message}`);
+        toast.error(
+          `Error al reservar la clase: ${response.error.response.data.message}`
+        );
       }
     } catch (error) {
       toast.error("Error al reservar la clase");
@@ -67,7 +71,6 @@ export const ConfirmarClases = () => {
         </div>
         <button
           onClick={handleConfirm}
-          
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
         >
           Confirmar Asistencia
