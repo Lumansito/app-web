@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useUsuarios } from "../../context/Usuarios/proveedorUsuarios.jsx";
 import { useNavigate } from "react-router-dom";
 import { Usuario } from "../../components/Usuario.jsx";
-import toast from "react-hot-toast";
 import { Casa } from "../../assets/Iconos/Casa.jsx";
 import { FormularioUsuario } from "../../components/FormularioUsuario.jsx";
+import toast from "react-hot-toast";
+import { ms } from "date-fns/locale";
 
 export function ListadoUsuarios() {
   const { 
@@ -31,7 +32,7 @@ export function ListadoUsuarios() {
     roles: []
   });
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
-  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,33 +67,50 @@ export function ListadoUsuarios() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  
     if (formData.contrasenia !== formData.confirmarContrasenia) {
       setError("Las contraseñas no coinciden");
       return;
     }
-    setError("");
-    if (editingUser) {
-      actualizarUsuario(formData.dni,formData);
-    } else {
-      crearUsuario(formData);
-
+  
+    try {
+      
+      let respuesta;
+      if (editingUser) {
+        respuesta = await actualizarUsuario(formData.dni, formData);
+      } else {
+        respuesta = await crearUsuario(formData);
+      }
+      
+      if (respuesta.correcto) {
+        toast.success("Usuario guardado correctamente");
+  
+      } else {
+        toast.error("Ocurrió un error al guardar el usuario");
+      }
+  
+     
+      setIsModalOpen(false);
+      setEditingUser(null);
+      setFormData({
+        nombre: "",
+        apellido: "",
+        fechaNac: "",
+        mail: "",
+        dni: "",
+        contrasenia: "",
+        confirmarContrasenia: "",
+        sexo: "",
+        telefono: "",
+        roles: []
+      });
+    } catch (error) {
+      
+      toast.error("Se produjo un error inesperado");
+      
     }
-    setIsModalOpen(false);
-    setEditingUser(null);
-    setFormData({
-      nombre: "",
-      apellido: "",
-      fechaNac: "",
-      mail: "",
-      dni: "",
-      contrasenia: "",
-      confirmarContrasenia: "",
-      sexo: "",
-      telefono: "",
-      roles: []
-    });
   };
 
   const editUser = (user) => {
@@ -184,7 +202,6 @@ export function ListadoUsuarios() {
         formData={formData}
         onInputChange={handleInputChange}
         onRoleChange={handleRoleChange}
-        error={error}
       />
     )}
     </div>

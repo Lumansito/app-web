@@ -43,6 +43,11 @@ const ProveedorRutinas = ({ children }) => {
   const cargarSolicitudXid = async (id) => {
     try {
       const { data } = await obtenerSolicitudRutinaXidRutinaAPI(id);
+      if(data.fechaCarga !== null){
+        return { error: 
+          "No se ha cargado la rutina, por favor, espere a que el instructor la cargue"
+         };
+      }
       setSolicitud(data);
       return { correcto: true };
     } catch (error) {

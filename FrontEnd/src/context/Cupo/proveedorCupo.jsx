@@ -64,7 +64,11 @@ const ProveedorCupo = ({ children }) => {
 
   const crearCupo = async (cupo) => {
     try {
-      const { data: nuevoCupo } = await crearEsquemaCuposAPI(cupo);
+      const respuesta = await crearEsquemaCuposAPI(cupo);
+      if(respuesta.status !== 200){
+        return { error: respuesta };
+      }
+      const { data: nuevoCupo } = respuesta;
       setCupos((prev) => [...prev, nuevoCupo]);
       return { correcto: true };
     } catch (error) {

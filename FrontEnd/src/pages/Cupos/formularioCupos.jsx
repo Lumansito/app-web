@@ -3,6 +3,8 @@ import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useCupos } from "../../context/Cupo/proveedorCupo.jsx";
 import { useUsuario } from "../../context/Usuario/ProveedorUsuario.jsx";
 import toast from "react-hot-toast";
+import { Casa } from "../../assets/Iconos/Casa.jsx";
+
 import { format, parse, getDay } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -24,12 +26,20 @@ const FormularioCupos = () => {
   const isNewRoute = location.pathname.includes("/new");
   const diaPreseleccionado = diaSemana;
 
+  const normalizeText = (text) =>
+    text
+      .toLowerCase()
+      .normalize("NFD") 
+      .replace(/[\u0300-\u036f]/g, "");
+
+
   const getDayNumber = (dayName) => {
     try {
-      const parsedDate = parse(dayName, "EEEE", new Date(), { locale: es }); 
+      
+      const normalizado= normalizeText(dayName);
+      const parsedDate = parse(normalizado, "EEEE", new Date(), { locale: es }); 
       return getDay(parsedDate);
     } catch (error) {
-      console.error("Error al procesar el día:", error);
       return null;
     }
   };
@@ -74,13 +84,24 @@ const FormularioCupos = () => {
       diaSemana: isNewRoute ? getDayNumber(diaPreseleccionado) : diaSemana,
     };
 
-    let ok = true;
+    
+    let ok = false;
+    let respuesta = {};
+    let msjE = "";
 
     if (isNewRoute) {
-      ok = await crearCupo(cupoData);
+      respuesta = await crearCupo(cupoData);
     } else {
-      ok = await actualizarCupo(idEsquema, cupoData);
+      respuesta = await actualizarCupo(idEsquema, cupoData);
     }
+    
+    if(respuesta.correcto){
+      ok = true;
+    }else{
+      msjE = respuesta.error.response.data.message || "Error al procesar el cupo";
+      ok = false;
+    }
+
 
     if (ok) {
       toast.success(
@@ -90,7 +111,7 @@ const FormularioCupos = () => {
       );
       navigate("/cupos/lista");
     } else {
-      toast.error("Error al procesar el cupo");
+      toast.error(msjE);
     }
   };
 

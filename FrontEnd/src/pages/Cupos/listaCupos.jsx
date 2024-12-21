@@ -67,7 +67,7 @@ function ListaCupos() {
 
   const isMatchingDay = (cupo, day) => {
     try {
-      console.log(day, cupo.diaSemana);
+     
       const dayFromName = getDay(parseISO(`2024-01-0${day}`));
       
       return dayFromName === cupo.diaSemana;

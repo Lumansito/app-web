@@ -47,7 +47,11 @@ const ProveedorUsuarios = ({ children }) => {
 
   const crearUsuario = async (values) => {
     try {
-      await crearUsuarioAPI(values);
+       
+     const respuesta= await crearUsuarioAPI(values);
+      if(respuesta.status !== 200){
+        return {error: error};
+      }
       await cargarUsuarios();
       return { correcto: true };
     } catch (error) {
@@ -57,7 +61,10 @@ const ProveedorUsuarios = ({ children }) => {
 
   const actualizarUsuario = async (dni, usuario) => {
     try {
-      await actualizarUsuarioAPI(dni, usuario);
+      const respuesta = await actualizarUsuarioAPI(dni, usuario);
+      if(respuesta.status !== 200){
+        return {error: error};
+      }
       await cargarUsuarios();
       return { correcto: true };
     } catch (error) {

@@ -106,11 +106,13 @@ export const obtenerEsquemaCuposHoy = async (req, res, next) => {
 export const crearEsquemaCupos = async (req, res, next) => {
   try {
     const { diaSemana, horario, dniInstructor, cupo } = req.body;
+    console.log(req.body);
     const estadoPredeterminado = "habilitado";
     await pool.query(
       "INSERT INTO esquemaCupos (diaSemana, horario, estado, dniInstructor, cupo) VALUES (?, ?, ?, ?, ?)",
       [diaSemana, horario, estadoPredeterminado, dniInstructor, cupo]
     );
+    
     if (typeof diaSemana !== "number") {
       return res
         .status(400)

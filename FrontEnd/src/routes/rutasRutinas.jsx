@@ -6,7 +6,7 @@ import ProveedorRutinas from "../context/Rutinas/ProveedorRutinas.jsx";
 import ProveedorEjercicio from "../context/Ejercicio/proveedorEjercicio.jsx";
 import { ListadoSolicitudes } from "../pages/Rutina/listadoSolicitudes.jsx";
 import { FormularioSolicitudRutina } from "../pages/Rutina/formularioSolicitudRutina.jsx";
-import { Validacion } from "Validacion.jsx";
+import {Validacion} from "./Validacion.jsx";
 
 export function RutasRutinas() {
   const { rol } = useUsuario();

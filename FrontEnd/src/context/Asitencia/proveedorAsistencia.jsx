@@ -10,7 +10,7 @@ export const useAsistencia = () => {
       "useAsistencia debe estar dentro del proveedor ProveedorAsistencia"
     );
   }
-  return context;
+  return contexto;
 };
 
 const ProveedorAsistencia = ({ children }) => {

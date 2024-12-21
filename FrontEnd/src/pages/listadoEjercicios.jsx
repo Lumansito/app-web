@@ -7,7 +7,7 @@ export const ListadoEjercicios = () => {
         cargarEjercicios();
     }, []);
 
-    console.log(ejercicios);
+    
     return (
         <div>
             <h1>Listado de ejercicios</h1>

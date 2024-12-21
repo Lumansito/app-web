@@ -38,10 +38,24 @@ export const FormularioSolicitudRutina = () => {
     navigate("/");
   };
   useEffect(() => {
-    if (idSolicitud) {
-      cargarSolicitudXid(idSolicitud);
-    }
-  }, []);
+    const cargarDatos = async () => {
+      if (idSolicitud) {
+        try {
+          const respuesta = await cargarSolicitudXid(idSolicitud);
+          console.log(respuesta);
+          if (!respuesta.correcto) {
+            toast.error("Error al cargar la solicitud");
+            navigate("/rutinas/solicitudes");
+          }
+        } catch (error) {
+          console.error("Error al cargar la solicitud:", error);
+          toast.error("Ocurrió un error inesperado");
+          navigate("/rutinas/solicitudes");
+        }
+      }
+    };
+    cargarDatos();
+  }, [idSolicitud]);
 
   const handleClickButton = async () => {
     const dia = comprobarLineasRutina();
@@ -53,7 +67,7 @@ export const FormularioSolicitudRutina = () => {
     }
     try {
       const response = await actualizarRutina();
-      if (response) {
+      if (response.correcto) {
         toast.success("Rutina subida correctamente");
         asignarDiasRutina({ dia: 1, lineas: [] });
         navigate("/rutinas/solicitudes");

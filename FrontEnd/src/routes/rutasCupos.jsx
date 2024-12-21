@@ -3,12 +3,11 @@ import ListaCupos from "../pages/Cupos/listaCupos.jsx";
 import FormularioCupos from "../pages/Cupos/formularioCupos.jsx";
 import DetalleCupo from "../pages/Cupos/detalleCupo.jsx";
 import ProveedorCupo from "../context/Cupo/proveedorCupo.jsx";
-import { Validacion } from "Validacion.jsx";
+import {Validacion} from "./Validacion.jsx";
 import { useUsuario } from "../context/Usuario/ProveedorUsuario.jsx";
 
 export function RutasCupos() {
-  const { rol, comprobarToken } = useUsuario();
-  comprobarToken();
+  const { rol } = useUsuario();
   return (
     <ProveedorCupo>
       <Validacion esperado={1} rol={rol}>

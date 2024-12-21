@@ -3,11 +3,10 @@ import ProveedorSeguimiento from "../context/Seguimiento/proveedorSeguimiento.js
 import {useUsuario} from "../context/Usuario/ProveedorUsuario.jsx";
 import {ListadoClientesSeguimiento} from "../pages/Seguimiento/listadoClientesSeguimiento.jsx";
 import {FormularioSeguimiento} from "../pages/Seguimiento/formularioSeguimiento.jsx";
-import {Validacion} from "Validacion.jsx";
+import {Validacion} from "./Validacion.jsx";
 
 export function RutasSeguimientos() {
-    const {rol, comprobarToken} = useUsuario();
-    comprobarToken();
+    const {rol} = useUsuario();
     return (
         <ProveedorSeguimiento>
             <Validacion rol={rol} esperado={2}>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 
 export function FormularioUsuario({
   isOpen,
@@ -9,6 +10,8 @@ export function FormularioUsuario({
   onRoleChange,
   error,
 }) {
+  
+  
   if (!isOpen) return null;
 
   return (
