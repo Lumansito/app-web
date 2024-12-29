@@ -45,7 +45,7 @@ export function Perfil() {
         className="absolute top-4 left-4 px-4 py-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
         aria-label="Ir al inicio"
       >
-        <Casa className="h-5 w-5 bg-black" />
+        <Casa className="h-5 w-5 " />
       </button>
       <div className="max-w-md mx-auto mt-12">
         <div className="flex items-center justify-between mb-6">
@@ -64,7 +64,7 @@ export function Perfil() {
              
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                 <Usuario className="h-6 w-6 text-white" />
+                 <Usuario className="h-6 w-6" />
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold text-gray-800">{`${datosUsuario.nombre} ${datosUsuario.apellido}`}</h2>
@@ -77,7 +77,7 @@ export function Perfil() {
                 <>
                   <div className="flex items-center space-x-4">
                     <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                      <Calendario className="h-6 w-6 text-white" />
+                      <Calendario className="h-6 w-6" />
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Membresía</p>
@@ -89,7 +89,7 @@ export function Perfil() {
 
                   <div className="flex items-center space-x-4">
                     <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <Calendario className="h-6 w-6 text-white" />
+                    <Calendario className="h-6 w-6" />
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">
