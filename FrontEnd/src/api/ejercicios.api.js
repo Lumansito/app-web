@@ -2,8 +2,8 @@ import axiosInstance from "./axiosInstance";
 
 export const obtenerEjerciciosAPI = async () => {
   try {
-    const response = await axiosInstance.get("/ejercicios");
-    return response;
+    return await axiosInstance.get("/ejercicios");
+    
   } catch (error) {
     return error;
   }
@@ -11,8 +11,8 @@ export const obtenerEjerciciosAPI = async () => {
 
 export const obtenerEjerciciosXcodigoEjAPI = async (codEjercicio) => {
   try {
-    const response = await axiosInstance.get(`/ejercicios/${codEjercicio}`);
-    return response;
+    return await axiosInstance.get(`/ejercicios/${codEjercicio}`);
+    
   } catch (error) {
     return error;
   }
@@ -20,8 +20,8 @@ export const obtenerEjerciciosXcodigoEjAPI = async (codEjercicio) => {
 
 export const crearEjercicioAPI = async (values) => {
   try {
-    const response = await axiosInstance.post("/ejercicios", values);
-    return response;
+    return await axiosInstance.post("/ejercicios", values);
+    
   } catch (error) {
     return error;
   }
@@ -29,8 +29,8 @@ export const crearEjercicioAPI = async (values) => {
 
 export const eliminarEjercicioAPI = async (codEjercicio) => {
   try {
-    const response = await axiosInstance.delete(`/ejercicios/${codEjercicio}`);
-    return response;
+    return await axiosInstance.delete(`/ejercicios/${codEjercicio}`);
+    
   } catch (error) {
     return error;
   }
@@ -38,11 +38,11 @@ export const eliminarEjercicioAPI = async (codEjercicio) => {
 
 export const actualizarEjercicioAPI = async (codEjercicio, values) => {
   try {
-    const response = await axiosInstance.put(
+    const respuesta = await axiosInstance.put(
       `/ejercicios/${codEjercicio}`,
       values
     );
-    return response;
+    return respuesta;
   } catch (error) {
     return error;
   }

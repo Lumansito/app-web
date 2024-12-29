@@ -23,7 +23,7 @@ const ProveedorAsistencia = ({ children }) => {
         return { error: respuesta };
       }
     } catch (error) {
-      return error;
+      return {error};
     }
   };
 

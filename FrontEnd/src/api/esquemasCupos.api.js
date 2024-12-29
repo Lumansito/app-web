@@ -2,8 +2,8 @@ import axiosInstance from "./axiosInstance";
 
 export const obtenerEsquemaCuposAPI = async () => {
   try {
-    const response = await axiosInstance.get("/esquemaCupos");
-    return response;
+    return  await axiosInstance.get("/esquemaCupos");
+    
   } catch (error) {
     return error;
   }
@@ -11,8 +11,8 @@ export const obtenerEsquemaCuposAPI = async () => {
 
 export const obtenerEsquemaCuposXfechaAPI = async (diaSemana) => {
   try {
-    const response = await axiosInstance.get(`/esquemaCupos/dia/${diaSemana}`);
-    return response;
+    return  await axiosInstance.get(`/esquemaCupos/dia/${diaSemana}`);
+    
   } catch (error) {
     return error;
   }
@@ -20,8 +20,8 @@ export const obtenerEsquemaCuposXfechaAPI = async (diaSemana) => {
 
 export const obtenerCuposOcupadosXidEsquemaAPI = async (idEsquema) => {
   try {
-    const response = await axiosInstance.get(`/esquemaCupos/${idEsquema}`);
-    return response;
+    return  await axiosInstance.get(`/esquemaCupos/${idEsquema}`);
+    
   } catch (error) {
     return error;
   }
@@ -29,8 +29,8 @@ export const obtenerCuposOcupadosXidEsquemaAPI = async (idEsquema) => {
 
 export const obtenerEsquemaCuposHoyAPI = async () => {
   try {
-    const response = await axiosInstance.get("/esquemaCupos/today");
-    return response;
+    return  await axiosInstance.get("/esquemaCupos/today");
+    
   } catch (error) {
     return error;
   }
@@ -38,8 +38,8 @@ export const obtenerEsquemaCuposHoyAPI = async () => {
 
 export const crearEsquemaCuposAPI = async (cupo) => {
   try {
-    const response = await axiosInstance.post("/esquemaCupos", cupo);
-    return response;
+    return  await axiosInstance.post("/esquemaCupos", cupo);
+    
   } catch (error) {
     return error;
   }
@@ -47,11 +47,11 @@ export const crearEsquemaCuposAPI = async (cupo) => {
 
 export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
   try {
-    const response = await axiosInstance.put(
+    return  await axiosInstance.put(
       `/esquemaCupos/${idEsquema}`,
       cupo
     );
-    return response;
+    
   } catch (error) {
     return error;
   }
@@ -59,11 +59,11 @@ export const actualizarEsquemaCuposAPI = async (idEsquema, cupo) => {
 
 export const actualizarEstadoCupoAPI = async (idEsquema, cupo) => {
   try {
-    const response = await axiosInstance.put(
+    return  await axiosInstance.put(
       `/esquemaCupos/${idEsquema}`,
       cupo
     );
-    return response;
+    
   } catch (error) {
     return error;
   }
@@ -71,8 +71,8 @@ export const actualizarEstadoCupoAPI = async (idEsquema, cupo) => {
 
 export const eliminarEsquemaCuposAPI = async (idEsquema) => {
   try {
-    const response = await axiosInstance.delete(`/esquemaCupos/${idEsquema}`);
-    return response;
+    return  await axiosInstance.delete(`/esquemaCupos/${idEsquema}`);
+    
   } catch (error) {
     return error;
   }

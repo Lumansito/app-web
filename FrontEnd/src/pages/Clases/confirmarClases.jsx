@@ -18,14 +18,14 @@ export const ConfirmarClases = () => {
 
   const handleConfirm = async () => {
     try {
-      const response = await reservarClase(clase.dniInstructor, clase.horario);
-      console.log(response);
-      if (response.correcto) {
+      const respuesta = await reservarClase(clase.dniInstructor, clase.horario);
+      
+      if (respuesta.correcto) {
         toast.success("Clase reservada con exito");
         navigate("/clases");
       } else {
         toast.error(
-          `Error al reservar la clase: ${response.error.response.data.message}`
+          `Error al reservar la clase: ${respuesta.error.response.data.message}`
         );
       }
     } catch (error) {

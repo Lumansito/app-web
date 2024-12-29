@@ -4,8 +4,8 @@ const APIURL = import.meta.env.VITE_API_URL;
 
 export const iniciarSesionAPI = async (usuario) => {
   try {
-    const response = await axios.post(APIURL + "/users/login", usuario); //coloar la ip de la maquina donde se esta ejecutando el backend
-    return response;
+    return  await axios.post(APIURL + "/users/login", usuario); //coloar la ip de la maquina donde se esta ejecutando el backend
+    
   } catch (error) {
     return error;
   }
@@ -13,8 +13,8 @@ export const iniciarSesionAPI = async (usuario) => {
 
 export const crearUsuarioAPI = async (usuario) => {
   try {
-    const response = await axiosInstance.post("/users", usuario);
-    return response;
+    return  await axiosInstance.post("/users", usuario);
+    
   } catch (error) {
     return error;
   }
@@ -22,10 +22,10 @@ export const crearUsuarioAPI = async (usuario) => {
 
 export const usuariosConMembresiaAPI = async (codMembresia) => {
   try {
-    const response = await axiosInstance.get(
+    return  await axiosInstance.get(
       `/users/membresia/${codMembresia}`
     );
-    return response;
+    
   } catch (error) {
     return error;
   }
@@ -33,8 +33,8 @@ export const usuariosConMembresiaAPI = async (codMembresia) => {
 
 export const obtenerClienteXdniAPI = async (dni) => {
   try {
-    const response = await axiosInstance.get(`/users/${dni}`);
-    return response;
+    return  await axiosInstance.get(`/users/${dni}`);
+    
   }
   catch (error) {
     return error;
@@ -43,9 +43,9 @@ export const obtenerClienteXdniAPI = async (dni) => {
 
 export const obtenerProfesionalesAPI = async () => {
   try {
-    const response = await axiosInstance.get('/users/profesionales'); 
+    return  await axiosInstance.get('/users/profesionales'); 
     
-    return response;
+    
   } catch (error) {
     return error
   }
@@ -53,8 +53,8 @@ export const obtenerProfesionalesAPI = async () => {
 
 export const obtenerUsuariosAPI = async () => {
   try {
-    const response = await axiosInstance.get('/users');
-    return response;
+    return  await axiosInstance.get('/users');
+    
   } catch (error) {
     return error;
   }
@@ -62,8 +62,8 @@ export const obtenerUsuariosAPI = async () => {
 
 export const eliminarUsuarioAPI = async (dni) => {
   try {
-    const response = await axiosInstance.delete(`/users/${dni}`);
-    return response;
+    return  await axiosInstance.delete(`/users/${dni}`);
+    
   } catch (error) {
     return error;
   }
@@ -71,8 +71,8 @@ export const eliminarUsuarioAPI = async (dni) => {
 
 export const actualizarUsuarioAPI = async (dni, usuario) => {
   try {
-    const response = await axiosInstance.put(`/users/${dni}`, usuario);
-    return response;
+    return  await axiosInstance.put(`/users/${dni}`, usuario);
+    
   } catch (error) {
     return error;
   }

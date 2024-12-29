@@ -2,8 +2,8 @@ import axiosInstance from "./axiosInstance";
 
 export const obtenerSeguimientosXdni_codEjercicioAPI = async (dni, codEjercicio) => {
     try {
-      const response = await axiosInstance.get(`/seguimientos/clientes/${dni}/${codEjercicio}`);
-      return response;
+      return await axiosInstance.get(`/seguimientos/clientes/${dni}/${codEjercicio}`);
+      
     } catch (error) {
       return error;
     }
@@ -11,8 +11,8 @@ export const obtenerSeguimientosXdni_codEjercicioAPI = async (dni, codEjercicio)
 
 export const obtenerSeguimientosXdniAPI = async (idSeguimiento) => {
     try {
-      const response = await axiosInstance.get(`/seguimientos/${idSeguimiento}`);
-      return response;
+      return await axiosInstance.get(`/seguimientos/${idSeguimiento}`);
+      
     } catch (error) {
       return error;
     }
@@ -20,8 +20,8 @@ export const obtenerSeguimientosXdniAPI = async (idSeguimiento) => {
 
 export const actualizarSeguimientoXidAPI = async (id, seguimiento) => {
     try {
-      const response = await axiosInstance.put(`/seguimientos/${id}`, seguimiento);
-      return response;
+      return await axiosInstance.put(`/seguimientos/${id}`, seguimiento);
+      
     } catch (error) {
       return error;
     }
@@ -29,8 +29,8 @@ export const actualizarSeguimientoXidAPI = async (id, seguimiento) => {
 
 export const crearSeguimientoAPI = async (seguimiento) => {
     try {
-      const response = await axiosInstance.post(`/seguimientos`, seguimiento);
-      return response;
+      return await axiosInstance.post(`/seguimientos`, seguimiento);
+      
     } catch (error) {
       return error;
     }
@@ -38,8 +38,8 @@ export const crearSeguimientoAPI = async (seguimiento) => {
 
 export const eliminarSeguimientoAPI = async (idSeguimiento) => {
     try {
-      const response = await axiosInstance.delete(`/seguimientos/${idSeguimiento}`);
-      return response;
+      return await axiosInstance.delete(`/seguimientos/${idSeguimiento}`);
+      
     } catch (error) {
       return error;
     }

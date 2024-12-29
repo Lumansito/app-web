@@ -2,8 +2,8 @@ import axiosInstance from "./axiosInstance";
 
 export const obtenerClasesHoyAPI = async () => {
   try {
-    const response = await axiosInstance.get("/esquemaCupos/today");
-    return response; 
+    return await axiosInstance.get("/esquemaCupos/today");
+   
   } catch (error) {
     return error; 
   }
@@ -11,8 +11,8 @@ export const obtenerClasesHoyAPI = async () => {
 
 export const obtenerClaseAPI = async (idClase) => {
   try {
-    const response = await axiosInstance.get(`/esquemaCupos/${idClase}`);
-    return response;
+    return await axiosInstance.get(`/esquemaCupos/${idClase}`);
+    
   } catch (error) {
     return error;
   }
@@ -20,8 +20,8 @@ export const obtenerClaseAPI = async (idClase) => {
 
 export const obtenerCupoClaseAPI = async (idClase) => {
   try {
-    const response = await axiosInstance.get(`/cupoOtorgado/${idClase}`);
-    return response;
+    return await axiosInstance.get(`/cupoOtorgado/${idClase}`);
+    
   } catch (error) {
     return error;
   }
@@ -29,8 +29,8 @@ export const obtenerCupoClaseAPI = async (idClase) => {
 
 export const crearResevaClaseAPI = async (clase) => {
   try {
-    const response = await axiosInstance.post("/cupoOtorgado", clase);
-    return response;
+    return await axiosInstance.post("/cupoOtorgado", clase);
+    
   } catch (error) {
     return error;
   }
@@ -38,8 +38,8 @@ export const crearResevaClaseAPI = async (clase) => {
 
 export const obtenerClaseReservadaXdniAPI = async (dni) => {
   try {
-    const response = await axiosInstance.get(`/cupoOtorgado/reservas/${dni}`);
-    return response;
+    return await axiosInstance.get(`/cupoOtorgado/reservas/${dni}`);
+    
   } catch (error) {
     return error;
   }
@@ -47,8 +47,8 @@ export const obtenerClaseReservadaXdniAPI = async (dni) => {
 
 export const cancelarReservaClaseAPI = async (dni) => {
   try {
-    const response = await axiosInstance.post(`/cupoOtorgado/cancelar/${dni}`);
-    return response;
+    return await axiosInstance.post(`/cupoOtorgado/cancelar/${dni}`);
+    
   } catch (error) {
     return error;
   }
