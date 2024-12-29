@@ -23,7 +23,9 @@ const ProveedorUsuarios = ({ children }) => {
 
   const cargarUsuarios = async () => {
     try {
+      
       const response = await obtenerUsuariosAPI();
+      console.log(response);
       if (response.status !== 200) {
         console.error("Error al cargar usuarios");
         return { correcto: false, error: "Error al cargar usuarios" };

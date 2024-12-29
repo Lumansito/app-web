@@ -10,7 +10,6 @@ export const obtenerUsuarios = async (req, res, next) => {
     FROM usuarios 
     LEFT JOIN usuarios_roles 
     ON usuarios.dni = usuarios_roles.dni
-    WHERE usuarios.estado = 1
     GROUP BY usuarios.dni
     `);
     
@@ -30,6 +29,8 @@ export const obtenerUsuarios = async (req, res, next) => {
       res.json(usuarios);
     }
   } catch (error) {
+    console.log(error);
+
     next(error);
   }
 };
