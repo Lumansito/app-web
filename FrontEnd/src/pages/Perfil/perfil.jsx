@@ -45,7 +45,7 @@ export function Perfil() {
         className="absolute top-4 left-4 px-4 py-2 bg-gray-200 text-black rounded-full hover:bg-gray-300 transition-colors"
         aria-label="Ir al inicio"
       >
-        <Casa className="h-5 w-5" />
+        <Casa className="h-5 w-5 bg-black" />
       </button>
       <div className="max-w-md mx-auto mt-12">
         <div className="flex items-center justify-between mb-6">
